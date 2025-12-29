@@ -1,4 +1,4 @@
-# Bandmgr Flutter app
+# Architecture
 
 ## Platform
 
@@ -6,11 +6,6 @@
 - Offline-first design is a primary feature, allowing full functionality without an internet connection.
 - Data is stored locally-first using Drift (SQLite), with later option to sync data to a backend server.
 - The app will sync data with a backend server when an internet connection is available.
-
-## General Development Practices
-
-- Helper scripts are placed in the `s/` directory (e.g., `build`, `up`, `down`, `migrate`)
-- Persistent documentation of new features and requirements is maintained in this file
 
 ## Flutter targets
 
@@ -22,6 +17,7 @@
 ## Local data persistence
 
 - Primary: Drift (SQLite). (Earlier note about YAML: treat as optional import/export format, not live store.)
+- Local DB file path: application documents directory `/bandmgr.db`
 
 ## Tagging
 
@@ -58,3 +54,36 @@
 - Clicking on a song in the list opens the Song Detail view
 - Song Detail view shows all song attributes and allows editing
 - Songs can be imported from Plain Text, Markdown, or CSV files
+
+## State management and layering
+
+- State management: Riverpod
+- Data flow: drift tables -> DAOs -> repositories -> Riverpod providers -> UI
+- Dependency injection is used to manage services and repositories
+- Repositories expose Streams for reactive UI updates
+
+## Domain model conventions
+
+- Immutability in domain models
+- Mapping layer between Drift data classes and domain models
+- Entities: Instance (implicit/config), Band, Member, Song, Setlist (+ SetlistSongs for ordering), Event (Gig), Equipment, Tag, Tagging
+
+## Tech stack
+
+- Flutter/Dart
+- Drift
+- YAML for configuration and import/export formats
+
+## Pending architecture decisions
+
+- Sync protocol design (conflict resolution, tombstones)
+- Authentication and multi-instance separation (namespace strategy)
+- Responsive UI (bottom nav vs sidebar) implementation
+
+## Open questions
+
+- Auth method? Initially no auth needed.
+- Offline requirements?
+- Primary features and prioritization?
+- Multi-band per user?
+- Hosting backend?
