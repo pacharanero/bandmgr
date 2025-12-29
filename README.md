@@ -10,9 +10,20 @@ Modern bands need a place to store and share important information - things like
 
 Band Manager aims to be a one-stop solution for all of these needs, with a focus on ease of use and flexibility. It is free and open source, and will always remain free. Hosted options may be available in the future but there will **never** be a feature in the 'premium' version that is disabled in the self-hosted version.
 
-## Features
+## Key Features
 
-All feature lists, status, and roadmap items live in `spec/features.md`.
+Build a single home for your band and keep everything tight, fast, and organized:
+
+- 🎵 Song library with tags, keys, tempos, and quick search
+- 📋 Setlists with easy ordering and duplication
+- 📅 Gigs + calendar planning with reminders
+- 👥 Band roster, roles, and member messaging
+- 🧾 Merch + simple merch store support
+- 🎛️ Stage plans and equipment inventory
+- 🌐 Band site + branding, themes, and custom domains
+- 🔗 Integrations: Google Drive, Spotify, YouTube, SoundCloud, Bandcamp
+
+For the full status list and roadmap, see `spec/features.md`.
 
 ---
 
