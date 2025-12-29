@@ -1,0 +1,11 @@
+#!/usr/bin/env bash            # Use the env-resolved bash interpreter for portability.
+set -euo pipefail               # e: exit on error; u: error on unset vars; o pipefail: catch errors in pipelines.
+
+# Determine absolute directory of this script, even if invoked via a symlink.
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# Move into the Flutter app subdirectory (project root for flutter tools).
+cd "$SCRIPT_DIR/../app"
+
+# Run the Flutter app, forwarding all passed CLI arguments.
+flutter run "$@"

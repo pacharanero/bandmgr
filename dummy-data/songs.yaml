@@ -1,0 +1,33 @@
+# YAML file for all songs
+songs:
+  - title: "Haleluia, I Love Her So - Ray Charles."
+    key: ""
+    tags: ["Shab"]
+    notes: ""
+    video_url: "video"
+    chart_url: "chart"
+  - title: "Lonely This Christmas - Mudd"
+    key: "G"
+    tags: ["Shab"]
+    notes: "lyrics"
+    video_url: "video"
+    chart_url: "chart"
+  - title: "All Shook Up - Elvis Presley"
+    key: "B♭"
+    tags: ["Shab"]
+    notes: ""
+    video_url: "video"
+    chart_url: "chart"
+  - title: "Another Saturday Night - Sam Cooke"
+    key: "A"
+    tags: ["Shab"]
+    notes: "fast funk-style strumming, start guitar ad-lib, calypso feel solo"
+    video_url: "video"
+    chart_url: "chart"
+  - title: "Blue Suede Shoes - Elvis Presley"
+    key: "A"
+    tags: ["Shab"]
+    notes: "Shab start, bass & guitar end tune"
+    video_url: "video"
+    chart_url: "chart"
+# ... more songs can be added as needed ...

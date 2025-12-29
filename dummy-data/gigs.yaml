@@ -1,0 +1,273 @@
+- status: CONFIRMED
+  title: Cawood Beer Festival
+  date: '2025-05-03'
+  time: ''
+  location: Cawood White Cross Ski Club
+  notes: 'PA from 11am - 5:00-6:30
+
+    '
+  fee: PAID
+  members:
+    M: true
+    P: true
+    J: true
+    G: false
+  pa: true
+  contact_name: Patrick
+  contact_details: ''
+- status: CONFIRMED
+  title: Stillingfleet Beer Festival
+  date: '2025-05-10'
+  time: ''
+  location: Stillingfleet
+  notes: 'Contact: Marcus Baw
+
+    '
+  fee: UNPAID
+  members:
+    M: true
+    P: true
+    J: true
+    G: false
+  pa: true
+  contact_name: Juan Jose Brooks
+  contact_details: ''
+- status: POTENTIAL
+  title: Private Function
+  date: '2025-06-28'
+  time: ''
+  location: Castle Grove Lodge, Headingley
+  notes: 'Subject to Jim''s availability
+
+    '
+  fee: £300
+  members:
+    M: true
+    P: true
+    J: unknown
+    G: false
+  pa: true
+  contact_name: Helen Bolland
+  contact_details: 7753988301
+- status: CONFIRMED
+  title: Party in the Park
+  date: '2025-07-12'
+  time: ''
+  location: Cawood
+  notes: 'Headline slot 9:45-10:45
+
+    '
+  fee: Modest (donation optional)
+  members:
+    M: true
+    P: true
+    J: true
+    G: false
+  pa: MAYBE
+  contact_name: Sara McLoughlin
+  contact_details: ''
+- status: CONFIRMED
+  title: Paella Night
+  date: '2025-07-19'
+  time: ''
+  location: Bogie's Garden
+  notes: 'Later than usual
+
+    '
+  fee: UNPAID
+  members:
+    M: true
+    P: true
+    J: unknown
+    G: false
+  pa: true
+  contact_name: Richard Bogie
+  contact_details: ''
+- status: CONFIRMED
+  title: 7 Arts
+  date: '2025-08-09'
+  time: ''
+  location: Chappel Allerton
+  notes: 'Possibly outside on the terrace
+
+    '
+  fee: PWYF, £80 min
+  members:
+    M: true
+    P: true
+    J: true
+    G: false
+  pa: false
+  contact_name: '?'
+  contact_details: ''
+- status: CONFIRMED
+  title: Gaz & Teri Wedding
+  date: '2025-08-22'
+  time: ''
+  location: York St John Uni
+  notes: 'Musically literate crowd
+
+    '
+  fee: UNPAID?
+  members:
+    M: true
+    P: true
+    J: true
+    G: true
+  pa: MAYBE
+  contact_name: Gaz/Teri
+  contact_details: ''
+- status: CONFIRMED
+  title: Cawoodstock
+  date: '2025-08-23'
+  time: ''
+  location: Cawood
+  notes: 'Possible multiple gigs, TBD after May meeting
+
+    '
+  fee: UNPAID
+  members:
+    M: true
+    P: true
+    J: unknown
+    G: false
+  pa: MAYBE
+  contact_name: '?'
+  contact_details: ''
+- status: POTENTIAL
+  title: Corner House Club
+  date: '2025-10-05'
+  time: ''
+  location: Moortown
+  notes: 'Marcus Baw chasing
+
+    '
+  fee: £350 (less Gaz Arse Licensing fee)
+  members:
+    M: true
+    P: true
+    J: false
+    G: false
+  pa: false
+  contact_name: Michael Brogden
+  contact_details: mbrogden163@gmail.com,07973 344987
+- status: POTENTIAL
+  title: ''
+  date: ''
+  time: ''
+  location: ''
+  notes: ''
+  fee: ''
+  members:
+    M: false
+    P: false
+    J: false
+    G: false
+  pa: ''
+  contact_name: ''
+  contact_details: ''
+- status: POTENTIAL
+  title: ''
+  date: ''
+  time: ''
+  location: ''
+  notes: ''
+  fee: ''
+  members:
+    M: false
+    P: false
+    J: false
+    G: false
+  pa: ''
+  contact_name: ''
+  contact_details: ''
+- status: POTENTIAL
+  title: ''
+  date: ''
+  time: ''
+  location: ''
+  notes: ''
+  fee: ''
+  members:
+    M: false
+    P: false
+    J: false
+    G: false
+  pa: ''
+  contact_name: ''
+  contact_details: ''
+- status: POTENTIAL
+  title: ''
+  date: ''
+  time: ''
+  location: ''
+  notes: ''
+  fee: ''
+  members:
+    M: false
+    P: false
+    J: false
+    G: false
+  pa: ''
+  contact_name: ''
+  contact_details: ''
+- status: POTENTIAL
+  title: ''
+  date: ''
+  time: ''
+  location: ''
+  notes: ''
+  fee: ''
+  members:
+    M: false
+    P: false
+    J: false
+    G: false
+  pa: ''
+  contact_name: ''
+  contact_details: ''
+- status: POTENTIAL
+  title: ''
+  date: ''
+  time: ''
+  location: ''
+  notes: ''
+  fee: ''
+  members:
+    M: false
+    P: false
+    J: false
+    G: false
+  pa: ''
+  contact_name: ''
+  contact_details: ''
+- status: POTENTIAL
+  title: ''
+  date: ''
+  time: ''
+  location: ''
+  notes: ''
+  fee: ''
+  members:
+    M: false
+    P: false
+    J: false
+    G: false
+  pa: ''
+  contact_name: ''
+  contact_details: ''
+- status: POTENTIAL
+  title: ''
+  date: ''
+  time: ''
+  location: ''
+  notes: ''
+  fee: ''
+  members:
+    M: false
+    P: false
+    J: false
+    G: false
+  pa: ''
+  contact_name: ''
+  contact_details: ''
