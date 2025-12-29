@@ -1,0 +1,12 @@
+# Bandmanager Instance Configuration
+# This file allows per-instance customization for white-labelling and theming.
+# Example options:
+# primary_color: The main color for navigation and accents (Fomantic UI color name)
+# accent_color: Secondary color for highlights (optional)
+# brand_name: The name to display in the header and footer
+# footer_text: Custom footer text (optional)
+
+primary_color: teal
+accent_color: orange
+brand_name: Bandmanager
+footer_text: "AGPL v3 Licensed Open Source"

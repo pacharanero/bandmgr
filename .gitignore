@@ -1,0 +1,80 @@
+# Flutter/Dart
+.dart_tool/
+.packages
+.pub-cache/
+.pub/
+build/
+flutter_*.png
+generated_plugin_registrant.dart
+
+# Coverage
+coverage/
+lcov.info
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDEs
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.android/
+.metadata
+
+# Xcode
+ios/Flutter/App.framework
+ios/Flutter/Flutter.framework
+ios/Flutter/Generated.xcconfig
+ios/Flutter/ephemeral/
+ios/Runner/GeneratedPluginRegistrant.*
+ios/Pods/
+ios/.symlinks/
+macos/Flutter/ephemeral/
+macos/Pods/
+macos/Runner/GeneratedPluginRegistrant.*
+
+# Android
+android/.gradle/
+android/captures/
+android/app/*.iml
+android/local.properties
+android/key.properties
+android/.settings/
+**/android/app/debug
+**/android/app/profile
+**/android/app/release
+
+# Web
+web/.dart_tool/
+
+# Linux
+linux/flutter/
+
+# Windows
+windows/flutter/
+
+# Generated files (keep *.g.dart tracked, so NOT ignored)
+# Uncomment if you decide not to commit generated code:
+# **/*.g.dart
+
+# Drift sqlite database (runtime)
+*.db
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+
+# Dependency / lock files backups
+pubspec.lock.bak
+
+# Temporary
+.tmp/
+temp/
+
+# Spec
+spec/*
