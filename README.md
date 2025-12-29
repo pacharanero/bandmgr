@@ -6,7 +6,9 @@ Band Manager is an open-source, self-hostable platform for managing your band.
 
 ## Mission
 
-Modern bands need a place to store and share important information - things like repertoir, charts, setlists, bookings, and contacts. Almost all bands need a webpage of some kind, and will use some form of social media to promote themselves. Band Manager aims to be a one-stop solution for all of these needs, with a focus on ease of use and flexibility. It is free and will always remain free. Hosted options may be available in the future but there will **never** be a feature in the 'premium' version that is disabled in the self-hosted version.
+Modern bands need a place to store and share important information - things like repertoire, charts, setlists, bookings, and contacts. Almost all bands need a webpage of some kind, and will use some form of social media to promote themselves.
+
+Band Manager aims to be a one-stop solution for all of these needs, with a focus on ease of use and flexibility. It is free and open source, and will always remain free. Hosted options may be available in the future but there will **never** be a feature in the 'premium' version that is disabled in the self-hosted version.
 
 ## Features
 
@@ -19,8 +21,8 @@ All feature lists, status, and roadmap items live in `spec/features.md`.
 ### 1. Clone
 
 ```bash
-git clone https://github.com/pacharanero/bandmgr-flutter.git
-cd bandmgr-flutter
+git clone https://github.com/pacharanero/bandmgr.git
+cd bandmgr
 ```
 
 ### 2. (Optional) Enable desktop targets
