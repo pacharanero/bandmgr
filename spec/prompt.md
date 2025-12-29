@@ -16,10 +16,8 @@ This document forms persistent prompt instructions for LLMs writing code in this
 - Repetitive developer operations (build, migrate, run) should be automated with scripts in `s/`
 - See `spec/architecture.md` for architectural decisions and open questions.
 
-## Drift Companion Usage
+## JSON Storage Usage
 
-- When using `*Companion.insert`, provide only required fields.
-- For optional/nullable or defaulted columns, either omit them (preferred) or wrap values with `Value(...)`.
-- Example:
-  `await into(songs).insert(SongsCompanion.insert(id: someId, bandId: bandId, title: 'Name'));`
-  Not: `externalJson: '{}'` (wrong) – use `externalJson: const Value('{}')` if you must override default.
+- Treat JSON files as the source of truth for local data.
+- Prefer atomic writes (write to a temp file, then rename) to avoid corruption.
+- Keep serializers explicit and versioned to allow future migrations.

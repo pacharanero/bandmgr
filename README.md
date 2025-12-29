@@ -45,7 +45,6 @@ flutter config --enable-linux-desktop --enable-macos-desktop --enable-windows-de
 ### 3. Get dependencies
 
 ```bash
-cd app
 flutter pub get
 ```
 
@@ -55,8 +54,7 @@ flutter pub get
 dart run build_runner build --delete-conflicting-outputs
 ```
 
-Re-run this after any change to tables in:
-lib/core/persistence/app_database.dart
+Re-run this after any change to model serialization or generated code.
 
 ### 5. Run the app
 
@@ -78,7 +76,7 @@ Mobile (attached device/emulator):
 flutter run
 ```
 
-Alternative (from repo root without cd):
+Alternative:
 
 ```bash
 ./s/run -d linux
@@ -101,16 +99,16 @@ flutter run
 flutter test
 ```
 
-### 8. Regenerate after schema changes
+### 8. Regenerate after model changes
 
-Any edit to database tables:
+Any edit to data models or JSON serialization:
 
-1. Update app_database.dart
+1. Update the relevant model or serializer
 2. Run build:
    ```bash
    dart run build_runner build --delete-conflicting-outputs
    ```
-3. Restart the app (hot restart may be insufficient for schema migrations—full restart recommended for now).
+3. Restart the app (hot restart may be insufficient for data migrations—full restart recommended for now).
 
 ### 9. Importing Songs
 
@@ -120,14 +118,14 @@ Navigate: Home -> Songs -> Import (supports Plain Text / Markdown list / CSV).
 
 From repo root:
 
-- ./s/run (runs flutter run inside app/)
+- ./s/run (runs flutter from the repo root)
 - ./s/docker-up (enables + scaffolds Linux desktop if missing, then runs)
 
 ### 11. Common issues
 
 - Error: MemberRow / SongRow not found -> run build_runner.
-- Error: uuid not found -> ensure flutter pub get was executed inside app/.
-- Still seeing Flutter counter page -> confirm you are launching app/lib/main.dart (grep for BandMgrApp).
+- Error: uuid not found -> ensure flutter pub get was executed at the repo root.
+- Still seeing Flutter counter page -> confirm you are launching lib/main.dart (grep for BandMgrApp).
 
 ---
 

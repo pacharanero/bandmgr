@@ -4,8 +4,8 @@ set -euo pipefail               # e: exit on error; u: error on unset vars; o pi
 # Determine absolute directory of this script, even if invoked via a symlink.
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# Move into the Flutter app subdirectory (project root for flutter tools).
-cd "$SCRIPT_DIR/../app"
+# Move into the Flutter project root for flutter tools.
+cd "$SCRIPT_DIR/.."
 
 # Run the Flutter app, forwarding all passed CLI arguments.
 flutter run "$@"

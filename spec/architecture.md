@@ -4,8 +4,7 @@
 
 - Flutter has been chosen as it is a modern framework with good support, which can be used to build mobile apps, desktop apps, and web apps from a single codebase.
 - Offline-first design is a primary feature, allowing full functionality without an internet connection.
-- Data is stored locally-first using Drift (SQLite), with later option to sync data to a backend server.
-- The app will sync data with a backend server when an internet connection is available.
+- Data is stored locally-first using JSON files, with later option to sync data to a backend server.
 
 ## Flutter targets
 
@@ -16,13 +15,13 @@
 
 ## Local data persistence
 
-- Primary: Drift (SQLite). (Earlier note about YAML: treat as optional import/export format, not live store.)
-- Local DB file path: application documents directory `/bandmgr.db`
+- Primary: JSON file storage. 
+- Local data file path: application documents directory `/bandmgr.json`
 
 ## Tagging
 
-- Tags stored in Tags table.
-- Taggings join table (tagId, entityType, entityId) enables polymorphic tagging of songs, members, events, setlists, equipment.
+- Tags stored in a tags collection.
+- Taggings stored as records with (tagId, entityType, entityId) to enable polymorphic tagging of songs, members, events, setlists, equipment.
 
 ## Data Model
 
@@ -58,32 +57,18 @@
 ## State management and layering
 
 - State management: Riverpod
-- Data flow: drift tables -> DAOs -> repositories -> Riverpod providers -> UI
+- Data flow: JSON storage -> repositories -> Riverpod providers -> UI
 - Dependency injection is used to manage services and repositories
 - Repositories expose Streams for reactive UI updates
 
 ## Domain model conventions
 
 - Immutability in domain models
-- Mapping layer between Drift data classes and domain models
+- Mapping layer between JSON maps and domain models
 - Entities: Instance (implicit/config), Band, Member, Song, Setlist (+ SetlistSongs for ordering), Event (Gig), Equipment, Tag, Tagging
-
-## Tech stack
-
-- Flutter/Dart
-- Drift
-- YAML for configuration and import/export formats
 
 ## Pending architecture decisions
 
 - Sync protocol design (conflict resolution, tombstones)
 - Authentication and multi-instance separation (namespace strategy)
 - Responsive UI (bottom nav vs sidebar) implementation
-
-## Open questions
-
-- Auth method? Initially no auth needed.
-- Offline requirements?
-- Primary features and prioritization?
-- Multi-band per user?
-- Hosting backend?
