@@ -1,7 +1,7 @@
 import 'package:csv/csv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../core/persistence/app_database.dart';
-import '../../../core/persistence/database_provider.dart'; // added
+import '../../../core/persistence/json_store.dart';
+import '../../../core/persistence/storage_provider.dart';
 import '../../../core/band/current_band_provider.dart';
 import '../domain/song.dart' as domain;
 import '../infrastructure/song_repository.dart';
@@ -20,23 +20,23 @@ class SongImportResult {
 }
 
 final songRepositoryProvider = Provider<SongRepository>((ref) {
-  final db = ref.watch(appDatabaseProvider);
-  return DriftSongRepository(db);
+  final store = ref.watch(jsonStoreProvider);
+  return JsonSongRepository(store);
 });
 
 final songImportServiceProvider = Provider<SongImportService>((ref) {
   return SongImportService(
     ref.watch(songRepositoryProvider),
-    ref.watch(appDatabaseProvider),
+    ref.watch(jsonStoreProvider),
     () => ref.read(currentBandIdProvider),
   );
 });
 
 class SongImportService {
   final SongRepository repo;
-  final AppDatabase db;
+  final JsonStore store;
   final String Function() _bandId;
-  SongImportService(this.repo, this.db, this._bandId);
+  SongImportService(this.repo, this.store, this._bandId);
 
   Future<SongImportResult> import(
     String raw,
@@ -56,7 +56,7 @@ class SongImportService {
         return;
       }
       toInsert.add(domain.Song(
-        id: db.uuid(),
+        id: store.uuid(),
         bandId: bandId,
         title: t,
         artist: a?.isEmpty == true ? null : a,

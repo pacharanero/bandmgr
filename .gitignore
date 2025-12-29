@@ -77,6 +77,10 @@ windows/flutter/
 # Uncomment if you decide not to commit generated code:
 # **/*.g.dart
 
+# Local JSON storage (runtime)
+bandmgr.json
+bandmgr.json.tmp
+
 # Symbolication/obfuscation
 app.*.symbols
 app.*.map.json

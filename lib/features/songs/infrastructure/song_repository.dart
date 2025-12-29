@@ -1,6 +1,5 @@
 import 'dart:convert';
-import 'package:drift/drift.dart' show Value;
-import '../../../core/persistence/app_database.dart';
+import '../../../core/persistence/json_store.dart';
 import '../domain/song.dart' as domain;
 
 abstract class SongRepository {
@@ -11,29 +10,34 @@ abstract class SongRepository {
   Future<bool> existsByTitleArtist(String bandId, String title, String? artist);
 }
 
-class DriftSongRepository implements SongRepository {
-  final AppDatabase db;
-  DriftSongRepository(this.db);
+class JsonSongRepository implements SongRepository {
+  final JsonStore store;
+  JsonSongRepository(this.store);
 
-  domain.Song _map(SongRow row) {
+  domain.Song _map(Map<String, dynamic> row) {
     Map<String, dynamic> external = {};
     try {
-      external = jsonDecode(row.externalJson) as Map<String, dynamic>;
+      final raw = row['externalJson'];
+      if (raw is String) {
+        external = jsonDecode(raw) as Map<String, dynamic>;
+      } else if (row['external'] is Map) {
+        external = Map<String, dynamic>.from(row['external'] as Map);
+      }
     } catch (_) {}
     Duration? length;
     final len = external['lengthSeconds'];
     if (len is int) length = Duration(seconds: len);
     return domain.Song(
-      id: row.id,
-      bandId: row.bandId,
-      title: row.title,
-      artist: row.artist,
-      album: row.album,
-      key: row.key,
-      tempo: row.tempo,
+      id: row['id'] as String,
+      bandId: row['bandId'] as String,
+      title: row['title'] as String,
+      artist: row['artist'] as String?,
+      album: row['album'] as String?,
+      key: row['key'] as String?,
+      tempo: row['tempo'] as int?,
       length: length,
       external: external,
-      streamingUrl: external['streamingUrl'] as String?, // added
+      streamingUrl: external['streamingUrl'] as String?,
     );
   }
 
@@ -51,68 +55,59 @@ class DriftSongRepository implements SongRepository {
   }
 
   @override
-  Stream<List<domain.Song>> watchAll(String bandId) =>
-      db.watchSongsByBand(bandId).map((rows) => rows.map(_map).toList());
+  Stream<List<domain.Song>> watchAll(String bandId) => store
+      .watchCollection('songs')
+      .map((rows) => rows.where((r) => r['bandId'] == bandId).map(_map).toList());
 
   @override
-  Stream<domain.Song?> watchOne(String id) =>
-      (db.select(db.songs)..where((s) => s.id.equals(id)))
-          .watchSingleOrNull()
-          .map(
-            (row) => row == null ? null : _map(row),
-          );
+  Stream<domain.Song?> watchOne(String id) => store.watchCollection('songs').map(
+        (rows) {
+          final match = rows.where((r) => r['id'] == id).map(_map).toList();
+          return match.isEmpty ? null : match.first;
+        },
+      );
 
   @override
   Future<void> upsert(domain.Song song) async {
-    await db.into(db.songs).insertOnConflictUpdate(
-          SongsCompanion(
-            id: Value(song.id),
-            bandId: Value(song.bandId),
-            title: Value(song.title),
-            artist: Value(song.artist),
-            album: Value(song.album),
-            key: Value(song.key),
-            tempo: Value(song.tempo),
-            externalJson: Value(jsonEncode(_encodeExternal(song))),
-          ),
-        );
+    await store.upsertItem('songs', song.id, {
+      'id': song.id,
+      'bandId': song.bandId,
+      'title': song.title,
+      'artist': song.artist,
+      'album': song.album,
+      'key': song.key,
+      'tempo': song.tempo,
+      'externalJson': jsonEncode(_encodeExternal(song)),
+    });
   }
 
   @override
   Future<void> upsertAll(List<domain.Song> songs) async {
     if (songs.isEmpty) return;
-    await db.batch((b) {
-      b.insertAllOnConflictUpdate(
-        db.songs,
-        songs
-            .map(
-              (s) => SongsCompanion(
-                id: Value(s.id),
-                bandId: Value(s.bandId),
-                title: Value(s.title),
-                artist: Value(s.artist),
-                album: Value(s.album),
-                key: Value(s.key),
-                tempo: Value(s.tempo),
-                externalJson: Value(jsonEncode(_encodeExternal(s))),
-              ),
-            )
-            .toList(),
-      );
-    });
+    await store.upsertAll(
+      'songs',
+      songs
+          .map((s) => {
+                'id': s.id,
+                'bandId': s.bandId,
+                'title': s.title,
+                'artist': s.artist,
+                'album': s.album,
+                'key': s.key,
+                'tempo': s.tempo,
+                'externalJson': jsonEncode(_encodeExternal(s)),
+              })
+          .toList(),
+    );
   }
 
   @override
   Future<bool> existsByTitleArtist(
       String bandId, String title, String? artist) async {
-    final q = db.select(db.songs)
-      ..where((s) => s.bandId.equals(bandId))
-      ..where((s) => s.title.equals(title));
-    if (artist == null) {
-      q.where((s) => s.artist.isNull());
-    } else {
-      q.where((s) => s.artist.equals(artist));
-    }
-    return (await q.getSingleOrNull()) != null;
+    final rows = await store.readCollection('songs');
+    return rows.any((r) =>
+        r['bandId'] == bandId &&
+        r['title'] == title &&
+        ((artist == null && r['artist'] == null) || r['artist'] == artist));
   }
 }

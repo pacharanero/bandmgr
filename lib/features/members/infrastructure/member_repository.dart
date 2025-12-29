@@ -1,6 +1,5 @@
 import 'dart:async';
-import '../../../core/persistence/app_database.dart';
-import '../../tags/infrastructure/tag_mapper.dart';
+import '../../../core/persistence/json_store.dart';
 import '../domain/member.dart';
 
 // Legacy (kept for reference)
@@ -11,61 +10,43 @@ abstract class MemberRepository {
   Future<void> upsert(Member member);
 }
 
-class DriftMemberRepository implements MemberRepository {
-  final AppDatabase db;
-  DriftMemberRepository(this.db);
+class JsonMemberRepository implements MemberRepository {
+  final JsonStore store;
+  JsonMemberRepository(this.store);
 
-  Member _map(MemberRow r, List<String> tagIds) => Member(
-        id: r.id,
-        bandId: r.bandId,
-        name: r.name,
-        email: r.email,
-        roles: (r.rolesJson.isEmpty
-                ? <String>[]
-                : (TagMapper.decodeList(r.rolesJson)))
-            .cast<String>(),
+  Member _map(Map<String, dynamic> r, List<String> tagIds) => Member(
+        id: r['id'] as String,
+        bandId: r['bandId'] as String,
+        name: r['name'] as String,
+        email: r['email'] as String,
+        roles: (r['roles'] as List? ?? const <dynamic>[])
+            .map((e) => e.toString())
+            .toList(),
         tagIds: tagIds,
       );
 
   @override
   Stream<List<Member>> watchByBand(String bandId) async* {
     // Combine member rows with their taggings.
-    yield* db.watchMembersByBand(bandId).asyncMap((rows) async {
-      final ids = rows.map((e) => e.id).toList();
-      final tagMap = await db.fetchTagIdsForEntities('member', ids);
-      return rows
-          .map((r) => _map(r, tagMap[r.id] ?? const []))
+    yield* store.watchCollection('members').asyncMap((rows) async {
+      final scoped = rows.where((r) => r['bandId'] == bandId).toList();
+      final ids = scoped.map((e) => e['id'] as String).toList();
+      final tagMap = await store.fetchTagIdsForEntities('member', ids);
+      return scoped
+          .map((r) => _map(r, tagMap[r['id']] ?? const []))
           .toList(growable: false);
     });
   }
 
   @override
   Future<void> upsert(Member member) async {
-    return db.transaction(() async {
-      await db.into(db.members).insertOnConflictUpdate(MembersCompanion.insert(
-            id: member.id,
-            bandId: member.bandId,
-            name: member.name,
-            email: member.email,
-            rolesJson: TagMapper.encodeList(member.roles),
-          ));
-      // Clear existing taggings then re-add
-      await db.deleteTaggingsForEntity('member', member.id);
-      if (member.tagIds.isNotEmpty) {
-        await db.batch((b) {
-          b.insertAll(
-            db.taggings,
-            member.tagIds
-                .map((t) => TaggingsCompanion.insert(
-                      id: db.uuid(),
-                      tagId: t,
-                      entityType: 'member',
-                      entityId: member.id,
-                    ))
-                .toList(),
-          );
-        });
-      }
+    await store.upsertItem('members', member.id, {
+      'id': member.id,
+      'bandId': member.bandId,
+      'name': member.name,
+      'email': member.email,
+      'roles': member.roles,
     });
+    await store.replaceTaggings('member', member.id, member.tagIds);
   }
 }

@@ -1,34 +1,27 @@
-import 'package:bandmgr/core/persistence/app_database.dart';
+import 'dart:io';
+import 'package:bandmgr/core/persistence/json_store.dart';
+import 'package:bandmgr/core/persistence/storage_provider.dart';
 import 'package:bandmgr/features/songs/presentation/song_edit_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-// NOTE: Requires generated Drift code. Run build_runner before this test.
+import 'package:path/path.dart' as p;
 
 void main() {
   testWidgets('SongEditScreen shows existing song title', (tester) async {
-    final db = AppDatabase();
-    final id = db.uuid();
-    await db.into(db.songs).insert(
-          SongsCompanion.insert(
-            id: id,
-            bandId: 'default-band',
-            title: 'Test Song',
-            // externalJson omitted; table default '{}' used.
-          ),
-        );
-
-    await tester.pumpWidget(
-      const ProviderScope(
-        child: MaterialApp(
-          home: SizedBox(), // placeholder replaced below
-        ),
-      ),
-    );
+    final dir = Directory.systemTemp.createTempSync('bandmgr-test');
+    final store = JsonStore.withFile(File(p.join(dir.path, 'bandmgr.json')));
+    final id = store.uuid();
+    await store.upsertItem('songs', id, {
+      'id': id,
+      'bandId': 'default-band',
+      'title': 'Test Song',
+      'externalJson': '{}',
+    });
 
     await tester.pumpWidget(
       ProviderScope(
+        overrides: [jsonStoreProvider.overrideWithValue(store)],
         child: MaterialApp(
           home: SongEditScreen(songId: id),
         ),

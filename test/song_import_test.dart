@@ -1,12 +1,21 @@
+import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:bandmgr/core/persistence/app_database.dart';
+import 'package:path/path.dart' as p;
+import 'package:bandmgr/core/persistence/json_store.dart';
 import 'package:bandmgr/features/songs/infrastructure/song_repository.dart';
 import 'package:bandmgr/features/songs/application/song_import_service.dart';
 
 void main() {
-  final db = AppDatabase();
-  final repo = DriftSongRepository(db);
-  final service = SongImportService(repo, db, () => 'default-band');
+  late JsonStore store;
+  late SongRepository repo;
+  late SongImportService service;
+
+  setUp(() {
+    final dir = Directory.systemTemp.createTempSync('bandmgr-test');
+    store = JsonStore.withFile(File(p.join(dir.path, 'bandmgr.json')));
+    repo = JsonSongRepository(store);
+    service = SongImportService(repo, store, () => 'default-band');
+  });
 
   test('plain text import parses title and artist', () async {
     final res = await service.import(
