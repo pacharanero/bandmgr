@@ -1,0 +1,35 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: bandmgr
+      POSTGRES_PASSWORD: bandmgr
+      POSTGRES_DB: bandmgr_development
+    ports:
+      - "5432:5432"
+    volumes:
+      - bandmgr_postgres_data:/var/lib/postgresql/data
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+    volumes:
+      - bandmgr_redis_data:/data
+  minio:
+    image: minio/minio:RELEASE.2024-10-13T13-34-11Z
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: bandmgr
+      MINIO_ROOT_PASSWORD: bandmgrpassword
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - bandmgr_minio_data:/data
+
+volumes:
+  bandmgr_postgres_data:
+  bandmgr_redis_data:
+  bandmgr_minio_data:

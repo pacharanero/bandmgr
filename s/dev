@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+compose_file="docker-compose.dev.yml"
+
+if ! command -v docker >/dev/null 2>&1; then
+  echo "Docker is required to run this script."
+  exit 1
+fi
+
+echo "== Starting dependencies =="
+docker compose -f "${compose_file}" up -d
+
+echo "== Waiting for Postgres =="
+until docker compose -f "${compose_file}" exec -T db pg_isready -U bandmgr -d bandmgr_development >/dev/null 2>&1; do
+  sleep 1
+done
+
+if [[ -z "${DATABASE_URL:-}" ]]; then
+  export DATABASE_URL="postgresql://bandmgr:bandmgr@localhost:5432/bandmgr_development"
+fi
+
+echo "== Preparing database =="
+bin/rails db:prepare
+
+echo "== Opening browser =="
+{
+  sleep 2
+  if command -v xdg-open >/dev/null 2>&1; then
+    xdg-open "http://localhost:3000" >/dev/null 2>&1
+  elif command -v open >/dev/null 2>&1; then
+    open "http://localhost:3000" >/dev/null 2>&1
+  else
+    echo "Open http://localhost:3000 in your browser."
+  fi
+} &
+
+echo "== Starting app =="
+exec bin/dev

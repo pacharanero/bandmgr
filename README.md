@@ -61,7 +61,21 @@ Copy the example env file and update values if needed:
 cp .env.example .env
 ```
 
-### 5. Setup the database
+### 5. Start dependencies with Docker
+
+If you want a local Postgres + Redis + MinIO stack:
+
+```bash
+docker compose -f docker-compose.dev.yml up -d
+```
+
+Or use the convenience script (starts dependencies, prepares the DB, opens the browser, and runs `bin/dev`):
+
+```bash
+./s/dev
+```
+
+### 6. Setup the database
 
 ```bash
 bin/setup
@@ -72,7 +86,7 @@ This seeds a demo account and user for local development:
 - Email: `demo@example.com`
 - Password: `password`
 
-### 6. Run the app
+### 7. Run the app
 
 In one terminal:
 
@@ -90,7 +104,7 @@ bin/rails server
 
 Sign in with the demo user or create a new login at `/registration`.
 
-### 7. Tests
+### 8. Tests
 
 ```bash
 bin/rails test
@@ -102,7 +116,7 @@ System tests:
 bin/rails test:system
 ```
 
-### 8. Lint and security checks
+### 9. Lint and security checks
 
 ```bash
 bin/rubocop
