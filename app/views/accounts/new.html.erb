@@ -1,0 +1,29 @@
+<% content_for :title, "Create Account" %>
+
+<div class="mx-auto max-w-xl rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+  <h1 class="text-xl font-semibold text-slate-900">Create your account</h1>
+  <p class="mt-2 text-sm text-slate-600">Set the name and URL slug for your workspace.</p>
+
+  <%= form_with model: @account, class: "mt-6 space-y-4" do |form| %>
+    <div>
+      <%= form.label :name, class: "block text-sm font-medium text-slate-700" %>
+      <%= form.text_field :name, class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2" %>
+      <% @account.errors.full_messages_for(:name).each do |message| %>
+        <p class="mt-1 text-xs text-red-600"><%= message %></p>
+      <% end %>
+    </div>
+
+    <div>
+      <%= form.label :slug, class: "block text-sm font-medium text-slate-700" %>
+      <%= form.text_field :slug, placeholder: "example-band", class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2" %>
+      <p class="mt-1 text-xs text-slate-500">Leave blank to auto-generate from the name.</p>
+      <% @account.errors.full_messages_for(:slug).each do |message| %>
+        <p class="mt-1 text-xs text-red-600"><%= message %></p>
+      <% end %>
+    </div>
+
+    <div class="flex items-center justify-end gap-3">
+      <%= form.submit "Create account", class: "rounded-md bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800" %>
+    </div>
+  <% end %>
+</div>

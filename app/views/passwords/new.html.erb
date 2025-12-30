@@ -1,0 +1,17 @@
+<% content_for :title, "Reset password" %>
+
+<div class="mx-auto max-w-xl rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+  <h1 class="text-xl font-semibold text-slate-900">Forgot your password?</h1>
+  <p class="mt-2 text-sm text-slate-600">We will email reset instructions to you.</p>
+
+  <%= form_with url: passwords_path, class: "mt-6 space-y-4" do |form| %>
+    <div>
+      <%= form.label :email_address, class: "block text-sm font-medium text-slate-700" %>
+      <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", value: params[:email_address], class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2" %>
+    </div>
+
+    <div class="flex items-center justify-end gap-3">
+      <%= form.submit "Email reset instructions", class: "rounded-md bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800" %>
+    </div>
+  <% end %>
+</div>

@@ -1,0 +1,28 @@
+<% content_for :title, "Sign in" %>
+
+<div class="mx-auto max-w-xl rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+  <h1 class="text-xl font-semibold text-slate-900">Sign in</h1>
+  <p class="mt-2 text-sm text-slate-600">Welcome back. Sign in to manage your bands.</p>
+
+  <%= form_with url: session_url, class: "mt-6 space-y-4" do |form| %>
+    <div>
+      <%= form.label :email_address, class: "block text-sm font-medium text-slate-700" %>
+      <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", value: params[:email_address], class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2" %>
+    </div>
+
+    <div>
+      <%= form.label :password, class: "block text-sm font-medium text-slate-700" %>
+      <%= form.password_field :password, required: true, autocomplete: "current-password", maxlength: 72, class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2" %>
+    </div>
+
+    <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <%= form.submit "Sign in", class: "rounded-md bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800" %>
+      <%= link_to "Forgot password?", new_password_path, class: "text-sm text-slate-600 underline" %>
+    </div>
+  <% end %>
+
+  <p class="mt-4 text-sm text-slate-600">
+    Need an account?
+    <%= link_to "Create a login", new_registration_path, class: "text-slate-900 underline" %>
+  </p>
+</div>

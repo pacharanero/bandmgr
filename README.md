@@ -67,6 +67,11 @@ cp .env.example .env
 bin/setup
 ```
 
+This seeds a demo account and user for local development:
+
+- Email: `demo@example.com`
+- Password: `password`
+
 ### 6. Run the app
 
 In one terminal:
@@ -82,6 +87,8 @@ If you prefer running without foreman:
 ```bash
 bin/rails server
 ```
+
+Sign in with the demo user or create a new login at `/registration`.
 
 ### 7. Tests
 

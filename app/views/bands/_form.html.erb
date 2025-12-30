@@ -1,0 +1,19 @@
+<%= form_with model: band, class: "space-y-4" do |form| %>
+  <div>
+    <%= form.label :name, class: "block text-sm font-medium text-slate-700" %>
+    <%= form.text_field :name, class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2" %>
+    <% band.errors.full_messages_for(:name).each do |message| %>
+      <p class="mt-1 text-xs text-red-600"><%= message %></p>
+    <% end %>
+  </div>
+
+  <div>
+    <%= form.label :description, class: "block text-sm font-medium text-slate-700" %>
+    <%= form.text_area :description, rows: 4, class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2" %>
+  </div>
+
+  <div class="flex items-center justify-end gap-3">
+    <%= link_to "Cancel", bands_path, class: "text-sm text-slate-600 hover:text-slate-900" %>
+    <%= form.submit class: "rounded-md bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800" %>
+  </div>
+<% end %>

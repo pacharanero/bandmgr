@@ -1,0 +1,29 @@
+<% content_for :title, @band.name %>
+
+<div class="flex flex-col gap-6">
+  <div class="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+    <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+      <div>
+        <h1 class="text-2xl font-semibold text-slate-900"><%= @band.name %></h1>
+        <p class="mt-2 text-sm text-slate-600"><%= @band.description.presence || "No description yet." %></p>
+      </div>
+      <div class="flex items-center gap-3 text-sm">
+        <%= link_to "Edit", edit_band_path(@band), class: "rounded-md border border-slate-300 px-3 py-2 text-slate-700 hover:border-slate-400 hover:text-slate-900" %>
+        <%= button_to "Delete", band_path(@band), method: :delete, data: { turbo_confirm: "Delete this band?" }, class: "rounded-md border border-red-200 px-3 py-2 text-red-600 hover:border-red-300" %>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid gap-4 md:grid-cols-2">
+    <div class="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+      <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500">Songs</h2>
+      <p class="mt-2 text-sm text-slate-600">Song library work starts in the next stage.</p>
+      <%= link_to "Go to songs", songs_path, class: "mt-4 inline-flex text-sm text-slate-700 hover:text-slate-900" %>
+    </div>
+    <div class="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+      <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500">Events</h2>
+      <p class="mt-2 text-sm text-slate-600">Gigs and rehearsals will live here.</p>
+      <%= link_to "Go to events", events_path, class: "mt-4 inline-flex text-sm text-slate-700 hover:text-slate-900" %>
+    </div>
+  </div>
+</div>

@@ -7,3 +7,16 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+if User.none?
+  user = User.create!(
+    email_address: "demo@example.com",
+    password: "password",
+    password_confirmation: "password"
+  )
+
+  account = Account.create!(name: "Demo Account", slug: "demo-account")
+  Membership.create!(account: account, user: user, role: :owner)
+
+  band = Band.create!(account: account, name: "Demo Band", description: "Example band for development.")
+  BandMembership.create!(band: band, user: user, role: :band_admin)
+end
