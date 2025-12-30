@@ -1,6 +1,6 @@
 # bandmgr
 
-Band Manager is an open-source, self-hostable platform for managing your band.
+`bandmgr` is an open-source, self-hostable platform for managing your band.
 
 ## Mission
 
