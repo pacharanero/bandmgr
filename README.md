@@ -33,7 +33,8 @@ For the full status list and roadmap, see `spec/features.md` and `spec/roadmap.m
 - Band CRUD (name, description) scoped to account.
 - Band member management with role updates.
 - Song library CRUD with tags, search, filtering, and sorting.
-- Placeholder screens for Events, Setlists, Tasks.
+- Event CRUD for gigs and rehearsals.
+- Placeholder screens for Setlists, Tasks.
 
 ## Development Setup
 

@@ -8,7 +8,7 @@ Rails.application.routes.draw do
     resources :band_memberships, only: %i[create update destroy]
   end
   resources :songs
-  resources :events, only: %i[index]
+  resources :events
   resources :setlists, only: %i[index]
   resources :tasks, only: %i[index]
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

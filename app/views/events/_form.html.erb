@@ -1,0 +1,38 @@
+<%= form_with model: event, class: "space-y-4" do |form| %>
+  <div>
+    <%= form.label :band_id, "Band", class: "block text-sm font-medium text-slate-700" %>
+    <%= form.collection_select :band_id, @bands, :id, :name, { prompt: "Select a band" }, class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2" %>
+    <% event.errors.full_messages_for(:band).each do |message| %>
+      <p class="mt-1 text-xs text-red-600"><%= message %></p>
+    <% end %>
+  </div>
+
+  <div class="grid gap-4 sm:grid-cols-2">
+    <div>
+      <%= form.label :kind, class: "block text-sm font-medium text-slate-700" %>
+      <%= form.select :kind, Event.kinds.keys.map { |k| [k.titleize, k] }, {}, class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2" %>
+    </div>
+    <div>
+      <%= form.label :starts_at, "Start time", class: "block text-sm font-medium text-slate-700" %>
+      <%= form.datetime_local_field :starts_at, class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2" %>
+      <% event.errors.full_messages_for(:starts_at).each do |message| %>
+        <p class="mt-1 text-xs text-red-600"><%= message %></p>
+      <% end %>
+    </div>
+  </div>
+
+  <div>
+    <%= form.label :venue, class: "block text-sm font-medium text-slate-700" %>
+    <%= form.text_field :venue, class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2" %>
+  </div>
+
+  <div>
+    <%= form.label :notes, class: "block text-sm font-medium text-slate-700" %>
+    <%= form.text_area :notes, rows: 4, class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2" %>
+  </div>
+
+  <div class="flex items-center justify-end gap-3">
+    <%= link_to "Cancel", events_path, class: "text-sm text-slate-600 hover:text-slate-900" %>
+    <%= form.submit class: "rounded-md bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800" %>
+  </div>
+<% end %>

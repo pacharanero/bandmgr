@@ -83,6 +83,7 @@ A comprehensive Band Management Platform to help bands organise their music, gig
 - Pundit policies for account/band access.
 - Responsive nav shell with placeholder pages for Events, Setlists, Tasks.
 - Song library CRUD with tags, search/filtering, and sorting.
+- Events CRUD with gig/rehearsal types and notes.
 
 ### Import/Export
 

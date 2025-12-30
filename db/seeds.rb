@@ -23,4 +23,6 @@ if User.none?
   song = Song.create!(account: account, title: "Demo Song", artist: "Demo Artist", album: "Demo Album", key: "C", tempo: 120)
   tag = Tag.create!(account: account, name: "rehearsal")
   Tagging.create!(tag: tag, taggable: song)
+
+  Event.create!(band: band, kind: :gig, starts_at: 1.week.from_now, venue: "Demo Venue", notes: "Load-in at 6pm.")
 end

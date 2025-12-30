@@ -1,0 +1,10 @@
+<% content_for :title, "New Event" %>
+
+<div class="mx-auto max-w-3xl rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+  <h1 class="text-xl font-semibold text-slate-900">Create event</h1>
+  <p class="mt-2 text-sm text-slate-600">Log gigs, rehearsals, or other band events.</p>
+
+  <div class="mt-6">
+    <%= render "form", event: @event %>
+  </div>
+</div>

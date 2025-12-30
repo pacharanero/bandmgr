@@ -168,5 +168,8 @@ Keep the Turbo handbook as the shared reference.
 - Search and filters by title/artist/tags.
 - Persisted sort preferences per user (title/artist/album/tempo).
 
+**Events**
+- Event CRUD with gig/rehearsal types, date/time, venue, and notes.
+
 **Dev stack**
 - Local dev compose stack includes Rails web container, Postgres, Redis, and MinIO.

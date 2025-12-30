@@ -53,7 +53,7 @@ This roadmap is a living checklist for building the Rails 8 app from scratch. Ea
 
 ## Stage 8: Events and calendar
 
-- [ ] CRUD for Events (gigs/rehearsals) with venue and datetime.
+- [x] CRUD for Events (gigs/rehearsals) with venue and datetime.
 - [ ] Basic calendar/list views.
 - [ ] Event detail page with notes and attachments.
 - [ ] Add reminders placeholder (future jobs/notifications).

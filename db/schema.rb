@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_12_30_183140) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_30_183334) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -40,6 +40,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_30_183140) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["account_id"], name: "index_bands_on_account_id"
+  end
+
+  create_table "events", force: :cascade do |t|
+    t.bigint "band_id", null: false
+    t.integer "kind", default: 0, null: false
+    t.datetime "starts_at"
+    t.string "venue"
+    t.text "notes"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["band_id"], name: "index_events_on_band_id"
   end
 
   create_table "memberships", force: :cascade do |t|
@@ -108,6 +119,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_30_183140) do
   add_foreign_key "band_memberships", "bands"
   add_foreign_key "band_memberships", "users"
   add_foreign_key "bands", "accounts"
+  add_foreign_key "events", "bands"
   add_foreign_key "memberships", "accounts"
   add_foreign_key "memberships", "users"
   add_foreign_key "sessions", "users"
