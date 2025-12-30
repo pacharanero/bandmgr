@@ -94,6 +94,8 @@ In one terminal:
 bin/dev
 ```
 
+If you have watchman installed, Tailwind will use it automatically. If not, the dev Procfile disables it to avoid startup failures.
+
 Visit `http://localhost:3000`.
 
 If you prefer running without foreman:

@@ -1,2 +1,2 @@
 web: bin/rails server
-css: bin/rails tailwindcss:watch
+css: env TAILWIND_DISABLE_WATCHMAN=1 bin/rails tailwindcss:watch
