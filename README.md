@@ -23,7 +23,7 @@ Build a single home for your band and keep everything tight, fast, and organized
 - 🌐 Band site + branding, themes, and custom domains
 - 🔗 Integrations: Google Drive, Spotify, YouTube, SoundCloud, Bandcamp
 
-For the full status list and roadmap, see `spec/features.md`.
+For the full status list and roadmap, see `spec/features.md` and `spec/roadmap.md`.
 
 ---
 
@@ -40,8 +40,12 @@ cd bandmgr
 
 ### 2. Prerequisites
 
-- Ruby 3.3+
-- PostgreSQL (or SQLite if you choose that path)
+- Ruby 3.3+ (Rails 8 supported)
+- PostgreSQL 14+ (or SQLite if you choose that path later)
+
+Optional but recommended:
+
+- Node.js (for tooling that might be added later)
 
 ### 3. Install dependencies
 
@@ -49,33 +53,55 @@ cd bandmgr
 bundle install
 ```
 
-### 4. Setup the database
+### 4. Configure environment
+
+Copy the example env file and update values if needed:
+
+```bash
+cp .env.example .env
+```
+
+### 5. Setup the database
 
 ```bash
 bin/setup
 ```
 
-### 5. Run the app
+### 6. Run the app
+
+In one terminal:
+
+```bash
+bin/dev
+```
+
+Visit `http://localhost:3000`.
+
+If you prefer running without foreman:
 
 ```bash
 bin/rails server
 ```
 
-### 6. Tests
+### 7. Tests
 
 ```bash
 bin/rails test
 ```
 
-### 7. Importing Songs
+System tests:
 
-Navigate: Home -> Songs -> Import (supports Plain Text / Markdown list / CSV).
+```bash
+bin/rails test:system
+```
 
-### 8. Helpful scripts
+### 8. Lint and security checks
 
-From repo root:
-
-- `./s/` will host convenience scripts for common Rails dev tasks.
+```bash
+bin/rubocop
+bin/brakeman
+bundle exec bundler-audit check --update
+```
 
 ---
 
