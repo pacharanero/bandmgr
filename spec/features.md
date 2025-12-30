@@ -82,7 +82,7 @@ A comprehensive Band Management Platform to help bands organise their music, gig
 - Account + band models with role-based memberships.
 - Pundit policies for account/band access.
 - Responsive nav shell with placeholder pages for Events, Setlists, Tasks.
-- Song library CRUD with tags and search/filtering.
+- Song library CRUD with tags, search/filtering, and sorting.
 
 ### Import/Export
 

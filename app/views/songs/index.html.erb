@@ -13,6 +13,8 @@
     <%= form_with url: songs_path, method: :get, class: "flex flex-col gap-3 sm:flex-row sm:items-center" do |form| %>
       <%= form.text_field :q, value: @query, placeholder: "Search by title or artist", class: "w-full rounded-md border border-slate-300 px-3 py-2 text-sm sm:max-w-md" %>
       <%= form.select :tag, options_for_select([["All tags", ""]] + @tags.pluck(:name).map { |name| [name, name] }, @tag_filter), {}, class: "w-full rounded-md border border-slate-300 px-3 py-2 text-sm sm:max-w-xs" %>
+      <%= form.select :sort, options_for_select([["Title", "title"], ["Artist", "artist"], ["Album", "album"], ["Tempo", "tempo"]], @sort_field), {}, class: "w-full rounded-md border border-slate-300 px-3 py-2 text-sm sm:max-w-xs" %>
+      <%= form.select :direction, options_for_select([["Ascending", "asc"], ["Descending", "desc"]], @sort_direction), {}, class: "w-full rounded-md border border-slate-300 px-3 py-2 text-sm sm:max-w-xs" %>
       <%= form.submit "Search", class: "rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-700 hover:border-slate-400" %>
     <% end %>
   </div>

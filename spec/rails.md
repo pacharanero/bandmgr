@@ -166,6 +166,7 @@ Keep the Turbo handbook as the shared reference.
 - Song library CRUD scoped to account.
 - Tagging via account-level tags and polymorphic taggings.
 - Search and filters by title/artist/tags.
+- Persisted sort preferences per user (title/artist/album/tempo).
 
 **Dev stack**
 - Local dev compose stack includes Rails web container, Postgres, Redis, and MinIO.

@@ -21,6 +21,15 @@ class SongsControllerTest < ActionDispatch::IntegrationTest
     assert_select "a", text: "Example Song"
   end
 
+  test "persists song sort preferences" do
+    sign_in_as users(:one)
+
+    get songs_path, params: { sort: "artist", direction: "desc" }
+    assert_response :success
+    assert_equal "artist", users(:one).reload.song_sort
+    assert_equal "desc", users(:one).song_sort_direction
+  end
+
   test "creates a song with tags" do
     sign_in_as users(:one)
 

@@ -6,13 +6,17 @@ class SongsController < ApplicationController
     @query = params[:q].to_s.strip
     @tag_filter = params[:tag].to_s.strip
     @tags = current_account.tags.order(:name)
-    @songs = policy_scope(Song).where(account: current_account).order(:title)
+    update_sort_preferences
+    @sort_field = current_user.song_sort
+    @sort_direction = current_user.song_sort_direction
+    @songs = policy_scope(Song).where(account: current_account)
     if @query.present?
       @songs = @songs.where("title ILIKE ? OR artist ILIKE ?", "%#{@query}%", "%#{@query}%")
     end
     if @tag_filter.present?
       @songs = @songs.joins(:tags).where(tags: { name: @tag_filter })
     end
+    @songs = @songs.order(@sort_field => @sort_direction)
   end
 
   def show
@@ -78,5 +82,15 @@ class SongsController < ApplicationController
 
     def tag_list_for(song)
       song.tags.order(:name).pluck(:name).join(", ")
+    end
+
+    def update_sort_preferences
+      sort_field = params[:sort].presence
+      sort_direction = params[:direction].presence
+      return if sort_field.blank? && sort_direction.blank?
+
+      return unless User::SONG_SORT_FIELDS.include?(sort_field) && User::SONG_SORT_DIRECTIONS.include?(sort_direction)
+
+      current_user.update(song_sort: sort_field, song_sort_direction: sort_direction)
     end
 end
