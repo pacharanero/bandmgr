@@ -4,45 +4,45 @@ This roadmap is a living checklist for building the Rails 8 app from scratch. Ea
 
 ## Stage 1: Repo baseline and governance
 
-- [ ] Finalize documentation baseline (README, architecture, rails stack decisions).
+- [x] Finalize documentation baseline (README, architecture, rails stack decisions).
 - [ ] Add CONTRIBUTING.md, CODE_OF_CONDUCT.md, SECURITY.md.
 - [ ] Set up issue templates and PR checklist.
 - [ ] Define a lightweight ADR format and create `docs/adr/` folder.
 
 ## Stage 2: Rails 8 scaffold and tooling
 
-- [ ] Generate Rails 8 app with preferred options (Propshaft, importmap, hotwire).
-- [ ] Add RSpec or Minitest and pick one standard.
-- [ ] Configure linting and security tooling (RuboCop/Standard, Brakeman, bundler-audit).
-- [ ] Add `.env.example` and baseline ENV config.
+- [x] Generate Rails 8 app with preferred options (Propshaft, importmap, hotwire).
+- [x] Add RSpec or Minitest and pick one standard.
+- [x] Configure linting and security tooling (RuboCop/Standard, Brakeman, bundler-audit).
+- [x] Add `.env.example` and baseline ENV config.
 
 ## Stage 3: Data model core
 
-- [ ] Create models: Account, User, Membership, Band, BandMembership.
-- [ ] Define role enums and validations.
-- [ ] Add basic seed data for a single account + band.
-- [ ] Write model specs for core relationships and validations.
+- [x] Create models: Account, User, Membership, Band, BandMembership.
+- [x] Define role enums and validations.
+- [x] Add basic seed data for a single account + band.
+- [x] Write model specs for core relationships and validations.
 
 ## Stage 4: Authentication and authorization
 
-- [ ] Run Rails auth generator and configure account scoping.
-- [ ] Add policy layer (Pundit or equivalent) and base policies.
-- [ ] Define access rules for account- and band-scoped actions.
-- [ ] Add request specs for auth flows and unauthorized access.
+- [x] Run Rails auth generator and configure account scoping.
+- [x] Add policy layer (Pundit or equivalent) and base policies.
+- [x] Define access rules for account- and band-scoped actions.
+- [x] Add request specs for auth flows and unauthorized access.
 
 ## Stage 5: App layout and navigation shell
 
-- [ ] Build application layout with top-level navigation.
-- [ ] Responsive nav: compact for mobile, sidebar for large screens.
-- [ ] Create primary routes for Bands, Songs, Events, Setlists, Tasks.
-- [ ] Implement flash and error rendering defaults.
+- [x] Build application layout with top-level navigation.
+- [x] Responsive nav: compact for mobile, sidebar for large screens.
+- [x] Create primary routes for Bands, Songs, Events, Setlists, Tasks.
+- [x] Implement flash and error rendering defaults.
 
 ## Stage 6: Band management
 
-- [ ] CRUD for Bands with account scoping.
-- [ ] Band settings page (name, description, branding placeholders).
+- [x] CRUD for Bands with account scoping.
+- [x] Band settings page (name, description, branding placeholders).
 - [ ] Band membership management UI.
-- [ ] Policies and specs for band access control.
+- [x] Policies and specs for band access control.
 
 ## Stage 7: Song library
 
@@ -81,11 +81,11 @@ This roadmap is a living checklist for building the Rails 8 app from scratch. Ea
 
 ## Stage 12: Self-hosting and deployment
 
-- [ ] Dockerfile and docker-compose (web, worker, db, minio optional).
-- [ ] Add `docker-compose.dev.yml` for local development.
-- [ ] bin/setup and bin/upgrade scripts.
+- [x] Dockerfile and docker-compose (web, worker, db, minio optional).
+- [x] Add `docker-compose.dev.yml` for local development.
+- [x] bin/setup and bin/upgrade scripts.
 - [ ] docs/self_hosting.md with copy/paste instructions.
-- [ ] Add health checks (/up) and readiness endpoints.
+- [x] Add health checks (/up) and readiness endpoints.
 
 ## Stage 13: Background jobs and scheduling
 

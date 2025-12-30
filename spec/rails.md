@@ -51,7 +51,7 @@
 - Invite (invite user to account/band)
 
 **Permissions**
-- Two-level roles: Account (owner/admin/member) and Band (band_admin/member/readonly).
+- Two-level roles: Account (owner/admin/member) and Band (band_admin/member/read_only).
 - Keep authorization explicit with a single gem (e.g., Pundit) and policy specs.
 
 ## 4. Architecture Conventions (Reduce Magic)
@@ -142,3 +142,21 @@ Keep the Turbo handbook as the shared reference.
 - Postgres vs SQLite for production (SQLite is more viable now, Postgres remains expected for OSS SaaS).
 - Song library scope: per-account or per-band.
 - Messaging: in-app vs integrations (email/Discord/etc.).
+
+## 11. Current Implementation Notes
+
+**Foundations in place**
+- Rails 8 scaffold with Propshaft, importmap, Turbo, Stimulus, Tailwind.
+- Auth flow via Rails auth generator (sessions + password reset).
+- Pundit policies for Account and Band.
+
+**Core models**
+- User, Account, Membership, Band, BandMembership with role enums and validations.
+- Seed data creates a demo user/account/band for local development.
+
+**Navigation + shell**
+- Responsive header navigation for Bands/Songs/Events/Setlists/Tasks.
+- Placeholder index pages for non-implemented sections.
+
+**Dev stack**
+- Local dev compose stack includes Rails web container, Postgres, Redis, and MinIO.

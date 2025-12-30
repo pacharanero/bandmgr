@@ -16,8 +16,15 @@ A comprehensive Band Management Platform to help bands organise their music, gig
 ### Bands
 
 - Multi-band support within a single instance - an instance of Bandmgr can have many bands
-- Manage band members with roles and permissions
-- Customizable band settings and preferences
+- Manage band members with roles and permissions, and set a 'default' band for each member
+- Customizable band settings and preferences - default band
+- Branding and theme customization per band
+- Custom domain support per band
+
+**Current implementation (MVP)**
+- Account setup flow with a default band per account.
+- Bands CRUD (name, description) scoped to account.
+- Band roles defined (band_admin, member, read_only).
 
 ### Gigs
 
@@ -62,6 +69,14 @@ A comprehensive Band Management Platform to help bands organise their music, gig
 - External photos and video gallery
 - Electrical safety (PAT testing in UK) records and reminders
 - Band funds tracking (income, expenses, simple ledger)
+
+## Implementation status (so far)
+
+- Rails 8 scaffold with Hotwire + Tailwind.
+- Auth (login, signup, password reset) with account scoping.
+- Account + band models with role-based memberships.
+- Pundit policies for account/band access.
+- Responsive nav shell with placeholder pages for Songs, Events, Setlists, Tasks.
 
 ### Import/Export
 

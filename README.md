@@ -75,6 +75,8 @@ Or use the convenience script (starts dependencies, prepares the DB, opens the b
 ./s/dev
 ```
 
+The web container bind-mounts the repo for live code reload and runs `bundle install` on startup to keep gems in sync.
+
 ### 6. Setup the database
 
 ```bash
