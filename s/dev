@@ -18,14 +18,19 @@ done
 
 echo "== Opening browser =="
 {
-  sleep 2
-  if command -v xdg-open >/dev/null 2>&1; then
-    xdg-open "http://localhost:3000" >/dev/null 2>&1
-  elif command -v open >/dev/null 2>&1; then
-    open "http://localhost:3000" >/dev/null 2>&1
-  else
-    echo "Open http://localhost:3000 in your browser."
-  fi
+  for _ in $(seq 1 60); do
+    if curl -fsS "http://localhost:3000/up" >/dev/null 2>&1; then
+      if command -v xdg-open >/dev/null 2>&1; then
+        xdg-open "http://localhost:3000" >/dev/null 2>&1
+      elif command -v open >/dev/null 2>&1; then
+        open "http://localhost:3000" >/dev/null 2>&1
+      else
+        echo "Open http://localhost:3000 in your browser."
+      fi
+      break
+    fi
+    sleep 1
+  done
 } &
 
 echo "== Starting app =="
