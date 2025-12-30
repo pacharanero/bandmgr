@@ -63,13 +63,13 @@ cp .env.example .env
 
 ### 5. Start dependencies with Docker
 
-If you want a local Postgres + Redis + MinIO stack:
+If you want a containerized dev stack (Rails + Postgres + Redis + MinIO):
 
 ```bash
-docker compose -f docker-compose.dev.yml up -d
+docker compose -f docker-compose.dev.yml up --build web
 ```
 
-Or use the convenience script (starts dependencies, prepares the DB, opens the browser, and runs `bin/dev`):
+Or use the convenience script (starts dependencies, prepares the DB, opens the browser, and runs the web container):
 
 ```bash
 ./s/dev

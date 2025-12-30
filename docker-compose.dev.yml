@@ -1,6 +1,26 @@
-version: "3.9"
-
 services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    environment:
+      DATABASE_URL: postgresql://bandmgr:bandmgr@db:5432/bandmgr_development
+      REDIS_URL: redis://redis:6379/1
+      MINIO_ROOT_USER: bandmgr
+      MINIO_ROOT_PASSWORD: bandmgrpassword
+      RAILS_ENV: development
+      RAILS_LOG_TO_STDOUT: "true"
+    depends_on:
+      - db
+      - redis
+      - minio
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - bundle_cache:/usr/local/bundle
+    tty: true
+    stdin_open: true
   db:
     image: postgres:16
     environment:
@@ -33,3 +53,4 @@ volumes:
   bandmgr_postgres_data:
   bandmgr_redis_data:
   bandmgr_minio_data:
+  bundle_cache:

@@ -9,19 +9,12 @@ if ! command -v docker >/dev/null 2>&1; then
 fi
 
 echo "== Starting dependencies =="
-docker compose -f "${compose_file}" up -d
+docker compose -f "${compose_file}" up -d db redis minio
 
 echo "== Waiting for Postgres =="
 until docker compose -f "${compose_file}" exec -T db pg_isready -U bandmgr -d bandmgr_development >/dev/null 2>&1; do
   sleep 1
 done
-
-if [[ -z "${DATABASE_URL:-}" ]]; then
-  export DATABASE_URL="postgresql://bandmgr:bandmgr@localhost:5432/bandmgr_development"
-fi
-
-echo "== Preparing database =="
-bin/rails db:prepare
 
 echo "== Opening browser =="
 {
@@ -36,4 +29,4 @@ echo "== Opening browser =="
 } &
 
 echo "== Starting app =="
-exec bin/dev
+exec docker compose -f "${compose_file}" up --build web
