@@ -15,7 +15,7 @@ A comprehensive Band Management Platform to help bands organise their music, gig
 
 ### Bands
 
-- Multi-band support within a single instance
+- Multi-band support within a single instance - an instance of Bandmgr can have many bands
 - Manage band members with roles and permissions
 - Customizable band settings and preferences
 

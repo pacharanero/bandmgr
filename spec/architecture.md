@@ -2,21 +2,27 @@
 
 ## Platform
 
-- Flutter has been chosen as it is a modern framework with good support, which can be used to build mobile apps, desktop apps, and web apps from a single codebase.
-- Offline-first design is a primary feature, allowing full functionality without an internet connection.
-- Data is stored locally-first using JSON files, with later option to sync data to a backend server.
+- Rails 8 is the primary stack: a server-rendered web app with Hotwire (Turbo + Stimulus).
+- Responsive UI is the primary delivery surface; mobile and desktop share the same web app.
+- Data lives in a relational database (Postgres in production; SQLite is a possible dev/prod option).
+- DaisyUI is used for component styling and theming.
 
-## Flutter targets
+## Delivery targets
 
-- The application targets all Flutter deployment types: mobile (iOS, Android), desktop (Windows, macOS, Linux), and web.
-- On mobile, it supports both portrait and landscape orientations.
-- On small screen devices, a bottom navigation bar is used; on larger screens, a sidebar is employed.
-- On web, it adapts to different screen sizes and orientations using responsive design principles.
+- Modern browsers on desktop and mobile.
+- Responsive layouts: compact navigation on small screens, sidebar/navigation rail on larger screens.
+- Progressive enhancement via Turbo Frames/Streams for fast interactions.
+- Server-side REST API for future mobile app or 3rd-party integrations.
 
 ## Local data persistence
 
-- Primary: JSON file storage. 
-- Local data file path: application documents directory `/bandmgr.json`
+- Primary: Postgres (production) with the option to evaluate SQLite for simpler deploys.
+- Files and media stored via Active Storage (S3/MinIO/etc.).
+
+## Containerisation
+
+- Self-hosting is encouraged and supported.
+- Docker Compose setup for local development and self-hosted production.
 
 ## Tagging
 
@@ -25,18 +31,15 @@
 
 ## Data Model
 
-- All data entities can have Tags to help more advanced searching and organisation
-
-### Instance
-
-- An instance of Bandmgr can have many bands
+- All data entities can have Tags to help more advanced searching and organisation.
+- Some data entities will have user-definable custom fields.
 
 ### Band
 
 - Bands have many: songs, gigs, setlists, and members
 - Bands have Equipment
 - Bands have a Stage layout
-- Bands belong to an Owner (admin)
+- Bands belong to an Instance Owner (admin)
 
 ### Member
 
@@ -54,21 +57,19 @@
 - Song Detail view shows all song attributes and allows editing
 - Songs can be imported from Plain Text, Markdown, or CSV files
 
-## State management and layering
+## Application flow and layering
 
-- State management: Riverpod
-- Data flow: JSON storage -> repositories -> Riverpod providers -> UI
-- Dependency injection is used to manage services and repositories
-- Repositories expose Streams for reactive UI updates
+- Controllers stay thin: load → authorize → service → render.
+- Business logic in explicit service objects and query objects.
+- Turbo handles fast navigation and live updates; Stimulus adds focused behaviors.
 
 ## Domain model conventions
 
-- Immutability in domain models
-- Mapping layer between JSON maps and domain models
-- Entities: Instance (implicit/config), Band, Member, Song, Setlist (+ SetlistSongs for ordering), Event (Gig), Equipment, Tag, Tagging
+- Active Record models with clear boundaries and minimal callbacks.
+- Entities: Account, User, Membership, Band, BandMembership, Song, Setlist (+ SetlistSongs for ordering), Event (Gig), Equipment, Tag, Tagging.
 
 ## Pending architecture decisions
 
-- Sync protocol design (conflict resolution, tombstones)
-- Authentication and multi-instance separation (namespace strategy)
-- Responsive UI (bottom nav vs sidebar) implementation
+- Postgres vs SQLite for production and self-hosted installs.
+- Song library scope: per-account vs per-band.
+- Messaging: in-app threads vs lightweight comments and notifications.

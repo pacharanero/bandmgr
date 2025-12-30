@@ -1,93 +1,64 @@
-# Miscellaneous
-*.class
-*.log
-*.pyc
-*.swp
+### OS
 .DS_Store
-.atom/
-.build/
-.buildlog/
-.history
-.svn/
-.swiftpm/
-migrate_working_dir/
-
-# Flutter/Dart
-.dart_tool/
-.flutter-plugins
-.flutter-plugins-dependencies
-.packages
-.pub-cache/
-.pub/
-build/
-flutter_*.png
-generated_plugin_registrant.dart
-**/doc/api/
-**/ios/Flutter/.last_build_id
-
-# Coverage
-coverage/
-lcov.info
-
-# OS
 Thumbs.db
 
-# IDEs
+### Editors / IDEs
 .idea/
+.vscode/
 *.iml
 *.ipr
 *.iws
-.vscode/
-.android/
-.metadata
+.history
+.atom/
 
-# Xcode
-ios/Flutter/App.framework
-ios/Flutter/Flutter.framework
-ios/Flutter/Generated.xcconfig
-ios/Flutter/ephemeral/
-ios/Runner/GeneratedPluginRegistrant.*
-ios/Pods/
-ios/.symlinks/
-macos/Flutter/ephemeral/
-macos/Pods/
-macos/Runner/GeneratedPluginRegistrant.*
+### Ruby / Rails
+.bundle/
+vendor/bundle/
+log/*
+tmp/
+tmp/**/
+!log/.keep
+!tmp/.keep
+tmp/pids/
+tmp/sockets/
+tmp/cache/
+tmp/storage/
+storage/*
+!storage/.keep
+/config/master.key
+/config/credentials/*.key
+.byebug_history
+.rspec_status
+coverage/
+spec/examples.txt
+rerun.txt
+capybara-*.html
+pickle-email-*.html
 
-# Android
-android/.gradle/
-android/captures/
-android/app/*.iml
-android/local.properties
-android/key.properties
-android/.settings/
-**/android/app/debug
-**/android/app/profile
-**/android/app/release
+### Dependencies / Assets
+node_modules/
+public/assets/
+public/packs/
+public/packs-test/
+public/system/
+public/uploads/
 
-# Web
-web/.dart_tool/
+### Databases
+db/*.sqlite3
+db/*.sqlite3-*
 
-# Linux
-linux/flutter/
+### Environment / Local overrides
+.env
+.env.*
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
-# Windows
-windows/flutter/
-
-# Generated files (keep *.g.dart tracked, so NOT ignored)
-# Uncomment if you decide not to commit generated code:
-# **/*.g.dart
-
-# Local JSON storage (runtime)
-bandmgr.json
-bandmgr.json.tmp
-
-# Symbolication/obfuscation
-app.*.symbols
-app.*.map.json
-
-# Dependency / lock files backups
-pubspec.lock.bak
-
-# Temporary
+### Misc
+*.log
+*.swp
+*.swo
+*.tmp
 .tmp/
 temp/
