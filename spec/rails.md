@@ -158,5 +158,14 @@ Keep the Turbo handbook as the shared reference.
 - Responsive header navigation for Bands/Songs/Events/Setlists/Tasks.
 - Placeholder index pages for non-implemented sections.
 
+**Band management**
+- Band CRUD with account scoping.
+- Band member management (add/update/remove) with role enforcement.
+
+**Songs**
+- Song library CRUD scoped to account.
+- Tagging via account-level tags and polymorphic taggings.
+- Search and filters by title/artist/tags.
+
 **Dev stack**
 - Local dev compose stack includes Rails web container, Postgres, Redis, and MinIO.

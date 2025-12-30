@@ -27,6 +27,14 @@ For the full status list and roadmap, see `spec/features.md` and `spec/roadmap.m
 
 ---
 
+## Current MVP Status
+
+- Account creation + sign in/out flow.
+- Band CRUD (name, description) scoped to account.
+- Band member management with role updates.
+- Song library CRUD with tags, search, and filtering.
+- Placeholder screens for Events, Setlists, Tasks.
+
 ## Development Setup
 
 These steps assume the Rails app scaffold is present in the repo (including `bin/setup`).

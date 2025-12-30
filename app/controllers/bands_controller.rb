@@ -9,6 +9,8 @@ class BandsController < ApplicationController
 
   def show
     authorize @band
+    @memberships = @band.band_memberships.includes(:user).order(:id)
+    @band_membership = @band.band_memberships.new
   end
 
   def new

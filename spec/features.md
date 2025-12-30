@@ -13,6 +13,10 @@ A comprehensive Band Management Platform to help bands organise their music, gig
 - Data import/export: import songs from Plain Text, Markdown, or CSV files; export band data to YAML for backup or transfer.
 - Simple band website: gallery, booking info, static content (optional band website replacement)
 
+### User Interface
+- Light and dark mode with DaisyUI
+- Responsive design for desktop and mobile
+
 ### Bands
 
 - Multi-band support within a single instance - an instance of Bandmgr can have many bands
@@ -25,6 +29,7 @@ A comprehensive Band Management Platform to help bands organise their music, gig
 - Account setup flow with a default band per account.
 - Bands CRUD (name, description) scoped to account.
 - Band roles defined (band_admin, member, read_only).
+- Band member management UI (add/update/remove) for admins.
 
 ### Gigs
 
@@ -76,7 +81,8 @@ A comprehensive Band Management Platform to help bands organise their music, gig
 - Auth (login, signup, password reset) with account scoping.
 - Account + band models with role-based memberships.
 - Pundit policies for account/band access.
-- Responsive nav shell with placeholder pages for Songs, Events, Setlists, Tasks.
+- Responsive nav shell with placeholder pages for Events, Setlists, Tasks.
+- Song library CRUD with tags and search/filtering.
 
 ### Import/Export
 

@@ -8,7 +8,7 @@ class BandMembershipTest < ActiveSupport::TestCase
   end
 
   test "enforces unique user per band" do
-    band_membership = BandMembership.new(band: bands(:one), user: users(:one), role: :readonly)
+    band_membership = BandMembership.new(band: bands(:one), user: users(:one), role: :read_only)
 
     assert_not band_membership.valid?
     assert_includes band_membership.errors[:user_id], "has already been taken"

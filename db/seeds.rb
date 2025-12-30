@@ -19,4 +19,8 @@ if User.none?
 
   band = Band.create!(account: account, name: "Demo Band", description: "Example band for development.")
   BandMembership.create!(band: band, user: user, role: :band_admin)
+
+  song = Song.create!(account: account, title: "Demo Song", artist: "Demo Artist", album: "Demo Album", key: "C", tempo: 120)
+  tag = Tag.create!(account: account, name: "rehearsal")
+  Tagging.create!(tag: tag, taggable: song)
 end

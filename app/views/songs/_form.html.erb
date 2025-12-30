@@ -1,0 +1,46 @@
+<%= form_with model: song, class: "space-y-4" do |form| %>
+  <div>
+    <%= form.label :title, class: "block text-sm font-medium text-slate-700" %>
+    <%= form.text_field :title, class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2" %>
+    <% song.errors.full_messages_for(:title).each do |message| %>
+      <p class="mt-1 text-xs text-red-600"><%= message %></p>
+    <% end %>
+  </div>
+
+  <div class="grid gap-4 sm:grid-cols-2">
+    <div>
+      <%= form.label :artist, class: "block text-sm font-medium text-slate-700" %>
+      <%= form.text_field :artist, class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2" %>
+    </div>
+    <div>
+      <%= form.label :album, class: "block text-sm font-medium text-slate-700" %>
+      <%= form.text_field :album, class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2" %>
+    </div>
+  </div>
+
+  <div class="grid gap-4 sm:grid-cols-2">
+    <div>
+      <%= form.label :key, "Key", class: "block text-sm font-medium text-slate-700" %>
+      <%= form.text_field :key, class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2" %>
+    </div>
+    <div>
+      <%= form.label :tempo, class: "block text-sm font-medium text-slate-700" %>
+      <%= form.number_field :tempo, class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2" %>
+    </div>
+  </div>
+
+  <div>
+    <%= form.label :tag_list, "Tags (comma-separated)", class: "block text-sm font-medium text-slate-700" %>
+    <%= form.text_field :tag_list, value: song.tag_list, class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2" %>
+  </div>
+
+  <div>
+    <%= form.label :notes, class: "block text-sm font-medium text-slate-700" %>
+    <%= form.text_area :notes, rows: 4, class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2" %>
+  </div>
+
+  <div class="flex items-center justify-end gap-3">
+    <%= link_to "Cancel", songs_path, class: "text-sm text-slate-600 hover:text-slate-900" %>
+    <%= form.submit class: "rounded-md bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800" %>
+  </div>
+<% end %>

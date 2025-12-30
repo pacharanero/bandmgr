@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  account: one
+  title: Example Song
+  artist: Example Artist
+  album: Example Album
+  key: C
+  tempo: 120
+  notes: Example notes
+
+two:
+  account: two
+  title: Second Song
+  artist: Second Artist
+  album: Second Album
+  key: G
+  tempo: 95
+  notes: Another note

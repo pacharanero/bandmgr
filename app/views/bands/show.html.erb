@@ -26,4 +26,57 @@
       <%= link_to "Go to events", events_path, class: "mt-4 inline-flex text-sm text-slate-700 hover:text-slate-900" %>
     </div>
   </div>
+
+  <div class="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+    <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+      <div>
+        <h2 class="text-lg font-semibold text-slate-900">Members</h2>
+        <p class="text-sm text-slate-600">Manage who has access to this band.</p>
+      </div>
+    </div>
+
+    <div class="mt-6 space-y-3">
+      <% @memberships.each do |membership| %>
+        <div class="flex flex-col gap-2 rounded-md border border-slate-200 px-4 py-3 text-sm sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p class="font-medium text-slate-900"><%= membership.user.email_address %></p>
+            <p class="text-xs uppercase tracking-wide text-slate-500"><%= membership.role %></p>
+          </div>
+          <% if policy(membership).update? %>
+            <div class="flex flex-wrap items-center gap-2">
+              <%= form_with model: [@band, membership], method: :patch, class: "flex items-center gap-2" do |form| %>
+                <%= form.select :role, BandMembership.roles.keys, {}, class: "rounded-md border border-slate-300 px-2 py-1 text-sm" %>
+                <%= form.submit "Update", class: "rounded-md border border-slate-300 px-3 py-1 text-xs text-slate-700 hover:border-slate-400" %>
+              <% end %>
+              <%= button_to "Remove", band_band_membership_path(@band, membership), method: :delete, data: { turbo_confirm: "Remove this member?" }, class: "rounded-md border border-red-200 px-3 py-1 text-xs text-red-600 hover:border-red-300" %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+
+    <% if policy(@band_membership).create? %>
+      <div class="mt-8 border-t border-slate-200 pt-6">
+        <h3 class="text-sm font-semibold uppercase tracking-wide text-slate-500">Add member</h3>
+        <%= form_with model: [@band, @band_membership], class: "mt-4 grid gap-3 sm:grid-cols-3 sm:items-end" do |form| %>
+          <div class="sm:col-span-2">
+            <%= form.label :email_address, "Member email", class: "block text-sm font-medium text-slate-700" %>
+            <%= form.email_field :email_address, class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2" %>
+          </div>
+          <div>
+            <%= form.label :role, class: "block text-sm font-medium text-slate-700" %>
+            <%= form.select :role, BandMembership.roles.keys, {}, class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2" %>
+          </div>
+          <% if @band_membership.errors.any? %>
+            <div class="sm:col-span-3 rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+              <%= @band_membership.errors.full_messages.to_sentence %>
+            </div>
+          <% end %>
+          <div class="sm:col-span-3">
+            <%= form.submit "Add member", class: "rounded-md bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800" %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
 </div>

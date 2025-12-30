@@ -41,13 +41,13 @@ This roadmap is a living checklist for building the Rails 8 app from scratch. Ea
 
 - [x] CRUD for Bands with account scoping.
 - [x] Band settings page (name, description, branding placeholders).
-- [ ] Band membership management UI.
+- [x] Band membership management UI.
 - [x] Policies and specs for band access control.
 
 ## Stage 7: Song library
 
-- [ ] CRUD for Songs with tagging.
-- [ ] Add search and filters (title, artist, tags).
+- [x] CRUD for Songs with tagging.
+- [x] Add search and filters (title, artist, tags).
 - [ ] Add list sorting and persisted preferences.
 - [ ] Import flow (plain text / markdown / CSV).
 

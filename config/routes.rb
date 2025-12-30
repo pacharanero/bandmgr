@@ -4,8 +4,10 @@ Rails.application.routes.draw do
   resources :passwords, param: :token
 
   resources :accounts, only: %i[new create show]
-  resources :bands
-  resources :songs, only: %i[index]
+  resources :bands do
+    resources :band_memberships, only: %i[create update destroy]
+  end
+  resources :songs
   resources :events, only: %i[index]
   resources :setlists, only: %i[index]
   resources :tasks, only: %i[index]
