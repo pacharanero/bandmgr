@@ -32,7 +32,7 @@ For the full status list and roadmap, see `spec/features.md` and `spec/roadmap.m
 - Account creation + sign in/out flow.
 - Band CRUD (name, description) scoped to account.
 - Band member management with role updates.
-- Song library CRUD with tags, search, filtering, and sorting.
+- Song library CRUD with tags, search, filtering, sorting, and import.
 - Event CRUD for gigs and rehearsals.
 - Placeholder screens for Setlists, Tasks.
 
@@ -116,6 +116,13 @@ bin/rails server
 ```
 
 Sign in with the demo user or create a new login at `/registration`.
+
+### 7a. Import demo songs
+
+Use the import screen at `/songs/import` to paste data or upload a CSV. The repo includes examples in `dummy-data/`:
+
+- `dummy-data/song-list.txt` (plain text)
+- `dummy-data/example data ALL IDEAS & REPERTOIRE.csv` (CSV)
 
 ### 8. Tests
 

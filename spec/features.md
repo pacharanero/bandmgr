@@ -4,7 +4,7 @@ A comprehensive Band Management Platform to help bands organise their music, gig
 
 ### Key Features
 
-- Song management: store and organise your band's songs with details like title, artist, album, key, tempo, tags, and external links (e.g., GoogleDocs chart, YouTube).
+- Song management: store and organise your band's songs with details like title, artist, album, key, tempo, tags, and external links (e.g., GoogleDocs chart, YouTube); import from plain text, markdown, or CSV.
 - Gig scheduling: plan and manage gigs with date, time, venue, setlist, and reminders.
 - Setlist creation: build and manage setlists for gigs, associating songs from your repertoire.
 - Member management: manage band members with roles and permissions.
@@ -82,7 +82,7 @@ A comprehensive Band Management Platform to help bands organise their music, gig
 - Account + band models with role-based memberships.
 - Pundit policies for account/band access.
 - Responsive nav shell with placeholder pages for Events, Setlists, Tasks.
-- Song library CRUD with tags, search/filtering, and sorting.
+- Song library CRUD with tags, search/filtering, sorting, and import (plain text/markdown/CSV).
 - Events CRUD with gig/rehearsal types and notes.
 
 ### Import/Export

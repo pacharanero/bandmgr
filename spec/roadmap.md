@@ -49,7 +49,7 @@ This roadmap is a living checklist for building the Rails 8 app from scratch. Ea
 - [x] CRUD for Songs with tagging.
 - [x] Add search and filters (title, artist, tags).
 - [x] Add list sorting and persisted preferences.
-- [ ] Import flow (plain text / markdown / CSV).
+- [x] Import flow (plain text / markdown / CSV).
 
 ## Stage 8: Events and calendar
 

@@ -73,4 +73,17 @@ class SongsControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to songs_path
   end
+
+  test "imports songs from plain text" do
+    sign_in_as users(:one)
+
+    assert_difference("Song.count", 2) do
+      post import_songs_path, params: {
+        format_type: "plain",
+        data: "New Song - New Artist\nAnother Song"
+      }
+    end
+
+    assert_redirected_to songs_path
+  end
 end
