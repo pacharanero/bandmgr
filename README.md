@@ -41,15 +41,16 @@ For the full status list and roadmap, see `spec/features.md` and `spec/roadmap.m
 ### Quickstart
 
 1. Clone: `git clone https://github.com/pacharanero/bandmgr.git && cd bandmgr`
-2. Run the dev stack: `./s/dev`
+2. Seed the database: `./s/seed` (starts db/redis if needed, prepares the DB, seeds demo data)
+3. Run the dev stack: `./s/dev`
 
 What `./s/dev` does:
 - Starts Postgres and Redis via Docker Compose.
 - Builds/starts the Rails web container with live code reload and bind-mounts `storage/` for uploads.
 - Waits for the stack and opens `http://localhost:3000`.
 
-Default demo credentials (seeded by the container entrypoint):
-- Email: `demo@example.com`
+Default demo credentials (seeded by `./s/seed`):
+- Email: `development@bandmgr.band`
 - Password: `password`
 
 Other tasks
