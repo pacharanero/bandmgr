@@ -4,7 +4,7 @@ class BandMembershipsController < ApplicationController
   before_action :set_band_membership, only: %i[update destroy resend_invite]
 
   def create
-    requested_role = band_membership_params[:role]
+    requested_role = sanitized_role_param
     if requested_role == "band_admin" && !current_user_band_admin?(@band)
       render_forbidden_role and return
     end
@@ -30,7 +30,7 @@ class BandMembershipsController < ApplicationController
   def update
     authorize @band_membership
 
-    requested_role = band_membership_params[:role]
+    requested_role = sanitized_role_param
     if requested_role == "band_admin" && !current_user_band_admin?(@band)
       render_forbidden_role and return
     end
@@ -70,7 +70,14 @@ class BandMembershipsController < ApplicationController
     end
 
     def band_membership_params
-      params.require(:band_membership).permit(:role, :email_address)
+      params.require(:band_membership).permit(:email_address)
+    end
+
+    def sanitized_role_param
+      role = params.dig(:band_membership, :role).to_s
+      allowed = %w[member read_only]
+      allowed << "band_admin" if current_user_band_admin?(@band)
+      allowed.include?(role) ? role : "member"
     end
 
     def current_user_band_admin?(band)
