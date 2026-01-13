@@ -19,19 +19,6 @@
     </div>
   </div>
 
-  <div class="grid gap-4 md:grid-cols-2">
-    <div class="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-      <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500">Songs</h2>
-      <p class="mt-2 text-sm text-slate-600">Song library work starts in the next stage.</p>
-      <%= link_to "Go to songs", songs_path, class: "mt-4 inline-flex text-sm text-slate-700 hover:text-slate-900" %>
-    </div>
-    <div class="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-      <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500">Events</h2>
-      <p class="mt-2 text-sm text-slate-600">Gigs and rehearsals will live here.</p>
-      <%= link_to "Go to events", events_path, class: "mt-4 inline-flex text-sm text-slate-700 hover:text-slate-900" %>
-    </div>
-  </div>
-
   <div class="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
     <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
       <div>
@@ -91,5 +78,30 @@
         <% end %>
       </div>
     <% end %>
+  </div>
+
+  <div class="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+    <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+      <div>
+        <h2 class="text-lg font-semibold text-slate-900">Calendar feeds</h2>
+        <p class="text-sm text-slate-600">Share calendars for members and fans.</p>
+      </div>
+      <%= link_to "Band settings", edit_band_path(@band), class: "rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-700 hover:border-slate-400 hover:text-slate-900" %>
+    </div>
+
+    <div class="mt-4 space-y-2 text-xs text-slate-600">
+      <div>
+        <span class="font-semibold text-slate-700">Private:</span>
+        <span class="font-mono"><%= private_band_calendar_url(band_id: @band.id, token: @band.private_calendar_token) %></span>
+      </div>
+      <div>
+        <span class="font-semibold text-slate-700">Public:</span>
+        <% if @band.public_calendar_enabled? %>
+          <span class="font-mono"><%= public_band_calendar_url(band_id: @band.id, token: @band.public_calendar_token) %></span>
+        <% else %>
+          <span class="text-slate-400">Enable public calendar in settings to generate a link.</span>
+        <% end %>
+      </div>
+    </div>
   </div>
 </div>
