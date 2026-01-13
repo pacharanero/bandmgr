@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_12_30_183334) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_13_123000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -28,8 +28,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_30_183334) do
     t.integer "role", default: 1, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "invitation_token"
+    t.datetime "invitation_sent_at"
+    t.datetime "invitation_accepted_at"
     t.index ["band_id", "user_id"], name: "index_band_memberships_on_band_id_and_user_id", unique: true
     t.index ["band_id"], name: "index_band_memberships_on_band_id"
+    t.index ["invitation_token"], name: "index_band_memberships_on_invitation_token", unique: true
     t.index ["user_id"], name: "index_band_memberships_on_user_id"
   end
 
@@ -39,7 +43,25 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_30_183334) do
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "location"
+    t.string "phone"
+    t.string "facebook"
+    t.string "instagram"
+    t.string "twitter"
+    t.string "youtube"
+    t.string "bandcamp"
+    t.string "soundcloud"
     t.index ["account_id"], name: "index_bands_on_account_id"
+  end
+
+  create_table "event_setlists", force: :cascade do |t|
+    t.bigint "event_id", null: false
+    t.bigint "setlist_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id", "setlist_id"], name: "index_event_setlists_on_event_id_and_setlist_id", unique: true
+    t.index ["event_id"], name: "index_event_setlists_on_event_id"
+    t.index ["setlist_id"], name: "index_event_setlists_on_setlist_id"
   end
 
   create_table "events", force: :cascade do |t|
@@ -73,6 +95,29 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_30_183334) do
     t.index ["user_id"], name: "index_sessions_on_user_id"
   end
 
+  create_table "setlist_songs", force: :cascade do |t|
+    t.bigint "setlist_id", null: false
+    t.bigint "song_id", null: false
+    t.integer "position", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["setlist_id", "position"], name: "index_setlist_songs_on_setlist_id_and_position"
+    t.index ["setlist_id", "song_id"], name: "index_setlist_songs_on_setlist_id_and_song_id"
+    t.index ["setlist_id"], name: "index_setlist_songs_on_setlist_id"
+    t.index ["song_id"], name: "index_setlist_songs_on_song_id"
+  end
+
+  create_table "setlists", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.bigint "band_id", null: false
+    t.string "title", null: false
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_setlists_on_account_id"
+    t.index ["band_id"], name: "index_setlists_on_band_id"
+  end
+
   create_table "songs", force: :cascade do |t|
     t.bigint "account_id", null: false
     t.string "title", null: false
@@ -83,6 +128,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_30_183334) do
     t.text "notes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "chart_url"
+    t.string "original_artist"
+    t.string "video_url"
     t.index ["account_id"], name: "index_songs_on_account_id"
   end
 
@@ -102,6 +150,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_30_183334) do
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "color", default: "blue", null: false
     t.index ["account_id", "name"], name: "index_tags_on_account_id_and_name", unique: true
     t.index ["account_id"], name: "index_tags_on_account_id"
   end
@@ -119,10 +168,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_30_183334) do
   add_foreign_key "band_memberships", "bands"
   add_foreign_key "band_memberships", "users"
   add_foreign_key "bands", "accounts"
+  add_foreign_key "event_setlists", "events"
+  add_foreign_key "event_setlists", "setlists"
   add_foreign_key "events", "bands"
   add_foreign_key "memberships", "accounts"
   add_foreign_key "memberships", "users"
   add_foreign_key "sessions", "users"
+  add_foreign_key "setlist_songs", "setlists"
+  add_foreign_key "setlist_songs", "songs"
+  add_foreign_key "setlists", "accounts"
+  add_foreign_key "setlists", "bands"
   add_foreign_key "songs", "accounts"
   add_foreign_key "taggings", "tags"
   add_foreign_key "tags", "accounts"

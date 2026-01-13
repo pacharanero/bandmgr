@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   resources :bands do
     resources :band_memberships, only: %i[create update destroy]
   end
+  get "invitations/:token" => "band_membership_invitations#show", as: :band_membership_invitation
   resources :songs do
     collection do
       get :import

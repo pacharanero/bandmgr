@@ -5,17 +5,19 @@ A comprehensive Band Management Platform to help bands organise their music, gig
 ### Key Features
 
 - Song management: store and organise your band's songs with details like title, artist, album, key, tempo, tags, and external links (e.g., GoogleDocs chart, YouTube); import from plain text, markdown, or CSV.
-- Gig scheduling: plan and manage gigs with date, time, venue, setlist, and reminders.
-- Setlist creation: build and manage setlists for gigs, associating songs from your repertoire.
+- Gig scheduling: plan and manage gigs with date, time, venue, setlist, and reminders; embed venue location with Google Maps.
+- Setlist creation: build and manage setlists for gigs, associating songs from your repertoire with drag-and-drop (including bulk add from song search/filter results).
 - Member management: manage band members with roles and permissions.
 - Equipment tracking: keep an inventory of your band's equipment and manage stage layouts.
-- Tagging system: use tags to organise songs, gigs, setlists, and members for easier searching and filtering.
+- Tagging system: use tags to organise songs, gigs, setlists, venues, and members for easier searching and filtering.
 - Data import/export: import songs from Plain Text, Markdown, or CSV files; export band data to YAML for backup or transfer.
 - Simple band website: gallery, booking info, static content (optional band website replacement)
 
 ### User Interface
 - Light and dark mode with DaisyUI
 - Responsive design for desktop and mobile
+- Sidebar navigation for fast access to repertoire, gigs, and settings
+- Creation flows for song/venue/gig/setlist run in modal dialogs to avoid context switching
 
 ### Bands
 
@@ -45,6 +47,7 @@ A comprehensive Band Management Platform to help bands organise their music, gig
 - Manage the songs in your repertoire
 - Create and manage setlists and associate them with gigs
 - use tags to add additional organisation
+- Drag-and-drop to add songs to setlists; bulk add via multi-select from search/filter results
 - Custom band website with merch store
 - Admin interface for all models
 - User authentication (login, signup, logout)
@@ -96,13 +99,14 @@ A comprehensive Band Management Platform to help bands organise their music, gig
 - Simple customizable band website to showcase your band
 - Gallery for photos and videos
 - Booking information and contact form
+- Online band booking inquiry form
 - Static content pages (About, Bio, Press Kit)
 - Calendar sync for band availability and gigs
 - Google Maps embed for Venues We've Played
 
 ## Ideas for future features
 
-- Performance Mode: step through lyrics and charts in SetList order, synchronized across band members (mobile-friendly)
+- Performance Mode: step through lyrics and charts in SetList order, displaying the right view on each band member's mobile device and staying in sync
 - Practice Mode: surface songs with least practice or not recently gigged, or in a random order
 - Markdown-based Song Editor (inline charts/lyrics instead of only external links)
 - Online store

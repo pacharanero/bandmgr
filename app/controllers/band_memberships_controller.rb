@@ -6,20 +6,17 @@ class BandMembershipsController < ApplicationController
   def create
     @band_membership = @band.band_memberships.new(role: band_membership_params[:role])
     @band_membership.user = find_user_from_email
+    @band_membership.invited_email = band_membership_params[:email_address] if @band_membership.user.nil?
     authorize @band_membership
 
-    if @band_membership.user.nil?
-      @band_membership.errors.add(:base, "User not found. Ask them to sign up first.")
-      render_band_membership_errors
-      return
-    end
-
-    @band.account.memberships.find_or_create_by!(user: @band_membership.user) do |membership|
-      membership.role = :member
+    if @band_membership.user
+      @band.account.memberships.find_or_create_by!(user: @band_membership.user) do |membership|
+        membership.role = :member
+      end
     end
 
     if @band_membership.save
-      redirect_to @band, notice: "Member added."
+      redirect_to @band, notice: "Invitation sent."
     else
       render_band_membership_errors
     end

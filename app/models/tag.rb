@@ -6,4 +6,5 @@ class Tag < ApplicationRecord
   normalizes :name, with: ->(name) { name.to_s.strip.downcase }
 
   validates :name, presence: true, uniqueness: { scope: :account_id, case_sensitive: false }
+  validates :color, presence: true
 end
