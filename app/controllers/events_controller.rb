@@ -6,6 +6,20 @@ class EventsController < ApplicationController
     @events = policy_scope(Event).joins(:band).where(bands: { account_id: current_account.id }).order(starts_at: :asc)
   end
 
+  def calendar
+    @month = parse_month(params[:month], params[:year])
+    @start_date = @month.beginning_of_month.beginning_of_week(:monday)
+    @end_date = @month.end_of_month.end_of_week(:monday)
+
+    events = policy_scope(Event)
+      .joins(:band)
+      .where(bands: { account_id: current_account.id })
+      .where(starts_at: @start_date.beginning_of_day..@end_date.end_of_day)
+      .order(starts_at: :asc)
+
+    @events_by_date = events.group_by { |event| event.starts_at.to_date }
+  end
+
   def show
     authorize @event
   end
@@ -14,10 +28,13 @@ class EventsController < ApplicationController
     @event = Event.new
     authorize @event
     load_bands
+    @event.band ||= @selected_band
   end
 
   def create
-    @event = Event.new(event_params)
+    load_bands
+    band_id = event_params[:band_id].presence || @selected_band&.id
+    @event = Event.new(event_params.merge(band_id: band_id))
     authorize @event
 
     if @event.save
@@ -31,6 +48,7 @@ class EventsController < ApplicationController
   def edit
     authorize @event
     load_bands
+    @selected_band ||= @event.band
   end
 
   def update
@@ -61,5 +79,18 @@ class EventsController < ApplicationController
 
     def load_bands
       @bands = current_account.bands.order(:name)
+      @selected_band = preferred_band(@bands)
+    end
+
+    def parse_month(month_param, year_param)
+      year = year_param.to_i
+      month = month_param.to_i
+      if year.positive? && month.positive?
+        Date.new(year, month, 1)
+      else
+        Date.current.beginning_of_month
+      end
+    rescue Date::Error
+      Date.current.beginning_of_month
     end
 end

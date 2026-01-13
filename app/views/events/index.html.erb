@@ -6,7 +6,10 @@
       <h1 class="text-2xl font-semibold text-slate-900">Events</h1>
       <p class="text-sm text-slate-600">Track gigs, rehearsals, and key dates.</p>
     </div>
-    <%= link_to "New event", new_event_path, class: "inline-flex items-center rounded-md bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800" %>
+    <div class="flex flex-wrap items-center gap-2">
+      <%= link_to "Calendar view", calendar_events_path, class: "inline-flex items-center rounded-md border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:border-slate-400 hover:text-slate-900" %>
+      <%= link_to "New event", new_event_path, class: "inline-flex items-center rounded-md bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800" %>
+    </div>
   </div>
 
   <% if @events.any? %>

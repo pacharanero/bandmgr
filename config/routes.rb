@@ -3,9 +3,14 @@ Rails.application.routes.draw do
   resource :registration, only: %i[new create]
   resources :passwords, param: :token
 
-  resources :accounts, only: %i[new create show]
+  resources :accounts, only: %i[new create show edit update]
   resources :bands do
-    resources :band_memberships, only: %i[create update destroy]
+    member do
+      post :set_default
+    end
+    resources :band_memberships, only: %i[create update destroy] do
+      post :resend_invite, on: :member
+    end
   end
   get "invitations/:token" => "band_membership_invitations#show", as: :band_membership_invitation
   resources :songs do
@@ -14,9 +19,21 @@ Rails.application.routes.draw do
       post :import, action: :run_import
     end
   end
-  resources :events
-  resources :setlists, only: %i[index]
+  resources :events do
+    collection do
+      get :calendar
+    end
+  end
+  resources :setlists do
+    collection do
+      post :import, action: :run_import
+    end
+    resources :setlist_songs, only: %i[create destroy] do
+      patch :reorder, on: :collection
+    end
+  end
   resources :tasks, only: %i[index]
+  get "admin" => "admin#show", as: :admin
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

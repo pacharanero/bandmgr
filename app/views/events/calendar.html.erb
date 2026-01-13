@@ -1,0 +1,50 @@
+<% content_for :title, "Event Calendar" %>
+
+<div class="flex flex-col gap-4">
+  <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+    <div>
+      <h1 class="text-2xl font-semibold text-slate-900">Events calendar</h1>
+      <p class="text-sm text-slate-600"><%= @month.strftime("%B %Y") %></p>
+    </div>
+    <div class="flex flex-wrap items-center gap-2">
+      <%= link_to "List view", events_path, class: "inline-flex items-center rounded-md border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:border-slate-400 hover:text-slate-900" %>
+      <%= link_to "New event", new_event_path, class: "inline-flex items-center rounded-md bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800" %>
+    </div>
+  </div>
+
+  <div class="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+    <div class="flex items-center justify-between">
+      <%= link_to "Previous", calendar_events_path(month: @month.prev_month.month, year: @month.prev_month.year), class: "text-sm text-slate-600 hover:text-slate-900" %>
+      <span class="text-sm font-semibold text-slate-700"><%= @month.strftime("%B %Y") %></span>
+      <%= link_to "Next", calendar_events_path(month: @month.next_month.month, year: @month.next_month.year), class: "text-sm text-slate-600 hover:text-slate-900" %>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-7 gap-px rounded-lg border border-slate-200 bg-slate-200 text-xs">
+    <% %w[Mon Tue Wed Thu Fri Sat Sun].each do |day| %>
+      <div class="bg-slate-50 px-2 py-2 font-semibold text-slate-500"><%= day %></div>
+    <% end %>
+
+    <% (@start_date..@end_date).each do |date| %>
+      <% is_current_month = date.month == @month.month %>
+      <div class="min-h-[120px] bg-white px-2 py-2 <%= is_current_month ? "text-slate-700" : "text-slate-400" %>">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-semibold"><%= date.day %></span>
+        </div>
+        <% if (events = @events_by_date[date]).present? %>
+          <div class="mt-2 space-y-1 text-xs">
+            <% events.first(3).each do |event| %>
+              <%= link_to event_path(event), class: "block rounded-md bg-slate-100 px-2 py-1 text-slate-700 hover:bg-slate-200" do %>
+                <span class="font-medium"><%= event.kind.titleize %></span>
+                <span class="text-slate-500"><%= event.starts_at.strftime("%-I:%M %p") %></span>
+              <% end %>
+            <% end %>
+            <% if events.size > 3 %>
+              <span class="text-slate-400">+<%= events.size - 3 %> more</span>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>
