@@ -33,6 +33,7 @@ class BandsController < ApplicationController
 
   def edit
     authorize @band
+    ensure_calendar_tokens
   end
 
   def update
@@ -71,5 +72,10 @@ class BandsController < ApplicationController
 
     def band_params
       params.require(:band).permit(:name, :description, :public_calendar_enabled, :public_calendar_include_rehearsals)
+    end
+
+    def ensure_calendar_tokens
+      @band.regenerate_private_calendar_token if @band.private_calendar_token.blank?
+      @band.regenerate_public_calendar_token if @band.public_calendar_token.blank?
     end
 end
