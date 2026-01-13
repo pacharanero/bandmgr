@@ -47,7 +47,8 @@
 - Hotwire (Turbo + Stimulus).
 - CSS: `tailwindcss-rails`.
 - JS packaging: importmap unless a bundler is clearly required.
-- DaisyUI for component styling and theming.
+- DaisyUI for component styling and theming. Documentation is available in LLM-friendly form here https://daisyui.com/llms.txt
+- Heroicons provides the icon set (via the heroicon gem).
 
 **Assets**
 
