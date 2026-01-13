@@ -125,5 +125,50 @@
         });
       })();
     </script>
+
+    <script>
+      (function() {
+        document.addEventListener("click", function(event) {
+          var button = event.target.closest("[data-copy-target]");
+          if (!button) return;
+
+          var target = button.getAttribute("data-copy-target");
+          var node = document.querySelector(target);
+          if (!node) return;
+
+          var text = node.textContent.trim();
+          var icon = button.querySelector("[data-copy-icon]");
+
+          function flash() {
+            if (!icon) return;
+            var original = icon.textContent;
+            icon.textContent = "✓";
+            button.classList.add("text-emerald-600");
+            setTimeout(function() {
+              icon.textContent = original;
+              button.classList.remove("text-emerald-600");
+            }, 1200);
+          }
+
+          if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(text).then(flash).catch(function() {});
+            return;
+          }
+
+          var textarea = document.createElement("textarea");
+          textarea.value = text;
+          textarea.setAttribute("readonly", "");
+          textarea.style.position = "absolute";
+          textarea.style.left = "-9999px";
+          document.body.appendChild(textarea);
+          textarea.focus();
+          textarea.select();
+          textarea.setSelectionRange(0, textarea.value.length);
+          var ok = document.execCommand("copy");
+          document.body.removeChild(textarea);
+          if (ok) flash();
+        });
+      })();
+    </script>
   </body>
 </html>
