@@ -94,7 +94,7 @@
         <span class="font-semibold text-slate-700">Private:</span>
         <span class="font-mono" id="private-calendar-link"><%= private_band_calendar_url(band_id: @band.id, token: @band.private_calendar_token) %></span>
         <button type="button" class="ml-2 inline-flex items-center gap-1 text-slate-500 hover:text-slate-700" data-copy-target="#private-calendar-link" data-action="click->copy#copy" aria-label="Copy private calendar link">
-          <span class="inline-flex h-4 w-4 items-center justify-center rounded border border-slate-300 text-[10px] font-semibold">⧉</span>
+          <span class="inline-flex h-4 w-4 items-center justify-center rounded border border-slate-300 text-[10px] font-semibold" data-copy-icon>⧉</span>
           Copy
         </button>
       </div>
@@ -103,7 +103,7 @@
         <% if @band.public_calendar_enabled? %>
           <span class="font-mono" id="public-calendar-link"><%= public_band_calendar_url(band_id: @band.id, token: @band.public_calendar_token) %></span>
           <button type="button" class="ml-2 inline-flex items-center gap-1 text-slate-500 hover:text-slate-700" data-copy-target="#public-calendar-link" data-action="click->copy#copy" aria-label="Copy public calendar link">
-            <span class="inline-flex h-4 w-4 items-center justify-center rounded border border-slate-300 text-[10px] font-semibold">⧉</span>
+            <span class="inline-flex h-4 w-4 items-center justify-center rounded border border-slate-300 text-[10px] font-semibold" data-copy-icon>⧉</span>
             Copy
           </button>
         <% else %>
