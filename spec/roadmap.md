@@ -55,7 +55,7 @@ This roadmap is a living checklist for building the Rails 8 app from scratch. Ea
 - [x] Event detail page with notes.
 - [x] Event attachments.
 - [x] Add reminders placeholder (future jobs/notifications).
-- [ ] Google Calendar integration: creates configurable 'subscribable' URL calendars - private calendar for band members, public calendar for fans.
+- [x] Google Calendar integration: creates configurable 'subscribable' URL calendars - private calendar for band members, public calendar for fans.
 
 ## Setlists
 

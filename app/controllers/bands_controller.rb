@@ -70,6 +70,6 @@ class BandsController < ApplicationController
     end
 
     def band_params
-      params.require(:band).permit(:name, :description)
+      params.require(:band).permit(:name, :description, :public_calendar_enabled, :public_calendar_include_rehearsals)
     end
 end
