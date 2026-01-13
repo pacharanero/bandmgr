@@ -21,6 +21,6 @@ This project keeps lightweight, persistent guidance for LLM contributors:
 
 ## Data storage notes
 
-- Treat the database (Active Record) as the source of truth.
+- Treat the database as the source of truth.
 - Use JSON files only for fixtures, exports, or local tooling data.
 - Prefer atomic writes (write to a temp file, then rename) when generating JSON artifacts.
