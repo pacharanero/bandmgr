@@ -61,7 +61,7 @@ class SongsControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to song_path(songs(:one))
     assert_equal "Updated Song", songs(:one).reload.title
-    assert_equal ["fresh"], songs(:one).tags.pluck(:name)
+    assert_equal [ "fresh" ], songs(:one).tags.pluck(:name)
   end
 
   test "deletes a song" do

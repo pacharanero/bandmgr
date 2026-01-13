@@ -231,7 +231,7 @@ class PlaylistImporter
 
         def extract_video_items(data)
           items = []
-          stack = [data]
+          stack = [ data ]
           until stack.empty?
             node = stack.pop
             case node
@@ -266,18 +266,18 @@ class PlaylistImporter
           title = raw_title.strip
           artist = channel_name
 
-          return [title, artist] unless title.include?(" - ")
+          return [ title, artist ] unless title.include?(" - ")
 
           left, right = title.split(" - ", 2).map(&:strip)
           if artist.present?
             if left.casecmp?(artist)
-              return [right, artist]
+              return [ right, artist ]
             elsif right.casecmp?(artist)
-              return [left, artist]
+              return [ left, artist ]
             end
           end
 
-          [right, left.presence]
+          [ right, left.presence ]
         end
     end
 end
