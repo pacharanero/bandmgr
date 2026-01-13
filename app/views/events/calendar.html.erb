@@ -25,11 +25,13 @@
       <div class="bg-slate-50 px-2 py-2 font-semibold text-slate-500"><%= day %></div>
     <% end %>
 
+    <% today = Date.current %>
     <% (@start_date..@end_date).each do |date| %>
       <% is_current_month = date.month == @month.month %>
-      <div class="min-h-[120px] bg-white px-2 py-2 <%= is_current_month ? "text-slate-700" : "text-slate-400" %>">
+      <% is_today = date == today %>
+      <div class="min-h-[120px] bg-white px-2 py-2 <%= is_current_month ? "text-slate-700" : "text-slate-400" %> <%= is_today ? "ring-2 ring-slate-900" : "" %>">
         <div class="flex items-center justify-between">
-          <span class="text-xs font-semibold"><%= date.day %></span>
+          <span class="text-xs font-semibold <%= is_today ? "rounded-full bg-slate-900 px-2 py-0.5 text-white" : "" %>"><%= date.day %></span>
         </div>
         <% if (events = @events_by_date[date]).present? %>
           <div class="mt-2 space-y-1 text-xs">
