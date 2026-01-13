@@ -1,4 +1,4 @@
-name: CI
+name: scan-lint-test-deploy
 
 on:
   pull_request:
@@ -99,3 +99,54 @@ jobs:
           name: screenshots
           path: ${{ github.workspace }}/tmp/screenshots
           if-no-files-found: ignore
+  deploy:
+    name: Deploy (Kamal)
+    runs-on: ubuntu-latest
+    needs: [scan_ruby, scan_js, lint, test]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .ruby-version
+          bundler-cache: true
+
+      - name: Load SSH key (for Hetzner host)
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.DEPLOY_SSH_KEY }}
+        # docs: :contentReference[oaicite:0]{index=0}
+
+      - name: Trust deploy host key
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H "${{ secrets.DEPLOY_HOST }}" >> ~/.ssh/known_hosts
+
+      - name: Docker login (GHCR)
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Write Kamal secrets file
+        env:
+          KAMAL_REGISTRY_PASSWORD: ${{ secrets.KAMAL_REGISTRY_PASSWORD }}
+          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+        run: |
+          cat > .kamal/secrets <<'EOF'
+          KAMAL_REGISTRY_PASSWORD=${KAMAL_REGISTRY_PASSWORD}
+          RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
+          EOF
+        # Kamal loads env vars from .kamal/secrets: :contentReference[oaicite:1]{index=1}
+
+      - name: Deploy
+        run: bundle exec kamal deploy
