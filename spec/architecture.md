@@ -131,8 +131,8 @@ Keep the Turbo handbook as the shared reference.
 
 **Static checks**
 
-- RuboCop or StandardRB.
-- Brakeman.
+- Lint with RuboCop regularly before commits and pushes
+- Scan for vulnerabilities with Brakeman.
 - bundler-audit or ruby-audit.
 
 **CI (GitHub Actions)**

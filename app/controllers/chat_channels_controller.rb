@@ -11,7 +11,7 @@ class ChatChannelsController < ApplicationController
       return
     end
 
-    channel = find_or_create_direct_channel(band, [current_user, recipient])
+    channel = find_or_create_direct_channel(band, [ current_user, recipient ])
     redirect_to chat_band_path(band, channel_id: channel.id)
   end
 
