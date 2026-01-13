@@ -91,7 +91,13 @@ class SetlistSongsController < ApplicationController
     end
 
     def update_positions(order)
-      case_statements = order.each_with_index.map { |id, index| "WHEN #{id} THEN #{index + 1}" }.join(" ")
-      SetlistSong.where(id: order).update_all("position = CASE id #{case_statements} END")
+      pairs = order.map.with_index { |id, index| [ id, index + 1 ] }
+      case_sql = pairs.map { "WHEN ? THEN ?" }.join(" ")
+      sanitized_sql = ActiveRecord::Base.send(
+        :sanitize_sql_array,
+        [ "position = CASE id #{case_sql} END", *pairs.flatten ]
+      )
+
+      SetlistSong.where(id: order, setlist_id: @setlist.id).update_all(sanitized_sql)
     end
 end
