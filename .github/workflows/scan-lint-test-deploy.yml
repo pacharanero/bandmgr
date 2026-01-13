@@ -129,9 +129,14 @@ jobs:
         # docs: :contentReference[oaicite:0]{index=0}
 
       - name: Trust deploy host key
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_PORT: ${{ secrets.DEPLOY_PORT }}
         run: |
           mkdir -p ~/.ssh
-          ssh-keyscan -H "${{ secrets.DEPLOY_HOST }}" >> ~/.ssh/known_hosts
+          host="${DEPLOY_HOST:?DEPLOY_HOST is not set}"
+          port="${DEPLOY_PORT:-22}"
+          ssh-keyscan -T 10 -p "$port" -H "$host" >> ~/.ssh/known_hosts
 
       - name: Docker login (GHCR)
         uses: docker/login-action@v3
