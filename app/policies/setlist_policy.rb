@@ -19,6 +19,10 @@ class SetlistPolicy < ApplicationPolicy
     account_member?
   end
 
+  def duplicate?
+    account_member?
+  end
+
   def import?
     account_member?
   end
