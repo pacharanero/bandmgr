@@ -13,6 +13,7 @@ Rails.application.routes.draw do
       post :resend_invite, on: :member
     end
   end
+  resources :chat_channels, only: %i[create]
   get "bands/:band_id/calendar/private/:token" => "band_calendars#private_feed", as: :private_band_calendar
   get "bands/:band_id/calendar/public/:token" => "band_calendars#public_feed", as: :public_band_calendar
   get "invitations/:token" => "band_membership_invitations#show", as: :band_membership_invitation
