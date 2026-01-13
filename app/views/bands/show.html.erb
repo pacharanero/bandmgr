@@ -1,7 +1,7 @@
 <% content_for :title, @band.name %>
 
 <div class="flex flex-col gap-6">
-  <div class="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+  <div class="rounded-lg border border-slate-200 bg-white p-6 shadow-sm" data-controller="copy">
     <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
       <div>
         <h1 class="text-2xl font-semibold text-slate-900"><%= @band.name %></h1>
@@ -92,12 +92,20 @@
     <div class="mt-4 space-y-2 text-xs text-slate-600">
       <div>
         <span class="font-semibold text-slate-700">Private:</span>
-        <span class="font-mono"><%= private_band_calendar_url(band_id: @band.id, token: @band.private_calendar_token) %></span>
+        <span class="font-mono" id="private-calendar-link"><%= private_band_calendar_url(band_id: @band.id, token: @band.private_calendar_token) %></span>
+        <button type="button" class="ml-2 inline-flex items-center gap-1 text-slate-500 hover:text-slate-700" data-copy-target="#private-calendar-link" data-action="click->copy#copy" aria-label="Copy private calendar link">
+          <span class="inline-flex h-4 w-4 items-center justify-center rounded border border-slate-300 text-[10px] font-semibold">⧉</span>
+          Copy
+        </button>
       </div>
       <div>
         <span class="font-semibold text-slate-700">Public:</span>
         <% if @band.public_calendar_enabled? %>
-          <span class="font-mono"><%= public_band_calendar_url(band_id: @band.id, token: @band.public_calendar_token) %></span>
+          <span class="font-mono" id="public-calendar-link"><%= public_band_calendar_url(band_id: @band.id, token: @band.public_calendar_token) %></span>
+          <button type="button" class="ml-2 inline-flex items-center gap-1 text-slate-500 hover:text-slate-700" data-copy-target="#public-calendar-link" data-action="click->copy#copy" aria-label="Copy public calendar link">
+            <span class="inline-flex h-4 w-4 items-center justify-center rounded border border-slate-300 text-[10px] font-semibold">⧉</span>
+            Copy
+          </button>
         <% else %>
           <span class="text-slate-400">Enable public calendar in settings to generate a link.</span>
         <% end %>
