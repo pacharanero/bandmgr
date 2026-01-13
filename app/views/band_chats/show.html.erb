@@ -34,9 +34,18 @@
       <div class="mt-6 space-y-3 text-sm text-slate-600">
         <% if @messages.any? %>
           <% @messages.each do |message| %>
+            <% liked = message.chat_message_reactions.any? { |reaction| reaction.user_id == current_user.id && reaction.kind == "like" } %>
+            <% like_count = message.chat_message_reactions.count { |reaction| reaction.kind == "like" } %>
             <div class="rounded-md border border-slate-200 px-3 py-2">
               <p class="text-xs text-slate-500"><%= message.user.email_address %> · <%= l(message.created_at, format: :short) %></p>
               <p class="mt-1 text-slate-700"><%= message.body %></p>
+              <div class="mt-2 flex items-center gap-2 text-xs text-slate-500">
+                <%= button_to toggle_chat_message_reaction_path(message_id: message.id), method: :post, class: "inline-flex items-center gap-1 rounded-md border border-slate-200 px-2 py-0.5 #{liked ? "text-emerald-600" : "text-slate-600"}" do %>
+                  <span aria-hidden="true"><%= liked ? "♥" : "♡" %></span>
+                  Like
+                <% end %>
+                <span><%= like_count %></span>
+              </div>
             </div>
           <% end %>
         <% else %>

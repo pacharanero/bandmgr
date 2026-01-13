@@ -6,7 +6,7 @@ class BandChatsController < ApplicationController
   def show
     @channels = @band.chat_channels.order(:kind, :name)
     @channel = @channels.find_by(id: params[:channel_id]) || @channels.first
-    @messages = @channel ? @channel.chat_messages.includes(:user).order(created_at: :asc) : []
+    @messages = @channel ? @channel.chat_messages.includes(:user, :chat_message_reactions).order(created_at: :asc) : []
     @members = @band.users.where.not(id: current_user.id).order(:email_address)
   end
 

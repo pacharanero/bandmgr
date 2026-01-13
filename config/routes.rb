@@ -14,6 +14,7 @@ Rails.application.routes.draw do
     end
   end
   resources :chat_channels, only: %i[create]
+  post "chat_message_reactions/:message_id/toggle" => "chat_message_reactions#toggle", as: :toggle_chat_message_reaction
   get "bands/:band_id/calendar/private/:token" => "band_calendars#private_feed", as: :private_band_calendar
   get "bands/:band_id/calendar/public/:token" => "band_calendars#public_feed", as: :public_band_calendar
   get "invitations/:token" => "band_membership_invitations#show", as: :band_membership_invitation
