@@ -9,4 +9,7 @@ if ! command -v docker >/dev/null 2>&1; then
 fi
 
 # Run Rails test suite inside the web image (assumes services already up)
-exec docker compose -f "${compose_file}" run --rm web bash -lc "bundle exec rails db:test:prepare test test:system"
+exec docker compose -f "${compose_file}" run --rm \
+  -e RAILS_ENV=test \
+  -e DATABASE_URL=postgres://bandmgr:bandmgr@db:5432/bandmgr_test \
+  web bash -lc "bundle exec rails db:test:prepare test test:system"

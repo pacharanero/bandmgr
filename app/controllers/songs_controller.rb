@@ -123,7 +123,11 @@ class SongsController < ApplicationController
 
     def assign_tags(song)
       tag_names = song.tag_list.to_s.split(",").map { |name| name.strip.downcase }.reject(&:blank?).uniq
-      tags = tag_names.map { |name| current_account.tags.find_or_create_by!(name: name) }
+      tags = tag_names.map do |name|
+        current_account.tags.find_or_create_by!(name: name) do |tag|
+          tag.color = "slate"
+        end
+      end
       song.tags = tags
     end
 
@@ -235,7 +239,7 @@ class SongsController < ApplicationController
     def find_band_from_params
       band_id = params[:band_id].presence
       band_id ||= song_params[:band_id] if params[:song].present?
-      return if band_id.blank?
+      return preferred_band if band_id.blank?
 
       current_account.bands.find_by(id: band_id)
     end

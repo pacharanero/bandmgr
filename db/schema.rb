@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_13_224448) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_13_234432) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -111,6 +111,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_13_224448) do
     t.string "name", null: false
     t.datetime "updated_at", null: false
     t.index ["band_id"], name: "index_chat_channels_on_band_id"
+  end
+
+  create_table "chat_message_reactions", force: :cascade do |t|
+    t.bigint "chat_message_id", null: false
+    t.datetime "created_at", null: false
+    t.string "kind", default: "like", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["chat_message_id", "user_id", "kind"], name: "index_chat_message_reactions_unique", unique: true
+    t.index ["chat_message_id"], name: "index_chat_message_reactions_on_chat_message_id"
+    t.index ["user_id"], name: "index_chat_message_reactions_on_user_id"
   end
 
   create_table "chat_messages", force: :cascade do |t|
@@ -252,6 +263,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_13_224448) do
   add_foreign_key "chat_channel_participants", "chat_channels"
   add_foreign_key "chat_channel_participants", "users"
   add_foreign_key "chat_channels", "bands"
+  add_foreign_key "chat_message_reactions", "chat_messages"
+  add_foreign_key "chat_message_reactions", "users"
   add_foreign_key "chat_messages", "chat_channels"
   add_foreign_key "chat_messages", "chat_messages", column: "parent_id"
   add_foreign_key "chat_messages", "users"
