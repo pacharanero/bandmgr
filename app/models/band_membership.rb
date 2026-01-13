@@ -24,6 +24,10 @@ class BandMembership < ApplicationRecord
     user&.email_address || invited_email
   end
 
+  def resend_invitation
+    send_invitation
+  end
+
   private
 
   def send_invitation

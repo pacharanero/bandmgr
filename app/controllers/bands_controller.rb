@@ -1,6 +1,6 @@
 class BandsController < ApplicationController
   before_action :require_account
-  before_action :set_band, only: %i[show edit update destroy]
+  before_action :set_band, only: %i[show edit update destroy set_default]
 
   def index
     @bands = policy_scope(Band).where(account: current_account)
@@ -11,6 +11,7 @@ class BandsController < ApplicationController
     authorize @band
     @memberships = @band.band_memberships.includes(:user).order(:id)
     @band_membership = @band.band_memberships.new
+    @default_band = current_account_membership&.default_band
   end
 
   def new
@@ -48,6 +49,19 @@ class BandsController < ApplicationController
     authorize @band
     @band.destroy
     redirect_to bands_path, notice: "Band removed."
+  end
+
+  def set_default
+    authorize @band
+
+    membership = current_account_membership
+
+    unless membership
+      redirect_to @band, alert: "You need access to set a default band." and return
+    end
+
+    membership.update!(default_band: @band)
+    redirect_to @band, notice: "Default band set."
   end
 
   private

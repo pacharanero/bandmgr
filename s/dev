@@ -9,7 +9,7 @@ if ! command -v docker >/dev/null 2>&1; then
 fi
 
 echo "== Starting dependencies =="
-docker compose -f "${compose_file}" up -d db redis minio
+docker compose -f "${compose_file}" up -d db redis
 
 echo "== Waiting for Postgres =="
 until docker compose -f "${compose_file}" exec -T db pg_isready -U bandmgr -d bandmgr_development >/dev/null 2>&1; do

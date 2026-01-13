@@ -10,27 +10,61 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_13_123000) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_13_183313) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
   create_table "accounts", force: :cascade do |t|
     t.string "name", null: false
     t.string "slug", null: false
+    t.string "ai_provider"
+    t.string "ai_openai_api_key"
+    t.string "ai_anthropic_api_key"
+    t.string "ai_local_url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["slug"], name: "index_accounts_on_slug", unique: true
   end
 
+  create_table "active_storage_attachments", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.string "service_name", null: false
+    t.bigint "byte_size", null: false
+    t.string "checksum"
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "active_storage_variant_records", force: :cascade do |t|
+    t.bigint "blob_id", null: false
+    t.string "variation_digest", null: false
+    t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
   create_table "band_memberships", force: :cascade do |t|
     t.bigint "band_id", null: false
-    t.bigint "user_id", null: false
+    t.bigint "user_id"
     t.integer "role", default: 1, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "invitation_token"
     t.datetime "invitation_sent_at"
     t.datetime "invitation_accepted_at"
+    t.string "invited_email"
+    t.index ["band_id", "invited_email"], name: "index_band_memberships_on_band_id_and_invited_email", unique: true
     t.index ["band_id", "user_id"], name: "index_band_memberships_on_band_id_and_user_id", unique: true
     t.index ["band_id"], name: "index_band_memberships_on_band_id"
     t.index ["invitation_token"], name: "index_band_memberships_on_invitation_token", unique: true
@@ -81,8 +115,10 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_13_123000) do
     t.integer "role", default: 2, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "default_band_id"
     t.index ["account_id", "user_id"], name: "index_memberships_on_account_id_and_user_id", unique: true
     t.index ["account_id"], name: "index_memberships_on_account_id"
+    t.index ["default_band_id"], name: "index_memberships_on_default_band_id"
     t.index ["user_id"], name: "index_memberships_on_user_id"
   end
 
@@ -131,7 +167,13 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_13_123000) do
     t.string "chart_url"
     t.string "original_artist"
     t.string "video_url"
+    t.integer "duration_seconds"
+    t.string "singer_name"
+    t.bigint "singer_band_membership_id"
+    t.bigint "band_id", null: false
     t.index ["account_id"], name: "index_songs_on_account_id"
+    t.index ["band_id"], name: "index_songs_on_band_id"
+    t.index ["singer_band_membership_id"], name: "index_songs_on_singer_band_membership_id"
   end
 
   create_table "taggings", force: :cascade do |t|
@@ -165,6 +207,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_13_123000) do
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
 
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "band_memberships", "bands"
   add_foreign_key "band_memberships", "users"
   add_foreign_key "bands", "accounts"
@@ -172,6 +216,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_13_123000) do
   add_foreign_key "event_setlists", "setlists"
   add_foreign_key "events", "bands"
   add_foreign_key "memberships", "accounts"
+  add_foreign_key "memberships", "bands", column: "default_band_id"
   add_foreign_key "memberships", "users"
   add_foreign_key "sessions", "users"
   add_foreign_key "setlist_songs", "setlists"
@@ -179,6 +224,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_13_123000) do
   add_foreign_key "setlists", "accounts"
   add_foreign_key "setlists", "bands"
   add_foreign_key "songs", "accounts"
+  add_foreign_key "songs", "band_memberships", column: "singer_band_membership_id"
+  add_foreign_key "songs", "bands"
   add_foreign_key "taggings", "tags"
   add_foreign_key "tags", "accounts"
 end

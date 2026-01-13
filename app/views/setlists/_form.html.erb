@@ -1,0 +1,28 @@
+<%= form_with model: setlist, class: "space-y-4" do |form| %>
+  <div>
+    <%= form.label :band_id, "Band", class: "block text-sm font-medium text-slate-700" %>
+    <% prompt_option = @bands.many? ? { prompt: "Select a band" } : {} %>
+    <%= form.collection_select :band_id, @bands, :id, :name, prompt_option.merge(selected: @selected_band&.id), class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2" %>
+    <% setlist.errors.full_messages_for(:band).each do |message| %>
+      <p class="mt-1 text-xs text-red-600"><%= message %></p>
+    <% end %>
+  </div>
+
+  <div>
+    <%= form.label :title, class: "block text-sm font-medium text-slate-700" %>
+    <%= form.text_field :title, class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2" %>
+    <% setlist.errors.full_messages_for(:title).each do |message| %>
+      <p class="mt-1 text-xs text-red-600"><%= message %></p>
+    <% end %>
+  </div>
+
+  <div>
+    <%= form.label :description, class: "block text-sm font-medium text-slate-700" %>
+    <%= form.text_area :description, rows: 4, class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2" %>
+  </div>
+
+  <div class="flex items-center justify-end gap-3">
+    <%= link_to "Cancel", setlists_path, class: "text-sm text-slate-600 hover:text-slate-900" %>
+    <%= form.submit class: "rounded-md bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800" %>
+  </div>
+<% end %>

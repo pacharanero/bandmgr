@@ -6,6 +6,20 @@
       <h1 class="text-xl font-semibold text-slate-900"><%= @account.name %></h1>
       <p class="text-sm text-slate-600">Slug: <span class="font-mono text-xs text-slate-700"><%= @account.slug %></span></p>
     </div>
-    <%= link_to "View bands", bands_path, class: "inline-flex items-center rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-700 hover:border-slate-400 hover:text-slate-900" %>
+    <div class="flex items-center gap-3">
+      <%= link_to "Account settings", edit_account_path(@account), class: "inline-flex items-center rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-700 hover:border-slate-400 hover:text-slate-900" %>
+      <%= link_to "View bands", bands_path, class: "inline-flex items-center rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-700 hover:border-slate-400 hover:text-slate-900" %>
+    </div>
+  </div>
+
+  <div class="mt-6 rounded-md border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700">
+    <span class="font-medium text-slate-900">AI status:</span>
+    <% if @account.ai_enabled? %>
+      Enabled (<%= @account.ai_provider %>)
+    <% elsif @account.ai_configured? %>
+      Missing credentials for <%= @account.ai_provider %>
+    <% else %>
+      Not configured
+    <% end %>
   </div>
 </div>

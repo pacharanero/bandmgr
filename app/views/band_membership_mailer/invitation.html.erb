@@ -1,7 +1,9 @@
-<p>Hi <%= @membership.user.email_address %>,</p>
+<p>Hi <%= @membership.recipient_email %>,</p>
 
 <p><%= @band.name %> has invited you to join their band workspace on Bandmgr.</p>
 
 <p><a href="<%= @accept_url %>">Accept invitation</a></p>
+
+<p>You may be asked to sign in or create an account with this email before accepting.</p>
 
 <p>If you weren't expecting this, you can ignore this email.</p>

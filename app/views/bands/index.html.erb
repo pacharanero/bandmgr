@@ -11,9 +11,15 @@
 
   <% if @bands.any? %>
     <div class="grid gap-4 md:grid-cols-2">
+      <% default_band_id = current_account_membership&.default_band_id %>
       <% @bands.each do |band| %>
         <div class="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-          <h2 class="text-lg font-semibold text-slate-900"><%= link_to band.name, band_path(band) %></h2>
+          <div class="flex flex-wrap items-center gap-2">
+            <h2 class="text-lg font-semibold text-slate-900"><%= link_to band.name, band_path(band) %></h2>
+            <% if default_band_id == band.id %>
+              <span class="rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-semibold text-emerald-700">Default</span>
+            <% end %>
+          </div>
           <p class="mt-2 text-sm text-slate-600"><%= band.description.presence || "No description yet." %></p>
           <div class="mt-4 flex items-center gap-3 text-sm">
             <%= link_to "View", band_path(band), class: "text-slate-700 hover:text-slate-900" %>

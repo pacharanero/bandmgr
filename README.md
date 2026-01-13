@@ -44,8 +44,8 @@ For the full status list and roadmap, see `spec/features.md` and `spec/roadmap.m
 2. Run the dev stack: `./s/dev`
 
 What `./s/dev` does:
-- Starts Postgres, Redis, and MinIO via Docker Compose.
-- Builds/starts the Rails web container with live code reload.
+- Starts Postgres and Redis via Docker Compose.
+- Builds/starts the Rails web container with live code reload and bind-mounts `storage/` for uploads.
 - Waits for the stack and opens `http://localhost:3000`.
 
 Default demo credentials (seeded by the container entrypoint):

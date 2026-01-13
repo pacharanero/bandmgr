@@ -19,11 +19,19 @@ class SongPolicy < ApplicationPolicy
     account_member?
   end
 
+  def import?
+    account_member?
+  end
+
+  def run_import?
+    account_member?
+  end
+
   class Scope < Scope
     def resolve
       return scope.none unless user
 
-      scope.joins(account: :memberships).where(memberships: { user_id: user.id }).distinct
+      scope.joins(band: { account: :memberships }).where(memberships: { user_id: user.id }).distinct
     end
   end
 
@@ -32,6 +40,8 @@ class SongPolicy < ApplicationPolicy
       return false unless user
       return user.memberships.exists? if record.is_a?(Class)
 
-      record.account.memberships.exists?(user_id: user.id)
+      return user.memberships.exists? if record.band.nil?
+
+      record.band.account.memberships.exists?(user_id: user.id)
     end
 end

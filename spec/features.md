@@ -1,10 +1,10 @@
 ## Key Features
 
-A comprehensive Band Management Platform to help bands organise their music, gigs, members, and equipment. Designed to reduce the workload of running a band, allowing musicians to focus on making music.
+- Song duration tracked in minutes/seconds; singer can be selected from band members or entered as free text.
 
 ### Key Features
 
-- Song management: store and organise your band's songs with details like title, artist, album, key, tempo, tags, and external links (e.g., GoogleDocs chart, YouTube); import from plain text, markdown, or CSV.
+- Song management: store and organise your band's songs with details like title, artist, key, tempo, tags, timings, and external links (e.g., GoogleDocs chart, YouTube); import from plain text, markdown, or CSV.
 - Gig scheduling: plan and manage gigs with date, time, venue, setlist, and reminders; embed venue location with Google Maps.
 - Setlist creation: build and manage setlists for gigs, associating songs from your repertoire with drag-and-drop (including bulk add from song search/filter results).
 - Member management: manage band members with roles and permissions.
@@ -12,6 +12,11 @@ A comprehensive Band Management Platform to help bands organise their music, gig
 - Tagging system: use tags to organise songs, gigs, setlists, venues, and members for easier searching and filtering.
 - Data import/export: import songs from Plain Text, Markdown, or CSV files; export band data to YAML for backup or transfer.
 - Simple band website: gallery, booking info, static content (optional band website replacement)
+
+### Tagging
+
+- Tags live in a tags collection; taggings use polymorphic records (tag_id, taggable_type, taggable_id) so songs, members, events, setlists, and equipment can all be tagged.
+- Tags power advanced search and filtering across entities; some entities may expose user-defined custom fields alongside tags.
 
 ### User Interface
 - Light and dark mode with DaisyUI
@@ -24,14 +29,10 @@ A comprehensive Band Management Platform to help bands organise their music, gig
 - Multi-band support within a single instance - an instance of Bandmgr can have many bands
 - Manage band members with roles and permissions, and set a 'default' band for each member
 - Customizable band settings and preferences - default band
+- Bands own songs, gigs/events, setlists, members, equipment, and a stage layout
+- Bands have an instance owner/admin
 - Branding and theme customization per band
 - Custom domain support per band
-
-**Current implementation (MVP)**
-- Account setup flow with a default band per account.
-- Bands CRUD (name, description) scoped to account.
-- Band roles defined (band_admin, member, read_only).
-- Band member management UI (add/update/remove) for admins.
 
 ### Gigs
 
@@ -80,13 +81,10 @@ A comprehensive Band Management Platform to help bands organise their music, gig
 
 ## Implementation status (so far)
 
-- Rails 8 scaffold with Hotwire + Tailwind.
-- Auth (login, signup, password reset) with account scoping.
-- Account + band models with role-based memberships.
-- Pundit policies for account/band access.
 - Responsive nav shell with placeholder pages for Events, Setlists, Tasks.
 - Song library CRUD with tags, search/filtering, sorting, and import (plain text/markdown/CSV).
 - Events CRUD with gig/rehearsal types and notes.
+- Setlist data model and associations (setlists, setlist songs, event links) with placeholder UI.
 
 ### Import/Export
 
@@ -110,3 +108,46 @@ A comprehensive Band Management Platform to help bands organise their music, gig
 - Practice Mode: surface songs with least practice or not recently gigged, or in a random order
 - Markdown-based Song Editor (inline charts/lyrics instead of only external links)
 - Online store
+
+## Entities
+Human-readable overview of the main data entities and their relationships.
+
+### Account
+- Account (customer/org/workspace; even self-host can default to one)
+- Accounts can have many Bands
+- Accounts needs at least one Admin
+
+### Band
+- Bands belong to an Account
+- Users can belong to many Bands
+- A Band can be set as the default Band for a User
+
+### User
+
+- Membership (user ↔ account, role)
+- Band (belongs to account)
+- BandMembership (user ↔ band, role; many users across bands)
+
+### Song
+- Songs belong to a Band
+- Songs can be organised into Setlists
+- Default song listing sort: artist ASC then title ASC; users can configure primary sort (artist | title | album | tempo) with sensible secondary fallback
+- Song detail view opens from list click and exposes full attributes for viewing/editing
+- Song imports support Plain Text, Markdown, or CSV
+
+### Setlist
+- A Setlist belongs to a Band
+- A Setlist has many Songs
+- Setlists have an order of Songs
+- 
+
+### Event
+- An Event is a Gig, Rehearsal, or other band-related occurrence.
+- A Setlist can be associated with an Event.
+
+**Band-scoped resources**
+- Song (shared per account or per band—decide)
+- Task (band todo)
+- Message/Thread (optional; comments on objects are often enough)
+- Invite (invite user to account/band)
+

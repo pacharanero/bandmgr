@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   include Pundit::Authorization
 
   before_action :set_current_account
-  helper_method :current_user, :current_account
+  helper_method :current_user, :current_account, :current_account_membership, :preferred_band
 
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
   allow_browser versions: :modern
@@ -19,10 +19,28 @@ class ApplicationController < ActionController::Base
       Current.account
     end
 
+    def current_account_membership
+      return unless current_user && current_account
+
+      @current_account_membership ||= current_user.memberships.find_by(account_id: current_account.id)
+    end
+
     def set_current_account
       return unless current_user
 
       Current.account ||= current_user.accounts.first
+    end
+
+    def preferred_band(scope = nil)
+      return unless current_account
+
+      bands = Array(scope.presence || current_account.bands)
+      return bands.first if bands.one?
+
+      default = current_account_membership&.default_band
+      return default if default && bands.any? { |band| band.id == default.id }
+
+      nil
     end
 
     def require_account

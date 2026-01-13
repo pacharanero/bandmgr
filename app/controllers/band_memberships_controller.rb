@@ -1,7 +1,7 @@
 class BandMembershipsController < ApplicationController
   before_action :require_account
   before_action :set_band
-  before_action :set_band_membership, only: %i[update destroy]
+  before_action :set_band_membership, only: %i[update destroy resend_invite]
 
   def create
     @band_membership = @band.band_memberships.new(role: band_membership_params[:role])
@@ -36,6 +36,18 @@ class BandMembershipsController < ApplicationController
     authorize @band_membership
     @band_membership.destroy
     redirect_to @band, notice: "Member removed."
+  end
+
+  def resend_invite
+    authorize @band_membership
+
+    if @band_membership.accepted?
+      redirect_to @band, alert: "This member has already accepted."
+      return
+    end
+
+    @band_membership.resend_invitation
+    redirect_to @band, notice: "Invitation resent."
   end
 
   private

@@ -1,5 +1,13 @@
 <%= form_with model: song, class: "space-y-4" do |form| %>
   <div>
+    <%= form.label :band_id, "Band", class: "block text-sm font-medium text-slate-700" %>
+    <%= form.collection_select :band_id, @bands, :id, :name, { prompt: "Select a band" }, class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2" %>
+    <% song.errors.full_messages_for(:band).each do |message| %>
+      <p class="mt-1 text-xs text-red-600"><%= message %></p>
+    <% end %>
+  </div>
+
+  <div>
     <%= form.label :title, class: "block text-sm font-medium text-slate-700" %>
     <%= form.text_field :title, class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2" %>
     <% song.errors.full_messages_for(:title).each do |message| %>
@@ -26,6 +34,22 @@
     <div>
       <%= form.label :tempo, class: "block text-sm font-medium text-slate-700" %>
       <%= form.number_field :tempo, class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2" %>
+    </div>
+  </div>
+
+  <div class="grid gap-4 sm:grid-cols-2">
+    <div>
+      <%= form.label :duration_seconds, "Duration (mm:ss)", class: "block text-sm font-medium text-slate-700" %>
+      <%= form.text_field :duration_seconds, value: song.duration_seconds, placeholder: "03:45", class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2", data: { controller: "duration-input" } %>
+      <% if song.errors[:duration_seconds].any? %>
+        <p class="mt-1 text-xs text-red-600"><%= song.errors.full_messages_for(:duration_seconds).to_sentence %></p>
+      <% end %>
+    </div>
+    <div>
+      <%= form.label :singer_band_membership_id, "Singer", class: "block text-sm font-medium text-slate-700" %>
+      <%= form.collection_select :singer_band_membership_id, @band_memberships, :id, ->(bm) { bm.user.email_address }, { include_blank: "Custom / not a member" }, class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2" %>
+      <%= form.label :singer_name, "Custom singer name", class: "mt-2 block text-xs font-medium text-slate-600" %>
+      <%= form.text_field :singer_name, class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2" %>
     </div>
   </div>
 

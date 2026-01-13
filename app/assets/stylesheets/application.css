@@ -8,3 +8,56 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+
+html.theme-dark {
+  color-scheme: dark;
+}
+
+html.theme-dark body {
+  background-color: #0b1220;
+  color: #e2e8f0;
+}
+
+html.theme-dark .bg-white {
+  background-color: #0f172a;
+}
+
+html.theme-dark .bg-slate-50 {
+  background-color: #0b1220;
+}
+
+html.theme-dark .border-slate-200 {
+  border-color: #1f2937;
+}
+
+html.theme-dark .border-slate-300 {
+  border-color: #334155;
+}
+
+html.theme-dark .text-slate-900 {
+  color: #f1f5f9;
+}
+
+html.theme-dark .text-slate-700 {
+  color: #cbd5f5;
+}
+
+html.theme-dark .text-slate-600 {
+  color: #94a3b8;
+}
+
+html.theme-dark .text-slate-500 {
+  color: #94a3b8;
+}
+
+html.theme-dark .text-slate-400 {
+  color: #64748b;
+}
+
+html.theme-dark .bg-slate-100 {
+  background-color: #111827;
+}
+
+html.theme-dark .shadow-sm {
+  box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.6), 0 1px 2px -1px rgba(15, 23, 42, 0.6);
+}

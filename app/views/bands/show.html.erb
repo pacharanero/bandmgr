@@ -6,6 +6,11 @@
       <div>
         <h1 class="text-2xl font-semibold text-slate-900"><%= @band.name %></h1>
         <p class="mt-2 text-sm text-slate-600"><%= @band.description.presence || "No description yet." %></p>
+        <% if @default_band&.id == @band.id %>
+          <p class="mt-2 inline-flex items-center gap-2 rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-emerald-700">Default band</p>
+        <% elsif current_account_membership %>
+          <%= button_to "Set as default", set_default_band_path(@band), method: :post, class: "mt-2 inline-flex items-center gap-2 rounded-full border border-slate-200 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-slate-700 hover:border-slate-300" %>
+        <% end %>
       </div>
       <div class="flex items-center gap-3 text-sm">
         <%= link_to "Edit", edit_band_path(@band), class: "rounded-md border border-slate-300 px-3 py-2 text-slate-700 hover:border-slate-400 hover:text-slate-900" %>
@@ -39,14 +44,22 @@
       <% @memberships.each do |membership| %>
         <div class="flex flex-col gap-2 rounded-md border border-slate-200 px-4 py-3 text-sm sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <p class="font-medium text-slate-900"><%= membership.user.email_address %></p>
-            <p class="text-xs uppercase tracking-wide text-slate-500"><%= membership.role %></p>
+            <p class="font-medium text-slate-900"><%= membership.recipient_email %></p>
+            <p class="text-xs uppercase tracking-wide text-slate-500">
+              <%= membership.role %>
+              <% unless membership.accepted? %>
+                <span class="ml-2 rounded bg-amber-100 px-2 py-0.5 text-[10px] font-semibold uppercase text-amber-700">Pending invite</span>
+              <% end %>
+            </p>
           </div>
           <% if policy(membership).update? %>
             <div class="flex flex-wrap items-center gap-2">
               <%= form_with model: [@band, membership], method: :patch, class: "flex items-center gap-2" do |form| %>
                 <%= form.select :role, BandMembership.roles.keys, {}, class: "rounded-md border border-slate-300 px-2 py-1 text-sm" %>
                 <%= form.submit "Update", class: "rounded-md border border-slate-300 px-3 py-1 text-xs text-slate-700 hover:border-slate-400" %>
+              <% end %>
+              <% unless membership.accepted? %>
+                <%= button_to "Resend invite", resend_invite_band_band_membership_path(@band, membership), method: :post, class: "rounded-md border border-amber-200 px-3 py-1 text-xs text-amber-700 hover:border-amber-300" %>
               <% end %>
               <%= button_to "Remove", band_band_membership_path(@band, membership), method: :delete, data: { turbo_confirm: "Remove this member?" }, class: "rounded-md border border-red-200 px-3 py-1 text-xs text-red-600 hover:border-red-300" %>
             </div>

@@ -19,6 +19,10 @@ class BandPolicy < ApplicationPolicy
     band_admin_or_account_admin?
   end
 
+  def set_default?
+    account_member?
+  end
+
   class Scope < Scope
     def resolve
       return scope.none unless user

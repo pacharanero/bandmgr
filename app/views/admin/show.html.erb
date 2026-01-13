@@ -1,0 +1,36 @@
+<% content_for :title, "Admin" %>
+
+<div class="flex flex-col gap-4">
+  <header class="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+    <h1 class="text-2xl font-semibold text-slate-900">Admin</h1>
+    <p class="mt-1 text-sm text-slate-600">Workspace appearance and upcoming admin controls.</p>
+  </header>
+
+  <section class="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+    <div class="flex items-center justify-between">
+      <div>
+        <p class="text-sm font-semibold uppercase tracking-wide text-slate-500">Palette</p>
+        <p class="text-sm text-slate-600">Light and dark theme reference.</p>
+      </div>
+      <button type="button" class="rounded-md border border-slate-200 px-3 py-1 text-xs font-semibold text-slate-400" disabled>Configure</button>
+    </div>
+    <div class="mt-4 grid grid-cols-2 gap-2 text-xs">
+      <div class="flex items-center justify-between rounded-md border border-slate-200 px-2 py-1 text-slate-500">
+        <span>Light</span>
+        <span class="flex items-center gap-1">
+          <span class="h-3 w-3 rounded-full bg-slate-900"></span>
+          <span class="h-3 w-3 rounded-full bg-slate-400"></span>
+          <span class="h-3 w-3 rounded-full bg-slate-200"></span>
+        </span>
+      </div>
+      <div class="flex items-center justify-between rounded-md border border-slate-200 px-2 py-1 text-slate-500">
+        <span>Dark</span>
+        <span class="flex items-center gap-1">
+          <span class="h-3 w-3 rounded-full bg-slate-800"></span>
+          <span class="h-3 w-3 rounded-full bg-slate-600"></span>
+          <span class="h-3 w-3 rounded-full bg-slate-500"></span>
+        </span>
+      </div>
+    </div>
+  </section>
+</div>

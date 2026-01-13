@@ -1,0 +1,38 @@
+<% content_for :title, "Import playlist" %>
+
+<div class="mx-auto max-w-3xl">
+  <div class="mb-4">
+    <h1 class="text-2xl font-semibold text-slate-900">Import a playlist</h1>
+    <p class="mt-1 text-sm text-slate-600">Bring in songs from YouTube or Spotify and create a new setlist.</p>
+  </div>
+
+  <div class="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+    <%= form_with url: import_setlists_path, method: :post, class: "space-y-4" do |form| %>
+      <div>
+        <%= form.label :band_id, "Band", class: "block text-sm font-medium text-slate-700" %>
+        <% prompt_option = @bands.many? ? { prompt: "Select a band" } : {} %>
+        <%= form.collection_select :band_id, @bands, :id, :name, prompt_option.merge(selected: params[:band_id].presence || @selected_band&.id), class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2" %>
+      </div>
+
+      <div>
+        <%= form.label :playlist_url, "Playlist URL", class: "block text-sm font-medium text-slate-700" %>
+        <%= form.url_field :playlist_url, value: @playlist_url, placeholder: "https://open.spotify.com/playlist/... or https://www.youtube.com/playlist?list=...", class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2" %>
+      </div>
+
+      <div>
+        <%= form.label :title, "Setlist title (optional)", class: "block text-sm font-medium text-slate-700" %>
+        <%= form.text_field :title, value: @title_override, class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2" %>
+      </div>
+
+      <div>
+        <%= form.label :description, "Description (optional)", class: "block text-sm font-medium text-slate-700" %>
+        <%= form.text_area :description, value: @description, rows: 3, class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2" %>
+      </div>
+
+      <div class="flex items-center justify-end gap-3">
+        <%= link_to "Cancel", setlists_path, class: "text-sm text-slate-600 hover:text-slate-900" %>
+        <%= form.submit "Import playlist", class: "rounded-md bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800" %>
+      </div>
+    <% end %>
+  </div>
+</div>

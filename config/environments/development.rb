@@ -40,9 +40,10 @@ Rails.application.configure do
   # Set localhost to be used by links generated in mailer templates.
   config.action_mailer.default_url_options = { host: "localhost", port: 3000 }
 
-  config.action_mailer.delivery_method = ENV.fetch("DEV_MAILER_DELIVERY", "logger").to_sym
+  delivery_method = ENV.fetch("DEV_MAILER_DELIVERY", "test").to_s
+  config.action_mailer.delivery_method = delivery_method.to_sym
 
-  if config.action_mailer.delivery_method == :smtp
+  if delivery_method == "smtp"
     config.action_mailer.smtp_settings = {
       address: ENV.fetch("SMTP_ADDRESS", "localhost"),
       port: ENV.fetch("SMTP_PORT", 1025),
@@ -51,9 +52,12 @@ Rails.application.configure do
       authentication: :plain,
       enable_starttls_auto: true
     }.compact
+  elsif delivery_method == "file"
+    config.action_mailer.file_settings = { location: Rails.root.join("tmp/mails") }
   else
-    config.action_mailer.logger = Logger.new($stdout)
+    config.action_mailer.delivery_method = :test
   end
+  config.action_mailer.logger = Logger.new($stdout)
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log

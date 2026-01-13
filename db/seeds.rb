@@ -9,20 +9,20 @@
 #   end
 if User.none?
   user = User.create!(
-    email_address: "demo@example.com",
+    email_address: "development@bandmgr.band",
     password: "password",
     password_confirmation: "password"
   )
 
-  account = Account.create!(name: "Demo Account", slug: "demo-account")
+  account = Account.create!(name: "Development Account", slug: "development-account")
   Membership.create!(account: account, user: user, role: :owner)
 
-  band = Band.create!(account: account, name: "Demo Band", description: "Example band for development.")
+  band = Band.create!(account: account, name: "Development Band", description: "Example band for development.")
   BandMembership.create!(band: band, user: user, role: :band_admin)
 
-  song = Song.create!(account: account, title: "Demo Song", artist: "Demo Artist", album: "Demo Album", key: "C", tempo: 120)
+  song = Song.create!(account: account, band: band, title: "Demo Song", artist: "Demo Artist", album: "Demo Album", key: "C", tempo: 120)
   tag = Tag.create!(account: account, name: "rehearsal")
   Tagging.create!(tag: tag, taggable: song)
 
-  Event.create!(band: band, kind: :gig, starts_at: 1.week.from_now, venue: "Demo Venue", notes: "Load-in at 6pm.")
+  Event.create!(band: band, kind: :gig, starts_at: 1.week.from_now, venue: "The Jolly Sailor", notes: "Load-in at 6pm.")
 end

@@ -1,11 +1,11 @@
 ## 1. Project Principles
 
-- Boring, readable Rails: explicit service objects, minimal callbacks, little DSL magic.
+- Standard Rails: explicit service objects, minimal callbacks, little DSL magic.
 - Hotwire-first UI: server-rendered HTML with Turbo and Stimulus; add a JS framework only when truly needed.
 - 12-factor-ish config: ENV-driven with `.env.example` for self-hosters.
 - Composable deployment: app image runs anywhere; DB/mail/storage are swappable.
 
-**Non-goals (initially):** multi-tenant pooled DB, microservices, heavy front-end framework.
+**Non-goals:** multi-tenant pooled DB, microservices, heavy front-end framework.
 
 ## 2. Baseline Tech Choices
 
@@ -30,28 +30,14 @@
 - Recurring work: small scheduler or a worker container that loops rake tasks.
 
 **File uploads**
-- Active Storage: MinIO for self-host (portable S3), S3/Backblaze/etc when hosted.
+- Active Storage: local filesystem by default; enable S3-compatible buckets (S3/Backblaze/etc.) later if needed.
 
-## 3. Domain Model (Band-Manager Friendly)
+## 3. Models
 
-**Core entities**
-- User
-- Account (customer/org/workspace; even self-host can default to one)
-- Membership (user ↔ account, role)
-- Band (belongs to account)
-- BandMembership (user ↔ band, role; many users across bands)
-
-**Band-scoped resources**
-- Event (gig/rehearsal; datetime, venue, notes)
-- Setlist (for an Event; ordered songs)
-- Song (shared per account or per band—decide)
-- Task (band todo)
-- Message/Thread (optional; comments on objects are often enough)
-- Document/Attachment (Active Storage)
-- Invite (invite user to account/band)
+- Use standard Rails practices for migrations including appropriate timestamps
+- Ensure that migrations and changes to mdoels are backward compatible
 
 **Permissions**
-- Two-level roles: Account (owner/admin/member) and Band (band_admin/member/read_only).
 - Keep authorization explicit with a single gem (e.g., Pundit) and policy specs.
 
 ## 4. Architecture Conventions (Reduce Magic)
@@ -88,7 +74,6 @@ Keep the Turbo handbook as the shared reference.
 - web (Rails)
 - worker (Solid Queue / Active Job runner)
 - db (Postgres)
-- minio (optional)
 - caddy or traefik (optional TLS/reverse proxy)
 
 **Deliverables**
@@ -173,4 +158,4 @@ Keep the Turbo handbook as the shared reference.
 - Event CRUD with gig/rehearsal types, date/time, venue, and notes.
 
 **Dev stack**
-- Local dev compose stack includes Rails web container, Postgres, Redis, and MinIO.
+- Local dev compose stack includes Rails web container, Postgres, and Redis. File uploads persist on a bind-mounted `storage/` directory.

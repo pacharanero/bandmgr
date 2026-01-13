@@ -9,7 +9,9 @@ class SongsController < ApplicationController
     update_sort_preferences
     @sort_field = current_user.song_sort
     @sort_direction = current_user.song_sort_direction
-    @songs = policy_scope(Song).where(account: current_account)
+    @bands = current_account.bands.order(:name)
+    @songs = policy_scope(Song).joins(:band).includes(:band).where(bands: { account_id: current_account.id })
+    @setlists = policy_scope(Setlist).joins(:band).where(bands: { account_id: current_account.id }).order(:title)
     if @query.present?
       @songs = @songs.where("title ILIKE ? OR artist ILIKE ?", "%#{@query}%", "%#{@query}%")
     end
@@ -21,16 +23,20 @@ class SongsController < ApplicationController
 
   def show
     authorize @song
+    @setlists = policy_scope(Setlist).joins(:band).where(bands: { account_id: current_account.id, id: @song.band_id }).order(:title)
   end
 
   def new
-    @song = current_account.songs.new
+    @song = Song.new
+    @song.band = preferred_band
     @song.tag_list = ""
     authorize @song
+    load_bands
+    load_band_memberships
   end
 
   def create
-    @song = current_account.songs.new(song_params.except(:tag_list))
+    @song = build_song_from_params
     @song.tag_list = song_params[:tag_list].to_s
     authorize @song
 
@@ -38,6 +44,8 @@ class SongsController < ApplicationController
       assign_tags(@song)
       redirect_to @song, notice: "Song created."
     else
+      load_bands
+      load_band_memberships
       render :new, status: :unprocessable_entity
     end
   end
@@ -45,16 +53,21 @@ class SongsController < ApplicationController
   def edit
     authorize @song
     @song.tag_list = tag_list_for(@song)
+    load_bands
+    load_band_memberships
   end
 
   def update
     authorize @song
     @song.tag_list = song_params[:tag_list].to_s
 
-    if @song.update(song_params.except(:tag_list))
+    assign_song_band
+    if @song.update(song_params.except(:tag_list, :band_id))
       assign_tags(@song)
       redirect_to @song, notice: "Song updated."
     else
+      load_bands
+      load_band_memberships
       render :edit, status: :unprocessable_entity
     end
   end
@@ -67,13 +80,21 @@ class SongsController < ApplicationController
 
   def import
     authorize Song
+    load_bands
   end
 
   def run_import
     authorize Song
+    load_bands
 
     input = import_input
     @format = params[:format_type].presence || "plain"
+    @band = find_band_from_params
+    if @band.nil?
+      flash.now[:alert] = "Select a band to import into."
+      render :import, status: :unprocessable_entity
+      return
+    end
     if input.blank?
       flash.now[:alert] = "Paste or upload song data to import."
       render :import, status: :unprocessable_entity
@@ -81,7 +102,7 @@ class SongsController < ApplicationController
     end
 
     entries = parse_import_entries(input, @format)
-    created, errors = import_entries(entries)
+    created, errors = import_entries(entries, @band)
 
     if errors.any?
       flash.now[:alert] = errors.join(" ")
@@ -97,7 +118,7 @@ class SongsController < ApplicationController
     end
 
     def song_params
-      params.require(:song).permit(:title, :artist, :album, :key, :tempo, :notes, :tag_list)
+      params.require(:song).permit(:band_id, :title, :artist, :album, :key, :tempo, :notes, :tag_list, :singer_band_membership_id, :singer_name, :duration_seconds)
     end
 
     def assign_tags(song)
@@ -156,17 +177,16 @@ class SongsController < ApplicationController
       CSV.parse(input, headers: false).filter_map do |row|
         next if row.compact.empty?
 
-        raw_title = row[0].to_s.strip
-        next if raw_title.blank?
+        title = row[0].to_s.strip
+        next if title.blank?
 
-        title, artist = split_title_and_artist(raw_title)
-        tags = parse_tag_field(row[2])
+        artist = row[1].to_s.strip.presence
         {
           title: title,
           artist: artist,
-          key: row[1].to_s.strip.presence,
-          notes: row[3].to_s.strip.presence,
-          tag_list: tags.join(", ")
+          key: row[2].to_s.strip.presence,
+          tempo: row[3].to_s.strip.presence,
+          notes: row[4].to_s.strip.presence
         }
       end
     end
@@ -174,24 +194,18 @@ class SongsController < ApplicationController
     def split_title_and_artist(raw_title)
       if raw_title.include?(" - ")
         title, artist = raw_title.split(" - ", 2)
-        [title.strip, artist.to_s.strip.presence]
+        [ title.strip, artist.to_s.strip.presence ]
       else
-        [raw_title.strip, nil]
+        [ raw_title.strip, nil ]
       end
     end
 
-    def parse_tag_field(raw)
-      cleaned = raw.to_s.strip
-      cleaned = cleaned.delete_prefix("[").delete_suffix("]")
-      cleaned.split(/[,\s]+/).map(&:strip).reject(&:blank?).uniq
-    end
-
-    def import_entries(entries)
+    def import_entries(entries, band)
       created = 0
       errors = []
 
       entries.each do |entry|
-        song = current_account.songs.new(entry.except(:tag_list))
+        song = band.songs.new(entry.except(:tag_list))
         song.tag_list = entry[:tag_list].to_s
 
         if song.save
@@ -202,6 +216,39 @@ class SongsController < ApplicationController
         end
       end
 
-      [created, errors]
+      [ created, errors ]
+    end
+
+    def load_bands
+      @bands = current_account.bands.order(:name)
+    end
+
+    def load_band_memberships
+      @band_memberships = current_account
+        .bands
+        .includes(band_memberships: :user)
+        .flat_map(&:band_memberships)
+        .select { |bm| bm.user.present? }
+        .uniq(&:id)
+        .sort_by { |bm| bm.user.email_address }
+    end
+    def find_band_from_params
+      band_id = params[:band_id].presence
+      band_id ||= song_params[:band_id] if params[:song].present?
+      return if band_id.blank?
+
+      current_account.bands.find_by(id: band_id)
+    end
+
+    def build_song_from_params
+      band = find_band_from_params
+      song = Song.new(song_params.except(:tag_list))
+      song.band = band if band
+      song
+    end
+
+    def assign_song_band
+      band = find_band_from_params
+      @song.band = band if band
     end
 end

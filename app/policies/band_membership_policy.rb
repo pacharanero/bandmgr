@@ -11,6 +11,10 @@ class BandMembershipPolicy < ApplicationPolicy
     band_admin_or_account_admin?
   end
 
+  def resend_invite?
+    band_admin_or_account_admin?
+  end
+
   private
     def band_admin_or_account_admin?
       return false unless user

@@ -1,0 +1,65 @@
+<% content_for :title, "Account settings" %>
+
+<div class="mx-auto max-w-3xl">
+  <div class="mb-4">
+    <h1 class="text-2xl font-semibold text-slate-900">Account settings</h1>
+    <p class="mt-1 text-sm text-slate-600">Update workspace details and AI provider settings.</p>
+  </div>
+
+  <div class="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+    <%= form_with model: @account, class: "space-y-6" do |form| %>
+      <div class="space-y-4">
+        <div>
+          <%= form.label :name, class: "block text-sm font-medium text-slate-700" %>
+          <%= form.text_field :name, class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2" %>
+          <% @account.errors.full_messages_for(:name).each do |message| %>
+            <p class="mt-1 text-xs text-red-600"><%= message %></p>
+          <% end %>
+        </div>
+
+        <div>
+          <%= form.label :slug, class: "block text-sm font-medium text-slate-700" %>
+          <%= form.text_field :slug, class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2" %>
+          <% @account.errors.full_messages_for(:slug).each do |message| %>
+            <p class="mt-1 text-xs text-red-600"><%= message %></p>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="border-t border-slate-200 pt-6">
+        <h2 class="text-lg font-semibold text-slate-900">AI provider</h2>
+        <p class="mt-1 text-sm text-slate-600">Choose a provider and add keys to enable AI features.</p>
+
+        <div class="mt-4 space-y-4">
+          <div>
+            <%= form.label :ai_provider, "Provider", class: "block text-sm font-medium text-slate-700" %>
+            <%= form.select :ai_provider, options_for_select([["None", ""], ["OpenAI", "openai"], ["Anthropic", "anthropic"], ["Local (Ollama)", "local"]], @account.ai_provider), {}, class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2" %>
+          </div>
+
+          <div>
+            <%= form.label :ai_openai_api_key, "OpenAI API key", class: "block text-sm font-medium text-slate-700" %>
+            <%= form.password_field :ai_openai_api_key, value: "", placeholder: "sk-...", class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2" %>
+            <p class="mt-1 text-xs text-slate-500">Leave blank to keep the current key.</p>
+          </div>
+
+          <div>
+            <%= form.label :ai_anthropic_api_key, "Anthropic API key", class: "block text-sm font-medium text-slate-700" %>
+            <%= form.password_field :ai_anthropic_api_key, value: "", placeholder: "anthropic-key", class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2" %>
+            <p class="mt-1 text-xs text-slate-500">Leave blank to keep the current key.</p>
+          </div>
+
+          <div>
+            <%= form.label :ai_local_url, "Local provider URL", class: "block text-sm font-medium text-slate-700" %>
+            <%= form.url_field :ai_local_url, placeholder: "http://localhost:11434", class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2" %>
+            <p class="mt-1 text-xs text-slate-500">Point this at a local model gateway like Ollama.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-end gap-3">
+        <%= link_to "Cancel", account_path(@account), class: "text-sm text-slate-600 hover:text-slate-900" %>
+        <%= form.submit "Save settings", class: "rounded-md bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800" %>
+      </div>
+    <% end %>
+  </div>
+</div>

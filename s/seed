@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+compose_file="docker-compose.dev.yml"
+
+if ! command -v docker >/dev/null 2>&1; then
+  echo "Docker is required to run this script."
+  exit 1
+fi
+
+if ! docker compose -f "${compose_file}" ps --status running web >/dev/null 2>&1; then
+  echo "The web container is not running. Start it first (s/dev)."
+  exit 1
+fi
+
+echo "== Seeding database =="
+docker compose -f "${compose_file}" exec -T web bin/rails db:seed

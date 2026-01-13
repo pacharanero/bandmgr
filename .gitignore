@@ -68,3 +68,6 @@ temp/
 
 /app/assets/builds/*
 !/app/assets/builds/.keep
+
+# testing data
+dummy-data/

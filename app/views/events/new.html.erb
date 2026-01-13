@@ -1,10 +1,25 @@
 <% content_for :title, "New Event" %>
 
-<div class="mx-auto max-w-3xl rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
-  <h1 class="text-xl font-semibold text-slate-900">Create event</h1>
-  <p class="mt-2 text-sm text-slate-600">Log gigs, rehearsals, or other band events.</p>
+<div class="mx-auto max-w-3xl space-y-4">
+  <div class="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+    <h1 class="text-xl font-semibold text-slate-900">Create event</h1>
+    <p class="mt-2 text-sm text-slate-600">Log gigs, rehearsals, or other band events.</p>
+  </div>
 
-  <div class="mt-6">
+  <div class="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+    <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+      <div>
+        <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500">AI assist</h2>
+        <p class="text-sm text-slate-600">Draft an event from a booking message.</p>
+      </div>
+      <button type="button" class="rounded-md border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-400" disabled title="Configure AI to enable this">Draft from message</button>
+    </div>
+    <% unless current_account&.ai_enabled? %>
+      <p class="mt-2 text-xs text-slate-500">AI is disabled. Add a provider key in Account settings.</p>
+    <% end %>
+  </div>
+
+  <div class="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
     <%= render "form", event: @event %>
   </div>
 </div>

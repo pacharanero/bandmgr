@@ -32,6 +32,8 @@ class EventPolicy < ApplicationPolicy
       return false unless user
       return user.memberships.exists? if record.is_a?(Class)
 
+      return user.memberships.exists? if record.band.nil?
+
       record.band.account.memberships.exists?(user_id: user.id)
     end
 end
