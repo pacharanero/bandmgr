@@ -29,6 +29,8 @@ Rails.application.routes.draw do
   resources :setlists do
     member do
       post :duplicate
+      get :print
+      get :export
     end
     collection do
       post :import, action: :run_import

@@ -11,6 +11,8 @@
       <div class="flex items-center gap-3 text-sm">
         <%= link_to "Edit", edit_setlist_path(@setlist), class: "rounded-md border border-slate-300 px-3 py-2 text-slate-700 hover:border-slate-400 hover:text-slate-900" %>
         <%= button_to "Duplicate", duplicate_setlist_path(@setlist), method: :post, class: "rounded-md border border-slate-300 px-3 py-2 text-slate-700 hover:border-slate-400 hover:text-slate-900" %>
+        <%= link_to "Print", print_setlist_path(@setlist), class: "rounded-md border border-slate-300 px-3 py-2 text-slate-700 hover:border-slate-400 hover:text-slate-900" %>
+        <%= link_to "Export PDF", export_setlist_path(@setlist), class: "rounded-md border border-slate-300 px-3 py-2 text-slate-700 hover:border-slate-400 hover:text-slate-900", target: "_blank" %>
         <%= button_to "Delete", setlist_path(@setlist), method: :delete, data: { turbo_confirm: "Delete this setlist?" }, class: "rounded-md border border-red-200 px-3 py-2 text-red-600 hover:border-red-300" %>
       </div>
     </div>

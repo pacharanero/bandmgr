@@ -1,0 +1,48 @@
+<% content_for :title, "Print #{@setlist.title}" %>
+
+<div class="toolbar">
+  <%= link_to "Back to setlist", setlist_path(@setlist) %>
+  <%= link_to "Export PDF", export_setlist_path(@setlist, @print_settings), target: "_blank" %>
+  <a href="#" onclick="window.print(); return false;">Print</a>
+</div>
+
+<div class="settings">
+  <%= form_with url: print_setlist_path(@setlist), method: :get, class: "print-help" do %>
+    <strong>Include:</strong>
+    <label><%= check_box_tag :artist, "1", @print_settings[:artist] %> Artist</label>
+    <label><%= check_box_tag :key, "1", @print_settings[:key] %> Key</label>
+    <label><%= check_box_tag :tempo, "1", @print_settings[:tempo] %> Tempo</label>
+    <label><%= check_box_tag :duration, "1", @print_settings[:duration] %> Duration</label>
+    <label><%= check_box_tag :tags, "1", @print_settings[:tags] %> Tags</label>
+    <label><%= check_box_tag :notes, "1", @print_settings[:notes] %> Notes</label>
+    <%= submit_tag "Update", class: "ml-2" %>
+  <% end %>
+</div>
+
+<h1><%= @setlist.title %></h1>
+<div class="meta"><%= @setlist.band.name %></div>
+<div class="meta"><%= @setlist.description %></div>
+
+<h2>Songs</h2>
+<% @setlist_songs.each_with_index do |setlist_song, index| %>
+  <% song = setlist_song.song %>
+  <div class="song">
+    <div class="song-title"><%= "#{index + 1}. #{song.title}" %></div>
+    <% meta = [] %>
+    <% meta << song.artist if @print_settings[:artist] && song.artist.present? %>
+    <% meta << "Key: #{song.key}" if @print_settings[:key] && song.key.present? %>
+    <% meta << "Tempo: #{song.tempo}" if @print_settings[:tempo] && song.tempo.present? %>
+    <% if @print_settings[:duration] && song.duration_seconds.present? %>
+      <% meta << "Duration: #{format_duration(song.duration_seconds)}" %>
+    <% end %>
+    <% if @print_settings[:tags] && song.tags.any? %>
+      <% meta << "Tags: #{song.tags.order(:name).pluck(:name).join(", ")}" %>
+    <% end %>
+    <% if meta.any? %>
+      <div class="song-meta"><%= meta.join(" · ") %></div>
+    <% end %>
+    <% if @print_settings[:notes] && song.notes.present? %>
+      <div class="song-notes"><%= song.notes %></div>
+    <% end %>
+  </div>
+<% end %>

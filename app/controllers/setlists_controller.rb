@@ -1,6 +1,6 @@
 class SetlistsController < ApplicationController
   before_action :require_account
-  before_action :set_setlist, only: %i[show edit update destroy]
+  before_action :set_setlist, only: %i[show edit update destroy duplicate print export]
 
   def index
     @setlists = policy_scope(Setlist)
@@ -14,6 +14,21 @@ class SetlistsController < ApplicationController
     authorize @setlist
     @setlist_songs = @setlist.setlist_songs.includes(:song).order(:position)
     @songs = @setlist.band.songs.order(:title)
+  end
+
+  def print
+    authorize @setlist
+    load_print_data
+    render layout: "print"
+  end
+
+  def export
+    authorize @setlist
+    load_print_data
+    pdf = SetlistPdf.new(setlist: @setlist, songs: @setlist_songs, settings: @print_settings).render
+    send_data pdf,
+      filename: "#{@setlist.title.to_s.parameterize}-setlist.pdf",
+      type: "application/pdf"
   end
 
   def new
@@ -134,5 +149,30 @@ class SetlistsController < ApplicationController
     def find_setlist_band
       band_id = setlist_params[:band_id].presence || @selected_band&.id
       current_account.bands.find_by(id: band_id)
+    end
+
+    def load_print_data
+      @setlist_songs = @setlist.setlist_songs.includes(song: :tags).order(:position)
+      @print_settings = {
+        artist: truthy_param?(params[:artist]),
+        key: truthy_param?(params[:key]),
+        tempo: truthy_param?(params[:tempo]),
+        notes: truthy_param?(params[:notes]),
+        tags: truthy_param?(params[:tags]),
+        duration: truthy_param?(params[:duration])
+      }
+      set_default_print_settings
+    end
+
+    def truthy_param?(value)
+      value == "1" || value == "true"
+    end
+
+    def set_default_print_settings
+      return if params.key?(:artist) || params.key?(:key) || params.key?(:tempo) || params.key?(:notes) || params.key?(:tags) || params.key?(:duration)
+
+      @print_settings[:artist] = true
+      @print_settings[:key] = true
+      @print_settings[:tempo] = true
     end
 end
