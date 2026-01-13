@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   resources :bands do
     member do
       post :set_default
+      get :chat, to: "band_chats#show"
     end
     resources :band_memberships, only: %i[create update destroy] do
       post :resend_invite, on: :member

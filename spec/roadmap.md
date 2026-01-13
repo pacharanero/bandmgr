@@ -73,11 +73,11 @@ This roadmap is a living checklist for building the Rails 8 app from scratch. Ea
 ## Band Chat
 
 - [ ] In-app threaded chat for band members
-- [ ] Default channels (General Chat, Gigs, Equipment)
+- [x] Default channels (General Chat, Gigs, Equipment)
 - [ ] Direct messages between band members
 - [ ] Basic message reactions (likes)
 - [ ] Browser notifications
-- [ ] Chat nav in Sidebar
+- [x] Chat nav in Sidebar
 
 ## Tasks
 

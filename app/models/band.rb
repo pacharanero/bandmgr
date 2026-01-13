@@ -5,6 +5,7 @@ class Band < ApplicationRecord
   has_many :events, dependent: :destroy
   has_many :songs, dependent: :destroy
   has_many :setlists, dependent: :destroy
+  has_many :chat_channels, dependent: :destroy
 
   has_secure_token :private_calendar_token
   has_secure_token :public_calendar_token

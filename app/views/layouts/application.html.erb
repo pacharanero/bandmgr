@@ -48,6 +48,11 @@
             <%= link_to "Songs", songs_path, class: "block rounded-md px-3 py-2 hover:bg-slate-100" %>
             <%= link_to "Setlists", setlists_path, class: "block rounded-md px-3 py-2 hover:bg-slate-100" %>
             <%= link_to "Events", events_path, class: "block rounded-md px-3 py-2 hover:bg-slate-100" %>
+            <% if preferred_band %>
+              <%= link_to "Chat", chat_band_path(preferred_band), class: "block rounded-md px-3 py-2 hover:bg-slate-100" %>
+            <% else %>
+              <span class="block rounded-md px-3 py-2 text-slate-400" aria-disabled="true">Chat</span>
+            <% end %>
             <span class="block rounded-md px-3 py-2 text-slate-400" aria-disabled="true">Branding</span>
             <span class="block rounded-md px-3 py-2 text-slate-400" aria-disabled="true">Inventory</span>
             <span class="block rounded-md px-3 py-2 text-slate-400" aria-disabled="true">Technical</span>
@@ -85,6 +90,11 @@
               <%= link_to "Songs", songs_path, class: "hover:text-slate-900" %>
               <%= link_to "Setlists", setlists_path, class: "hover:text-slate-900" %>
               <%= link_to "Events", events_path, class: "hover:text-slate-900" %>
+              <% if preferred_band %>
+                <%= link_to "Chat", chat_band_path(preferred_band), class: "hover:text-slate-900" %>
+              <% else %>
+                <span class="text-slate-400">Chat</span>
+              <% end %>
               <% if current_account_membership&.admin? || current_account_membership&.owner? %>
                 <%= link_to "Admin", admin_path, class: "hover:text-slate-900" %>
               <% end %>
