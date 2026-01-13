@@ -4,7 +4,12 @@ class BandMembershipsController < ApplicationController
   before_action :set_band_membership, only: %i[update destroy resend_invite]
 
   def create
-    @band_membership = @band.band_memberships.new(role: band_membership_params[:role])
+    requested_role = band_membership_params[:role]
+    if requested_role == "band_admin" && !current_user_band_admin?(@band)
+      render_forbidden_role and return
+    end
+
+    @band_membership = @band.band_memberships.new(role: requested_role)
     @band_membership.user = find_user_from_email
     @band_membership.invited_email = band_membership_params[:email_address] if @band_membership.user.nil?
     authorize @band_membership
@@ -25,7 +30,12 @@ class BandMembershipsController < ApplicationController
   def update
     authorize @band_membership
 
-    if @band_membership.update(role: band_membership_params[:role])
+    requested_role = band_membership_params[:role]
+    if requested_role == "band_admin" && !current_user_band_admin?(@band)
+      render_forbidden_role and return
+    end
+
+    if @band_membership.update(role: requested_role)
       redirect_to @band, notice: "Member updated."
     else
       render_band_membership_errors
@@ -63,6 +73,12 @@ class BandMembershipsController < ApplicationController
       params.require(:band_membership).permit(:role, :email_address)
     end
 
+    def current_user_band_admin?(band)
+      return false unless current_user
+
+      band.band_memberships.where(user_id: current_user.id, role: :band_admin).exists?
+    end
+
     def find_user_from_email
       email = band_membership_params[:email_address].to_s.strip.downcase
       return if email.blank?
@@ -73,5 +89,11 @@ class BandMembershipsController < ApplicationController
     def render_band_membership_errors
       @memberships = @band.band_memberships.includes(:user).order(:id)
       render "bands/show", status: :unprocessable_entity
+    end
+
+    def render_forbidden_role
+      @band_membership ||= @band.band_memberships.new
+      @band_membership.errors.add(:role, "only a band admin can assign band admin role")
+      render_band_membership_errors
     end
 end
