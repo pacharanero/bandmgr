@@ -22,10 +22,16 @@ class BandCalendarsController < ApplicationController
   private
     def render_calendar(band:, events:, public_feed:)
       calendar = BandCalendarIcs.new(band: band, events: events, public_feed: public_feed).render
-      render plain: calendar, content_type: "text/calendar; charset=utf-8"
+      send_data calendar,
+        filename: calendar_filename(band),
+        type: "text/calendar; charset=utf-8"
     end
 
     def secure_token_match?(token, provided)
       token.present? && ActiveSupport::SecurityUtils.secure_compare(token, provided.to_s)
+    end
+
+    def calendar_filename(band)
+      "#{band.name.to_s.parameterize}-calendar.ics"
     end
 end
