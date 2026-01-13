@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_13_183313) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_13_184309) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -85,7 +85,13 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_13_183313) do
     t.string "youtube"
     t.string "bandcamp"
     t.string "soundcloud"
+    t.string "private_calendar_token"
+    t.string "public_calendar_token"
+    t.boolean "public_calendar_enabled", default: false, null: false
+    t.boolean "public_calendar_include_rehearsals", default: false, null: false
     t.index ["account_id"], name: "index_bands_on_account_id"
+    t.index ["private_calendar_token"], name: "index_bands_on_private_calendar_token", unique: true
+    t.index ["public_calendar_token"], name: "index_bands_on_public_calendar_token", unique: true
   end
 
   create_table "event_setlists", force: :cascade do |t|

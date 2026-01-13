@@ -99,7 +99,7 @@ This roadmap is a living checklist for building the Rails 8 app from scratch. Ea
 - [x] Add `docker-compose.dev.yml` for local development.
 - [x] s/dev script to start local dev stack.
 - [x] s/seed script to prepare and seed the database.
-- [ ] Self hosting instructions in README.md
+- [x] Self hosting instructions in README.md
 - [x] Add health checks (/up) and readiness endpoints.
 
 ## Background jobs and scheduling

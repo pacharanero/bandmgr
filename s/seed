@@ -8,10 +8,11 @@ if ! command -v docker >/dev/null 2>&1; then
   exit 1
 fi
 
-if ! docker compose -f "${compose_file}" ps --status running web >/dev/null 2>&1; then
-  echo "The web container is not running. Start it first (s/dev)."
-  exit 1
-fi
+echo "== Starting dependencies (db, redis) =="
+docker compose -f "${compose_file}" up -d db redis
 
-echo "== Seeding database =="
-docker compose -f "${compose_file}" exec -T web bin/rails db:seed
+echo "== Building app image if needed =="
+docker compose -f "${compose_file}" build web
+
+echo "== Preparing and seeding database =="
+docker compose -f "${compose_file}" run --rm web bash -lc "bin/rails db:prepare db:seed"
