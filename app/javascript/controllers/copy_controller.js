@@ -39,7 +39,9 @@ export default class extends Controller {
     textarea.style.position = "absolute"
     textarea.style.left = "-9999px"
     document.body.appendChild(textarea)
+    textarea.focus()
     textarea.select()
+    textarea.setSelectionRange(0, textarea.value.length)
     const ok = document.execCommand("copy")
     document.body.removeChild(textarea)
     if (ok) {
