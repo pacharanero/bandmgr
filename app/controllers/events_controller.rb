@@ -74,7 +74,7 @@ class EventsController < ApplicationController
     end
 
     def event_params
-      params.require(:event).permit(:band_id, :kind, :starts_at, :venue, :notes)
+      params.require(:event).permit(:band_id, :kind, :starts_at, :venue, :notes, attachments: [])
     end
 
     def load_bands

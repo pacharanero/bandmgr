@@ -1,7 +1,8 @@
-<%= form_with model: event, class: "space-y-4" do |form| %>
+<%= form_with model: event, html: { multipart: true }, class: "space-y-4" do |form| %>
   <div>
     <%= form.label :band_id, "Band", class: "block text-sm font-medium text-slate-700" %>
-    <%= form.collection_select :band_id, @bands, :id, :name, { prompt: "Select a band" }, class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2" %>
+    <% prompt_option = @bands.many? ? { prompt: "Select a band" } : {} %>
+    <%= form.collection_select :band_id, @bands, :id, :name, prompt_option.merge(selected: @selected_band&.id), class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2" %>
     <% event.errors.full_messages_for(:band).each do |message| %>
       <p class="mt-1 text-xs text-red-600"><%= message %></p>
     <% end %>
@@ -29,6 +30,12 @@
   <div>
     <%= form.label :notes, class: "block text-sm font-medium text-slate-700" %>
     <%= form.text_area :notes, rows: 4, class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2" %>
+  </div>
+
+  <div>
+    <%= form.label :attachments, "Attachments", class: "block text-sm font-medium text-slate-700" %>
+    <%= form.file_field :attachments, multiple: true, class: "mt-1 w-full text-sm text-slate-600" %>
+    <p class="mt-2 text-xs text-slate-500">Upload contracts, stage plots, or PDFs.</p>
   </div>
 
   <div class="flex items-center justify-end gap-3">

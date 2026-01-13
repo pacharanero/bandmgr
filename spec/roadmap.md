@@ -53,7 +53,7 @@ This roadmap is a living checklist for building the Rails 8 app from scratch. Ea
 - [x] Basic list view for events.
 - [x] Basic calendar view.
 - [x] Event detail page with notes.
-- [ ] Event attachments.
+- [x] Event attachments.
 - [ ] Add reminders placeholder (future jobs/notifications).
 - [ ] Google Calendar integration: creates configurable 'subscribable' URL calendars - private calendar for band members, public calendar for fans.
 
@@ -88,7 +88,7 @@ This roadmap is a living checklist for building the Rails 8 app from scratch. Ea
 
 ## Files and documents
 
-- [ ] Enable Active Storage and configure local disk
+- [x] Enable Active Storage and configure local disk
 - [ ] Attachments on Songs, Events, and Setlists.
 - [ ] Document listing and permissions.
 - [ ] Basic file size/type validation.
@@ -133,7 +133,12 @@ This roadmap is a living checklist for building the Rails 8 app from scratch. Ea
 ## Testing and CI
 
 - [ ] Add unit tests for all models and controllers, covering edge cases, validations.
-- [ ] Use testing to assure authorisation rules - users cannot access data outside their bands.
+- [ ] Use testing to assure authorisation rules - users cannot access data outside their bands, and similar testing of logic boundaries.
+- [ ] Add system tests for key user flows (song management, gig scheduling, setlist creation).
+- [ ] Configure GitHub Actions for linting, tests, and security scans on PRs
+- [ ] Add code coverage reporting.
+- [ ] Document testing conventions in CONTRIBUTING.md.
+- [ ] Set up periodic dependency update checks (Dependabot or similar).
 
 ## Beta hardening
 
