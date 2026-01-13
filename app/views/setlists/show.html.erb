@@ -23,7 +23,7 @@
       <h2 class="text-lg font-semibold text-slate-900">Songs</h2>
       <span class="text-sm text-slate-600"><%= pluralize(@setlist_songs.size, "song") %></span>
     </div>
-    <div class="mt-4">
+    <div class="mt-4 space-y-4">
       <%= form_with url: setlist_setlist_songs_path(@setlist), method: :post, class: "flex flex-col gap-3 sm:flex-row sm:items-end" do |form| %>
         <div class="w-full">
           <%= label_tag :song_id, "Add song", class: "block text-sm font-medium text-slate-700" %>
@@ -31,12 +31,26 @@
         </div>
         <%= button_tag "Add to setlist", type: "submit", class: "rounded-md bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800" %>
       <% end %>
+
+      <%= form_with url: bulk_create_setlist_setlist_songs_path(@setlist), method: :post, class: "flex flex-col gap-3 sm:flex-row sm:items-end" do |form| %>
+        <div class="w-full">
+          <%= label_tag :song_ids, "Bulk add songs", class: "block text-sm font-medium text-slate-700" %>
+          <%= select_tag :song_ids, options_from_collection_for_select(@songs, :id, :title), multiple: true, size: 6, class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm" %>
+        </div>
+        <%= button_tag "Add selected", type: "submit", class: "rounded-md border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:border-slate-400 hover:text-slate-900" %>
+      <% end %>
     </div>
     <% if @setlist_songs.any? %>
-      <div class="mt-4 divide-y divide-slate-200" data-controller="setlist-sort" data-setlist-id="<%= @setlist.id %>">
+      <%= form_with url: bulk_destroy_setlist_setlist_songs_path(@setlist), method: :delete, class: "mt-4" do |form| %>
+        <div class="flex items-center justify-between text-xs text-slate-500">
+          <span>Select songs to remove</span>
+          <%= button_tag "Remove selected", type: "submit", class: "rounded-md border border-red-200 px-3 py-1 text-xs text-red-600 hover:border-red-300" %>
+        </div>
+        <div class="mt-3 divide-y divide-slate-200" data-controller="setlist-sort" data-setlist-id="<%= @setlist.id %>">
         <% @setlist_songs.each_with_index do |setlist_song, index| %>
           <div class="flex items-center justify-between py-3 text-sm" data-setlist-sort-target="item" data-setlist-song-id="<%= setlist_song.id %>" draggable="true" data-action="dragstart->setlist-sort#dragStart dragend->setlist-sort#dragEnd dragover->setlist-sort#dragOver dragleave->setlist-sort#dragLeave drop->setlist-sort#drop">
             <div class="flex items-center gap-3">
+              <%= check_box_tag "setlist_song_ids[]", setlist_song.id, false, class: "h-4 w-4 rounded border-slate-300 text-slate-900" %>
               <span class="inline-flex cursor-move select-none items-center justify-center rounded-md border border-slate-200 px-2 py-1" aria-label="Drag to reorder">
                 <span class="grid grid-cols-3 gap-0.5">
                   <span class="h-1 w-1 rounded-full bg-slate-400"></span>
@@ -58,7 +72,8 @@
             <%= button_to "Remove", setlist_setlist_song_path(@setlist, setlist_song), method: :delete, data: { turbo_confirm: "Remove this song?" }, class: "text-xs text-red-600 hover:text-red-700" %>
           </div>
         <% end %>
-      </div>
+        </div>
+      <% end %>
     <% else %>
       <p class="mt-3 text-sm text-slate-600">No songs yet. Import a playlist or add songs soon.</p>
     <% end %>

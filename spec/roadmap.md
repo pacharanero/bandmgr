@@ -67,7 +67,7 @@ This roadmap is a living checklist for building the Rails 8 app from scratch. Ea
 - [x] Create a Duplicate Setlist from existing.
 - [x] Export Setlist to PDF
 - [x] Print Setlist.
-- [ ] Bulk Setlist operations - all existing operations should be applicable in bulk
+- [x] Bulk Setlist operations - all existing operations should be applicable in bulk
 - [ ] Link Setlist to Event
 
 ## Band Chat

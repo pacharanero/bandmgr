@@ -37,6 +37,8 @@ Rails.application.routes.draw do
     end
     resources :setlist_songs, only: %i[create destroy] do
       patch :reorder, on: :collection
+      post :bulk_create, on: :collection
+      delete :bulk_destroy, on: :collection
     end
   end
   resources :tasks, only: %i[index]
