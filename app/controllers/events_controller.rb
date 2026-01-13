@@ -29,6 +29,8 @@ class EventsController < ApplicationController
     authorize @event
     load_bands
     @event.band ||= @selected_band
+    @selected_band = @event.band
+    load_setlists
   end
 
   def create
@@ -36,11 +38,15 @@ class EventsController < ApplicationController
     band_id = event_params[:band_id].presence || @selected_band&.id
     @event = Event.new(event_params.merge(band_id: band_id))
     authorize @event
+    @selected_band = @event.band
+    load_setlists
 
     if @event.save
+      assign_setlists
       redirect_to @event, notice: "Event created."
     else
       load_bands
+      load_setlists
       render :new, status: :unprocessable_entity
     end
   end
@@ -49,15 +55,20 @@ class EventsController < ApplicationController
     authorize @event
     load_bands
     @selected_band ||= @event.band
+    load_setlists
   end
 
   def update
     authorize @event
+    @selected_band = @event.band
+    load_setlists
 
     if @event.update(event_params)
+      assign_setlists
       redirect_to @event, notice: "Event updated."
     else
       load_bands
+      load_setlists
       render :edit, status: :unprocessable_entity
     end
   end
@@ -74,12 +85,23 @@ class EventsController < ApplicationController
     end
 
     def event_params
-      params.require(:event).permit(:band_id, :kind, :starts_at, :venue, :notes, attachments: [])
+      params.require(:event).permit(:band_id, :kind, :starts_at, :venue, :notes, setlist_ids: [], attachments: [])
     end
 
     def load_bands
       @bands = current_account.bands.order(:name)
       @selected_band = preferred_band(@bands)
+    end
+
+    def load_setlists
+      @setlists = @selected_band ? @selected_band.setlists.order(:title) : Setlist.none
+    end
+
+    def assign_setlists
+      return if @event.band.nil?
+
+      ids = Array(params.dig(:event, :setlist_ids)).reject(&:blank?).map(&:to_i).uniq
+      @event.setlist_ids = @event.band.setlists.where(id: ids).pluck(:id)
     end
 
     def parse_month(month_param, year_param)

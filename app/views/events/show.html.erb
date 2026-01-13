@@ -21,6 +21,21 @@
   </div>
 
   <div class="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+    <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500">Setlists</h2>
+    <% if @event.setlists.any? %>
+      <ul class="mt-3 space-y-2 text-sm">
+        <% @event.setlists.each do |setlist| %>
+          <li>
+            <%= link_to setlist.title, setlist_path(setlist), class: "text-slate-700 underline hover:text-slate-900" %>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="mt-3 text-sm text-slate-600">No setlists linked yet.</p>
+    <% end %>
+  </div>
+
+  <div class="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
     <h2 class="text-sm font-semibold uppercase tracking-wide text-slate-500">Attachments</h2>
     <% if @event.attachments.attached? %>
       <ul class="mt-3 space-y-2 text-sm">

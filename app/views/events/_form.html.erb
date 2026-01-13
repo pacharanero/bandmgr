@@ -33,6 +33,12 @@
   </div>
 
   <div>
+    <%= form.label :setlist_ids, "Setlists", class: "block text-sm font-medium text-slate-700" %>
+    <%= form.collection_select :setlist_ids, @setlists, :id, :title, { include_hidden: false }, multiple: true, size: 4, class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm" %>
+    <p class="mt-1 text-xs text-slate-500">Select one or more setlists to link to this event.</p>
+  </div>
+
+  <div>
     <%= form.label :attachments, "Attachments", class: "block text-sm font-medium text-slate-700" %>
     <%= form.file_field :attachments, multiple: true, class: "mt-1 w-full text-sm text-slate-600" %>
     <p class="mt-2 text-xs text-slate-500">Upload contracts, stage plots, or PDFs.</p>
