@@ -62,6 +62,14 @@ class SetlistsController < ApplicationController
     redirect_to setlists_path, notice: "Setlist deleted."
   end
 
+  def duplicate
+    authorize @setlist
+    copy = @setlist.copy
+    redirect_to edit_setlist_path(copy), notice: "Setlist duplicated."
+  rescue ActiveRecord::RecordInvalid => e
+    redirect_to @setlist, alert: e.message
+  end
+
   def import
     authorize Setlist
     load_bands

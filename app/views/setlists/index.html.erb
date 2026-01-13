@@ -22,6 +22,7 @@
           </div>
           <div class="flex items-center gap-3 text-sm">
             <%= link_to "Edit", edit_setlist_path(setlist), class: "text-slate-700 hover:text-slate-900" %>
+            <%= button_to "Duplicate", duplicate_setlist_path(setlist), method: :post, class: "text-slate-700 hover:text-slate-900" %>
             <%= button_to "Delete", setlist_path(setlist), method: :delete, data: { turbo_confirm: "Delete this setlist?" }, class: "text-red-600 hover:text-red-700" %>
           </div>
         </div>

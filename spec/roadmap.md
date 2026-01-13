@@ -64,7 +64,7 @@ This roadmap is a living checklist for building the Rails 8 app from scratch. Ea
 - [x] Drag-and-drop ordering via Stimulus.
 - [x] Add songs to setlists from song list, song detail, and setlist views.
 - [x] Import setlists from YouTube or Spotify playlists.
-- [ ] Create a Duplicate Setlist from existing.
+- [x] Create a Duplicate Setlist from existing.
 - [ ] Export Setlist to PDF
 - [ ] Print Setlist.
 - [ ] Bulk Setlist operations - all existing operations should be applicable in bulk
