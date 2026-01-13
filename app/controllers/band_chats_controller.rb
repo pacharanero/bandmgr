@@ -11,7 +11,7 @@ class BandChatsController < ApplicationController
 
   private
     def set_band
-      @band = policy_scope(Band).find(params[:band_id])
+      @band = policy_scope(Band).find(params[:id])
       authorize @band
     end
 
