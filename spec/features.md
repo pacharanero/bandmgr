@@ -19,6 +19,7 @@
 - Tags power advanced search and filtering across entities; some entities may expose user-defined custom fields alongside tags.
 
 ### User Interface
+
 - Light and dark mode with DaisyUI
 - Responsive design for desktop and mobile
 - Sidebar navigation for fast access to repertoire, gigs, and settings
@@ -26,6 +27,9 @@
 
 ### Bands
 
+- Bands belong to an Account
+- Users can belong to many Bands
+- A Band can be set as the default Band for a User
 - Multi-band support within a single instance - an instance of Bandmgr can have many bands
 - Manage band members with roles and permissions, and set a 'default' band for each member
 - Customizable band settings and preferences - default band
@@ -49,16 +53,17 @@
 - Create and manage setlists and associate them with gigs
 - use tags to add additional organisation
 - Drag-and-drop to add songs to setlists; bulk add via multi-select from search/filter results
-- Custom band website with merch store
-- Admin interface for all models
 - User authentication (login, signup, logout)
 - Automated YouTube and Spotify playlist synchronization from SetLists
+- Automatically create a YouTube or Spotify Playlist from a band SetList so you can listen through the set before a gig
 
 ### Communications
 
 - Band member messaging (private instant messaging, group chat)
 - Mini-forum for band discussions without having to resort to WhatsApp
 - Google Drive linking (docs, sheets)
+
+### Web
 
 ### Integrations
 
@@ -76,15 +81,12 @@
 - Custom domain support
 - Logo, branding, and theme customization
 - External photos and video gallery
-- Electrical safety (PAT testing in UK) records and reminders
 - Band funds tracking (income, expenses, simple ledger)
 
-## Implementation status (so far)
+### Inventory
 
-- Responsive nav shell with placeholder pages for Events, Setlists, Tasks.
-- Song library CRUD with tags, search/filtering, sorting, and import (plain text/markdown/CSV).
-- Events CRUD with gig/rehearsal types and notes.
-- Setlist data model and associations (setlists, setlist songs, event links) with placeholder UI.
+- Track band equipment and inventory including cost, ownership, location.
+- Electrical safety (PAT testing in UK) records and reminders
 
 ### Import/Export
 
@@ -96,9 +98,8 @@
 
 - Simple customizable band website to showcase your band
 - Gallery for photos and videos
-- Booking information and contact form
-- Online band booking inquiry form
-- Static content pages (About, Bio, Press Kit)
+- Booking information and booking inquiry form
+- Static content pages (About, Bio, Press Kit, technical rider)
 - Calendar sync for band availability and gigs
 - Google Maps embed for Venues We've Played
 
@@ -107,20 +108,13 @@
 - Performance Mode: step through lyrics and charts in SetList order, displaying the right view on each band member's mobile device and staying in sync
 - Practice Mode: surface songs with least practice or not recently gigged, or in a random order
 - Markdown-based Song Editor (inline charts/lyrics instead of only external links)
-- Online store
-
-## Entities
-Human-readable overview of the main data entities and their relationships.
+- Online Merch store
 
 ### Account
+
 - Account (customer/org/workspace; even self-host can default to one)
 - Accounts can have many Bands
 - Accounts needs at least one Admin
-
-### Band
-- Bands belong to an Account
-- Users can belong to many Bands
-- A Band can be set as the default Band for a User
 
 ### User
 
@@ -129,6 +123,7 @@ Human-readable overview of the main data entities and their relationships.
 - BandMembership (user ↔ band, role; many users across bands)
 
 ### Song
+
 - Songs belong to a Band
 - Songs can be organised into Setlists
 - Default song listing sort: artist ASC then title ASC; users can configure primary sort (artist | title | album | tempo) with sensible secondary fallback
@@ -136,18 +131,12 @@ Human-readable overview of the main data entities and their relationships.
 - Song imports support Plain Text, Markdown, or CSV
 
 ### Setlist
+
 - A Setlist belongs to a Band
 - A Setlist has many Songs
 - Setlists have an order of Songs
-- 
 
-### Event
+### Event (Gig, Rehearsal, Other)
+
 - An Event is a Gig, Rehearsal, or other band-related occurrence.
 - A Setlist can be associated with an Event.
-
-**Band-scoped resources**
-- Song (shared per account or per band—decide)
-- Task (band todo)
-- Message/Thread (optional; comments on objects are often enough)
-- Invite (invite user to account/band)
-

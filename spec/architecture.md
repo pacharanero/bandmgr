@@ -12,7 +12,6 @@
 - Progressive enhancement via Turbo Frames/Streams for fast interactions.
 - Server-side REST API for future mobile app or 3rd-party integrations.
 
-
 ## Containerisation
 
 - Self-hosting is encouraged and supported.
@@ -23,7 +22,6 @@
 - Controllers stay thin: load → authorize → service → render.
 - Business logic in explicit service objects and query objects.
 - Turbo handles fast navigation and live updates; Stimulus adds focused behaviors.
-
 
 ## Project Principles
 
