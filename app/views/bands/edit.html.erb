@@ -7,3 +7,66 @@
     <%= render "form", band: @band %>
   </div>
 </div>
+
+<div class="mx-auto mt-6 max-w-2xl rounded-lg border border-red-200 bg-white p-6 shadow-sm">
+  <h2 class="text-sm font-semibold uppercase tracking-wide text-red-600">Danger Zone</h2>
+  <p class="mt-2 text-sm text-slate-700">Deleting a band removes its songs, setlists, events, and memberships. This action cannot be undone.</p>
+  <div class="mt-4">
+    <button type="button" id="open-delete-band" class="rounded-md border border-red-300 px-4 py-2 text-sm font-semibold text-red-700 hover:border-red-400 hover:text-red-800">Delete band</button>
+  </div>
+</div>
+
+<dialog id="delete-band-dialog" class="rounded-lg border border-slate-200 p-0 shadow-xl max-w-lg w-full" style="margin: auto; inset: 0;">
+  <div class="p-6">
+    <h3 class="text-lg font-semibold text-slate-900">Delete band</h3>
+    <p class="mt-2 text-sm text-slate-600">Type the band name to confirm deletion:</p>
+    <p class="mt-1 text-sm font-semibold text-slate-900"><%= @band.name %></p>
+    <form id="delete-band-form" action="<%= band_path(@band) %>" method="post" class="mt-4 space-y-3">
+      <input type="hidden" name="_method" value="delete">
+      <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+      <label class="block text-sm font-medium text-slate-700" for="delete-band-confirmation">Band name</label>
+      <input id="delete-band-confirmation" name="confirmation" type="text" autocomplete="off" class="w-full rounded-md border border-slate-300 px-3 py-2" placeholder="Enter band name to confirm">
+      <div class="flex items-center justify-end gap-3 pt-2">
+        <button type="button" id="cancel-delete-band" class="rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-700 hover:border-slate-300">Cancel</button>
+        <button type="submit" id="confirm-delete-band" class="rounded-md bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-60" disabled>Delete band</button>
+      </div>
+      <p id="delete-band-hint" class="text-xs text-slate-500">You must type the band name exactly.</p>
+    </form>
+  </div>
+</dialog>
+
+<script>
+  (() => {
+    const dialog = document.getElementById("delete-band-dialog");
+    const openBtn = document.getElementById("open-delete-band");
+    const cancelBtn = document.getElementById("cancel-delete-band");
+    const input = document.getElementById("delete-band-confirmation");
+    const submit = document.getElementById("confirm-delete-band");
+    const targetName = "<%= j @band.name %>";
+
+    if (!dialog || !openBtn || !cancelBtn || !input || !submit) return;
+
+    const updateState = () => {
+      const match = input.value.trim() === targetName;
+      submit.disabled = !match;
+    };
+
+    openBtn.addEventListener("click", () => {
+      input.value = "";
+      updateState();
+      dialog.showModal();
+      input.focus();
+    });
+
+    cancelBtn.addEventListener("click", () => {
+      dialog.close();
+    });
+
+    input.addEventListener("input", updateState);
+
+    dialog.addEventListener("cancel", (event) => {
+      event.preventDefault();
+      dialog.close();
+    });
+  })();
+</script>

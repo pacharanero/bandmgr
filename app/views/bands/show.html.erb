@@ -13,8 +13,7 @@
         <% end %>
       </div>
       <div class="flex items-center gap-3 text-sm">
-        <%= link_to "Edit", edit_band_path(@band), class: "rounded-md border border-slate-300 px-3 py-2 text-slate-700 hover:border-slate-400 hover:text-slate-900" %>
-        <%= button_to "Delete", band_path(@band), method: :delete, data: { turbo_confirm: "Delete this band?" }, class: "rounded-md border border-red-200 px-3 py-2 text-red-600 hover:border-red-300" %>
+        <%= link_to "Band Settings", edit_band_path(@band), class: "rounded-md border border-slate-300 px-3 py-2 text-slate-700 hover:border-slate-400 hover:text-slate-900" %>
       </div>
     </div>
   </div>
