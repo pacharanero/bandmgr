@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+compose_file="docker-compose.dev.yml"
+
+if ! command -v docker >/dev/null 2>&1; then
+  echo "Docker is required to run this script."
+  exit 1
+fi
+
+# Run rubocop inside the web image (assumes services already up)
+exec docker compose -f "${compose_file}" run --rm web bash -lc "bundle exec rubocop"
