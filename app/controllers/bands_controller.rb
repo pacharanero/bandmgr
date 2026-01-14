@@ -12,6 +12,7 @@ class BandsController < ApplicationController
     @memberships = @band.band_memberships.includes(:user).order(:id)
     @band_membership = @band.band_memberships.new
     @default_band = current_account_membership&.default_band
+    ensure_calendar_tokens
   end
 
   def new
