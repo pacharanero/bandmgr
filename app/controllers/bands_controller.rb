@@ -76,7 +76,9 @@ class BandsController < ApplicationController
     end
 
     def ensure_calendar_tokens
-      @band.regenerate_private_calendar_token if @band.private_calendar_token.blank?
-      @band.regenerate_public_calendar_token if @band.public_calendar_token.blank?
+      updates = {}
+      updates[:private_calendar_token] = @band.generate_unique_secure_token if @band.private_calendar_token.blank?
+      updates[:public_calendar_token] = @band.generate_unique_secure_token if @band.public_calendar_token.blank?
+      @band.update_columns(updates) if updates.any?
     end
 end
