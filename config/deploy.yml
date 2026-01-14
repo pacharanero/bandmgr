@@ -87,9 +87,10 @@ builder:
   #   - GITHUB_TOKEN
   #   - RAILS_MASTER_KEY
 
-# Use a different ssh user than root
-# ssh:
-#   user: app
+# SSH settings (set custom port/user if needed)
+ssh:
+  user: bandmgr
+  port: 2227
 
 # Use accessory services (secrets come from .kamal/secrets).
 # accessories:
