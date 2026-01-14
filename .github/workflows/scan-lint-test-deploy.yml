@@ -157,4 +157,7 @@ jobs:
         # Kamal loads env vars from .kamal/secrets: :contentReference[oaicite:1]{index=1}
 
       - name: Deploy
+        env:
+          KAMAL_REGISTRY_PASSWORD: ${{ secrets.KAMAL_REGISTRY_PASSWORD }}
+          KAMAL_REGISTRY_USERNAME: ${{ github.actor }}
         run: bundle exec kamal deploy
