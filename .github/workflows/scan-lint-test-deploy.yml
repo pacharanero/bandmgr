@@ -123,7 +123,7 @@ jobs:
           bundler-cache: true
 
       - name: Load SSH key
-        uses: webfactory/ssh-agent@v0.9.1
+        uses: webfactory/ssh-agent@v0.10.0
         with:
           ssh-private-key: ${{ secrets.DEPLOY_SSH_KEY }}
         # docs: :contentReference[oaicite:0]{index=0}
