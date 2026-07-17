@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Configure this checkout to run the tracked pre-commit hook.
+set -euo pipefail
+cd "$(git rev-parse --show-toplevel)"
+
+git config core.hooksPath .githooks
+printf 'Git hooks installed: core.hooksPath=.githooks\n'

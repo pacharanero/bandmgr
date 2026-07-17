@@ -19,7 +19,7 @@ servers:
 # Note: If using Cloudflare, set encryption mode in SSL/TLS setting to "Full" to enable CF-to-app encryption.
 proxy:
   ssl: true
-  host: app.example.com
+  host: bandmgr.bawmedical.co.uk
 
 # Credentials for your image host.
 registry:
@@ -82,7 +82,7 @@ builder:
   #
   # # Pass arguments and secrets to the Docker build process
   # args:
-  #   RUBY_VERSION: ruby-3.4.7
+  #   RUBY_VERSION: ruby-3.4.10
   # secrets:
   #   - GITHUB_TOKEN
   #   - RAILS_MASTER_KEY

@@ -1,8 +1,8 @@
 # bandmgr
 
-`bandmgr` is an open-source, self-hostable platform for managing your band.
+`bandmgr` is an open-source, self-hostable platform for managing a band's repertoire, setlists, events, members, and shared information. It is not a hosted-service-only product or an enterprise upsell.
 
-The application is being built as a Rails 8 + Hotwire stack. See `spec/rails.md` for the baseline architecture.
+The application is being built as a Rails 8 + Hotwire stack. See [the architecture specification](spec/architecture.md) for the baseline design.
 
 ## Mission
 
@@ -54,8 +54,16 @@ Default demo credentials (seeded by `./s/seed`):
 - Password: `password`
 
 Other tasks
-- Tests: `bin/rails test`
-- System tests: `bin/rails test:system`
-- Lint/security: `bin/rubocop`, `bin/brakeman`, `bundle exec bundler-audit check --update`
+- Tests: `s/test`
+- Lint: `s/lint`
+- Security scans: `s/scan`
 
 Have an idea that isn't listed? Open an issue and let's chat.
+
+## Deployment
+
+Production deployments use Kamal and the configuration in `config/deploy.yml`. Keep `.kamal/secrets` local and supply `KAMAL_REGISTRY_PASSWORD` and `RAILS_MASTER_KEY` from a password manager or the environment. CI additionally requires a reviewed `DEPLOY_KNOWN_HOSTS` secret containing the SSH host key, rather than discovering it during deployment.
+
+## Licence
+
+The application code is licensed under [AGPL-3.0-or-later](LICENSE). Written project content is licensed under CC-BY-SA-4.0. This project is not available for proprietary subsumption.

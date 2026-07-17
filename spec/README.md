@@ -1,23 +1,16 @@
 # `spec/`
 
-`spec/` contains specifications and documentation for the Band Manager project, including architecture decisions, feature specifications, and prompt instructions for LLMs contributing code.
+`spec/` contains the durable product and architecture decisions for bandmgr. Read the documents in this order before changing product behaviour:
 
-## LLM prompt guidance
+1. [architecture.md](architecture.md) - platform, deployment, and application-layering constraints.
+2. [features.md](features.md) - product capabilities and domain intent.
+3. [roadmap.md](roadmap.md) - active work sessions and stable roadmap IDs.
 
-This project keeps lightweight, persistent guidance for LLM contributors:
+## Contributor Guidance
 
-- Read the relevant parts of the codebase to understand context.
-- Understand the problem and the specific feature being implemented.
-- Ask questions if necessary.
-- Write code that is clean, well-structured, and follows best practices.
-- Document files when the purpose is not obvious.
-- Add concise comments for non-obvious functions or objects.
-- Write tests for new features and bug fixes.
-- Ensure code is efficient and handles edge cases.
-- Always check that imports are declared when needed.
-- Follow the coding style and conventions used in the existing codebase.
-- As decisions are made, add them to `spec/` as necessary.
-- Repetitive developer operations (build, migrate, run) should be automated with scripts in `s/`.
+Follow [agent-instructions.md](../agent-instructions.md) for repository workflow and validation. Record durable product or architecture decisions here as they are made.
+
+Use the [roadmap](roadmap.md) IDs in commits, pull requests, and discussion. Do not renumber an existing roadmap item.
 
 ## Data storage notes
 

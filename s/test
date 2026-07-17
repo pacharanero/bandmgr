@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
+# Run the complete Rails unit and system test suite in the development Compose stack.
 set -euo pipefail
+cd "$(git rev-parse --show-toplevel)"
 
 compose_file="docker-compose.dev.yml"
 
@@ -8,7 +10,7 @@ if ! command -v docker >/dev/null 2>&1; then
   exit 1
 fi
 
-# Run Rails test suite inside the web image (assumes services already up)
+# Compose starts the required services for this one-off container.
 exec docker compose -f "${compose_file}" run --rm \
   -e RAILS_ENV=test \
   -e DATABASE_URL=postgres://bandmgr:bandmgr@db:5432/bandmgr_test \
