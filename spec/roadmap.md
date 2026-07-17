@@ -42,6 +42,7 @@ Legend: [x] done, [~] in progress, [ ] not started.
 - [ ] **R22 - Define error-reporting and minimal metrics integration points.**
 - [ ] **R23 - Document production operations** including configuration, upgrades, backup and recovery expectations, and deployment verification.
 - [ ] **R24 - Add self-hosted scheduled backups** to local disk or S3-compatible storage.
+- [ ] **R38 - Replace deploy-time SSH host discovery** with a reviewed, managed host-key trust policy.
 
 ## Work Session 6 - Quality And Community
 

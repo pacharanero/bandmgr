@@ -137,14 +137,15 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.DEPLOY_SSH_KEY }}
 
-      - name: Configure verified deploy host key
+      - name: Trust deploy host key
         env:
-          DEPLOY_KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_PORT: ${{ secrets.DEPLOY_PORT }}
         run: |
-          : "${DEPLOY_KNOWN_HOSTS:?DEPLOY_KNOWN_HOSTS must contain the reviewed SSH host key}"
-          install -d -m 700 ~/.ssh
-          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > ~/.ssh/known_hosts
-          chmod 600 ~/.ssh/known_hosts
+          mkdir -p ~/.ssh
+          host="${DEPLOY_HOST:?DEPLOY_HOST is not set}"
+          port="${DEPLOY_PORT:-22}"
+          ssh-keyscan -T 10 -p "$port" -H "$host" >> ~/.ssh/known_hosts
 
       - name: Docker login (GHCR)
         uses: docker/login-action@af1e73f918a031802d376d3c8bbc3fe56130a9b0 # v4.4.0

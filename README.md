@@ -62,7 +62,7 @@ Have an idea that isn't listed? Open an issue and let's chat.
 
 ## Deployment
 
-Production deployments use Kamal and the configuration in `config/deploy.yml`. Keep `.kamal/secrets` local and supply `KAMAL_REGISTRY_PASSWORD` and `RAILS_MASTER_KEY` from a password manager or the environment. CI additionally requires a reviewed `DEPLOY_KNOWN_HOSTS` secret containing the SSH host key, rather than discovering it during deployment.
+Production deployments use Kamal and the configuration in `config/deploy.yml`. Keep `.kamal/secrets` local and supply `KAMAL_REGISTRY_PASSWORD` and `RAILS_MASTER_KEY` from a password manager or the environment.
 
 ## Licence
 
