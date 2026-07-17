@@ -1,155 +1,67 @@
 # Roadmap
 
-This roadmap is a living checklist for building the Rails 8 app from scratch. Each stage is a milestone that can be checked off as it is completed; additional stages will be added as the project evolves.
+This is the active product and engineering backlog. Completed work belongs in Git history and the relevant specification, not in this file.
 
-## Rails 8 scaffold and tooling
+Legend: [x] done, [~] in progress, [ ] not started.
 
-- [x] Finalize documentation baseline (README, architecture, rails stack decisions).
-- [x] Generate Rails 8 app with preferred options (Propshaft, importmap, hotwire).
-- [x] Add RSpec or Minitest and pick one standard.
-- [x] Configure linting and security tooling (RuboCop/Standard, Brakeman, bundler-audit).
-- [x] Add `.env.example` and baseline ENV config.
+## Work Session 1 - Security And Tenant Boundaries
 
-## Data model core
+- [ ] **R1 - Enforce Pundit verification** across controllers, with explicit, tested exceptions for public endpoints.
+- [ ] **R2 - Restrict direct-chat access** so only channel participants can read, send, or react to direct messages.
+- [ ] **R3 - Encrypt account integration credentials** and provide a safe migration path for existing values.
+- [ ] **R4 - Enable a nonce-based content security policy** for the Rails application.
+- [ ] **R5 - Add cross-account and cross-band authorisation regression tests** for every privileged workflow.
 
-- [x] Create models: Account, User, Membership, Band, BandMembership.
-- [x] Define role enums and validations.
-- [x] Add basic seed data for a single account + band.
-- [x] Write model specs for core relationships and validations.
+## Work Session 2 - Collaboration Workflows
 
-## Authentication and authorization
+- [ ] **R6 - Complete in-app threaded chat** for band members, building on the existing channels, direct messages, reactions, and browser notifications.
+- [ ] **R7 - Add a band task list** with status and assignee.
+- [ ] **R8 - Add comments** on tasks, events, and songs.
+- [ ] **R9 - Add in-app notification placeholders** for collaborative activity.
+- [ ] **R10 - Cover collaboration policies and workflows** with focused tests.
 
-- [x] Run Rails auth generator and configure account scoping.
-- [x] Add policy layer (Pundit or equivalent) and base policies.
-- [x] Define access rules for account- and band-scoped actions.
-- [x] Add request specs for auth flows and unauthorized access.
+## Work Session 3 - Files And Background Work
 
-## App layout and navigation shell
+- [ ] **R11 - Add attachments** to songs, events, and setlists.
+- [ ] **R12 - Provide document listing, permissions, and file size/type validation.**
+- [ ] **R13 - Run background jobs in a dedicated production process** when the workload requires it.
+- [ ] **R14 - Add recurring reminders and cleanup jobs.**
+- [ ] **R15 - Add job failure logging or alerts and job specifications.**
 
-- [x] Build application layout with left sidebar navigation.
-- [x] Responsive nav: compact for mobile, sidebar for large screens.
-- [x] Create primary routes for Bands, Songs, Events, Setlists, Tasks.
-- [x] Implement flash and error rendering defaults.
+## Work Session 4 - Band Experience
 
-## Band management
+- [ ] **R16 - Establish the application visual system** with intentional Tailwind/DaisyUI theme, typography, and spacing tokens.
+- [ ] **R17 - Make key workflows keyboard-accessible** and provide non-drag alternatives for setlist ordering.
+- [ ] **R18 - Improve mobile layouts, empty states, and a reusable style guide page.**
+- [ ] **R19 - Build the public band website** with About, gallery, booking information, static content, merchandise, and an external-link directory.
+- [ ] **R20 - Add equipment inventory and stage-plan management.**
 
-- [x] CRUD for Bands with account scoping.
-- [x] Band settings page (name, description, branding placeholders).
-- [x] Band membership management UI.
-- [x] Invite band members via email with acceptance flow.
-- [x] Set default band per account membership.
-- [x] Policies and specs for band access control.
+## Work Session 5 - Operations And Self-Hosting
 
-## Song library
+- [ ] **R21 - Add structured production logging and useful log tags.**
+- [ ] **R22 - Define error-reporting and minimal metrics integration points.**
+- [ ] **R23 - Document production operations** including configuration, upgrades, backup and recovery expectations, and deployment verification.
+- [ ] **R24 - Add self-hosted scheduled backups** to local disk or S3-compatible storage.
+- [ ] **R38 - Replace deploy-time SSH host discovery** with a reviewed, managed host-key trust policy.
 
-- [x] CRUD for Songs with tagging.
-- [x] Add search and filters (title, artist, tags).
-- [x] Add list sorting and persisted preferences.
-- [x] Import flow (plain text / markdown / CSV).
+## Work Session 6 - Quality And Community
 
-## Events and calendar
+- [ ] **R25 - Expand model, controller, and request coverage** for edge cases, validations, and business rules.
+- [ ] **R26 - Add system coverage for song management, event scheduling, and setlist creation.**
+- [ ] **R27 - Add code coverage reporting** and document testing conventions.
+- [ ] **R28 - Add issue and pull-request templates** for public contributions.
+- [ ] **R29 - Record durable architecture decisions** using a lightweight ADR format in `docs/adr/`.
+- [ ] **R30 - Complete source-file SPDX/REUSE compliance** for code and written content.
 
-- [x] CRUD for Events (gigs/rehearsals) with venue and datetime.
-- [x] Basic list view for events.
-- [x] Basic calendar view.
-- [x] Event detail page with notes.
-- [x] Event attachments.
-- [x] Add reminders placeholder (future jobs/notifications).
-- [x] Google Calendar integration: creates configurable 'subscribable' URL calendars - private calendar for band members, public calendar for fans.
+## Work Session 7 - Data Portability
 
-## Setlists
+- [ ] **R31 - Decide and document the canonical backup exchange format** for band data.
+- [ ] **R32 - Export all band data** for backup or transfer.
+- [ ] **R33 - Import a band from a validated backup export.**
 
-- [x] Data model for Setlists, SetlistSongs, and EventSetlists.
-- [x] CRUD for Setlists and SetlistSongs ordering.
-- [x] Drag-and-drop ordering via Stimulus.
-- [x] Add songs to setlists from song list, song detail, and setlist views.
-- [x] Import setlists from YouTube or Spotify playlists.
-- [x] Create a Duplicate Setlist from existing.
-- [x] Export Setlist to PDF
-- [x] Print Setlist.
-- [x] Bulk Setlist operations - all existing operations should be applicable in bulk
-- [x] Link Setlist to Event
+## Work Session 8 - Beta Hardening
 
-## Band Chat
-
-- [ ] In-app threaded chat for band members
-- [x] Default channels (General Chat, Gigs, Equipment)
-- [x] Direct messages between band members
-- [x] Basic message reactions (likes)
-- [x] Browser notifications
-- [x] Chat nav in Sidebar
-
-## Tasks
-
-- [ ] Band task list with status and assignee.
-- [ ] Simple comments on tasks/events/songs.
-- [ ] Notification placeholders (in-app only).
-- [ ] Policies and basic tests.
-
-## Files and documents
-
-- [x] Enable Active Storage and configure local disk
-- [ ] Attachments on Songs, Events, and Setlists.
-- [ ] Document listing and permissions.
-- [ ] Basic file size/type validation.
-
-## Self-hosting and deployment
-
-- [x] Dockerfile and docker-compose (web, worker, db).
-- [x] Add `docker-compose.dev.yml` for local development.
-- [x] s/dev script to start local dev stack.
-- [x] s/seed script to prepare and seed the database.
-- [x] Self hosting instructions in README.md
-- [x] Add health checks (/up) and readiness endpoints.
-
-## Background jobs and scheduling
-
-- [x] Configure Solid Queue adapter, queues, and schemas.
-- [ ] Add job runner container or supervisor process.
-- [ ] Add recurring jobs (reminders, cleanup).
-- [ ] Add job failure alerts or logging.
-- [ ] Write job specs.
-
-## Observability and ops readiness
-
-- [ ] Structured logging config and log tags.
-- [ ] Error reporting hook (Sentry/Honeybadger) placeholder.
-- [ ] Add metrics hooks (minimal, optional).
-- [ ] Document operational expectations in README.
-
-## UI polish and accessibility
-
-- [ ] Tailwind + DaisyUI theme selection, typography, spacing scale.
-- [x] Basic dark mode toggle.
-- [ ] Ensure keyboard navigation for key flows.
-- [ ] Improve mobile layouts and empty states.
-- [ ] Add a basic style guide page.
-
-## Contribution and community setup
-
-- [ ] Add CONTRIBUTING.md, CODE_OF_CONDUCT.md, SECURITY.md.
-- [ ] Set up issue templates and PR checklist.
-- [ ] Define a lightweight ADR format and create `docs/adr/` folder.
-
-## Testing and CI
-
-- [ ] Add unit tests for all models and controllers, covering edge cases, validations.
-- [ ] Use testing to assure authorisation rules - users cannot access data outside their bands, and similar testing of logic boundaries.
-- [ ] Add system tests for key user flows (song management, gig scheduling, setlist creation).
-- [ ] Configure GitHub Actions for linting, tests, and security scans on PRs
-- [ ] Add code coverage reporting.
-- [ ] Document testing conventions in CONTRIBUTING.md.
-- [ ] Set up periodic dependency update checks (Dependabot or similar).
-
-## Beta hardening
-
-- [ ] Full regression pass on core flows.
-- [ ] Fix critical bugs and performance hotspots.
-- [ ] Review security posture (CSRF, authorization coverage).
-- [ ] Tag a beta release and publish notes.
-
-## Import, Export and Backup
-
-- [ ] Export all of a band's data to JSON for backup or transfer.
-- [ ] Import a band's data from JSON export.
-- [ ] Scheduled backups for self-hosted instances (to local disk or S3-compatible).
+- [ ] **R34 - Run a full regression pass** across the core member workflows.
+- [ ] **R35 - Resolve critical defects and performance hotspots.**
+- [ ] **R36 - Review the security posture** including CSRF protections and authorisation coverage.
+- [ ] **R37 - Publish beta release notes and tag the first beta.**

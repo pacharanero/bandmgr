@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
+# Start the local development stack and open the application once it is healthy.
 set -euo pipefail
+cd "$(git rev-parse --show-toplevel)"
 
 compose_file="docker-compose.dev.yml"
 

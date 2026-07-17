@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
+# Run Rails and dependency security scans in the development Compose stack.
 set -euo pipefail
+cd "$(git rev-parse --show-toplevel)"
 
 compose_file="docker-compose.dev.yml"
 
@@ -8,5 +10,5 @@ if ! command -v docker >/dev/null 2>&1; then
   exit 1
 fi
 
-# Run brakeman inside the web image (assumes services already up)
-exec docker compose -f "${compose_file}" run --rm web bash -lc "bundle exec brakeman"
+# Compose starts the required services for this one-off container.
+exec docker compose -f "${compose_file}" run --rm web bash -lc "bundle exec brakeman --no-pager && bundle exec bundler-audit check --update && bin/importmap audit"

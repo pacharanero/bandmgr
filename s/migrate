@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
+# Run pending migrations against the running local development stack.
 set -euo pipefail
+cd "$(git rev-parse --show-toplevel)"
 
 compose_file="docker-compose.dev.yml"
 
