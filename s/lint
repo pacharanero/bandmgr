@@ -10,5 +10,5 @@ if ! command -v docker >/dev/null 2>&1; then
   exit 1
 fi
 
-# Compose starts the required services for this one-off container.
-exec docker compose -f "${compose_file}" run --rm web bash -lc "bundle exec rubocop"
+# Install into the named bundle cache so the script works after runtime updates.
+exec docker compose -f "${compose_file}" run --rm web bash -lc "bundle install && bundle exec rubocop"

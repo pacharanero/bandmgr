@@ -10,8 +10,8 @@ if ! command -v docker >/dev/null 2>&1; then
   exit 1
 fi
 
-# Compose starts the required services for this one-off container.
+# Install into the named bundle cache so the script works after runtime updates.
 exec docker compose -f "${compose_file}" run --rm \
   -e RAILS_ENV=test \
   -e DATABASE_URL=postgres://bandmgr:bandmgr@db:5432/bandmgr_test \
-  web bash -lc "bundle exec rails db:test:prepare test test:system"
+  web bash -lc "bundle install && bundle exec rails db:test:prepare test test:system"
