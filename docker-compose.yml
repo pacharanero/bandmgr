@@ -1,0 +1,86 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    command: bash -lc "rm -f tmp/pids/server.pid && bundle install && if [ \"$$RAILS_ENV\" = production ]; then bin/rails assets:precompile && bin/rails server -b 0.0.0.0; else bin/dev; fi"
+    environment: &rails_environment
+      RAILS_ENV: ${RAILS_ENV:-development}
+      DATABASE_URL: postgresql://bandmgr:${POSTGRES_PASSWORD:-bandmgr}@db:5432/bandmgr_${RAILS_ENV:-development}
+      QUEUE_DATABASE_URL: postgresql://bandmgr:${POSTGRES_PASSWORD:-bandmgr}@db:5432/bandmgr_${RAILS_ENV:-development}_queue
+      BANDMGR_DATABASE_PASSWORD: ${POSTGRES_PASSWORD:-bandmgr}
+      REDIS_URL: redis://redis:6379/1
+      RAILS_LOG_TO_STDOUT: "true"
+      ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY: ${ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY:-}
+      ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY: ${ACTIVE_RECORD_ENCRYPTION_DETERMINISTIC_KEY:-}
+      ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT: ${ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT:-}
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - bundle_cache:/usr/local/bundle
+      - ./storage:/app/storage
+    tty: true
+    stdin_open: true
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    command: bash -lc "bundle install && bin/jobs"
+    environment: *rails_environment
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    volumes:
+      - .:/app
+      - bundle_cache:/usr/local/bundle
+      - ./storage:/app/storage
+
+  migrate:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    command: bash -lc "bundle install && bin/rails db:prepare"
+    environment: *rails_environment
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    volumes:
+      - .:/app
+      - bundle_cache:/usr/local/bundle
+      - ./storage:/app/storage
+    restart: "no"
+
+  db:
+    image: postgres:16.14
+    environment:
+      POSTGRES_USER: bandmgr
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-bandmgr}
+      POSTGRES_DB: bandmgr_${RAILS_ENV:-development}
+    ports:
+      - "5432:5432"
+    volumes:
+      - bandmgr_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U bandmgr -d bandmgr_${RAILS_ENV:-development}" ]
+      interval: 2s
+      timeout: 5s
+      retries: 30
+
+  redis:
+    image: redis:7.4.9
+    ports:
+      - "6379:6379"
+    volumes:
+      - bandmgr_redis_data:/data
+
+volumes:
+  bandmgr_postgres_data:
+  bandmgr_redis_data:
+  bundle_cache:

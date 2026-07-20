@@ -2,10 +2,12 @@ class RegistrationsController < ApplicationController
   allow_unauthenticated_access only: %i[new create]
 
   def new
+    skip_authorization
     @user = User.new
   end
 
   def create
+    skip_authorization
     @user = User.new(user_params)
 
     if @user.save

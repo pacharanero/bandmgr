@@ -53,6 +53,82 @@
     <% end %>
   </div>
 
+  <div class="rounded-lg border border-slate-200 bg-slate-50 p-4">
+    <h3 class="text-sm font-semibold uppercase tracking-wide text-slate-500">Public website</h3>
+    <p class="mt-2 text-sm text-slate-600">Keep the site private while you prepare it. When it is ready, point this domain at the server and publish it.</p>
+
+    <div class="mt-4 space-y-4">
+      <div class="flex items-center justify-between gap-3">
+        <div>
+          <p class="text-sm font-medium text-slate-700">Publish website</p>
+          <p class="text-xs text-slate-500">The public site is off by default.</p>
+        </div>
+        <%= form.check_box :public_site_enabled, class: "h-4 w-4 rounded border-slate-300 text-slate-900" %>
+      </div>
+
+      <div>
+        <%= form.label :public_domain, "Public domain", class: "block text-sm font-medium text-slate-700" %>
+        <%= form.text_field :public_domain, placeholder: "band-domain.com", autocomplete: "url", class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2" %>
+        <p class="mt-1 text-xs text-slate-500">Enter the hostname only. Caddy must forward this hostname to bandmgr.</p>
+        <% band.errors.full_messages_for(:public_domain).each do |message| %>
+          <p class="mt-1 text-xs text-red-600"><%= message %></p>
+        <% end %>
+      </div>
+
+      <div class="grid gap-4 sm:grid-cols-2">
+        <div>
+          <%= form.label :public_contact_email, "Public contact email", class: "block text-sm font-medium text-slate-700" %>
+          <%= form.email_field :public_contact_email, class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2" %>
+        </div>
+        <div>
+          <%= form.label :merch_url, "Merchandise URL", class: "block text-sm font-medium text-slate-700" %>
+          <%= form.url_field :merch_url, placeholder: "https://bandcamp.com/...", class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2" %>
+        </div>
+      </div>
+
+      <div class="grid gap-4 sm:grid-cols-2">
+        <div>
+          <%= form.label :bandcamp, "Bandcamp URL", class: "block text-sm font-medium text-slate-700" %>
+          <%= form.url_field :bandcamp, class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2" %>
+        </div>
+        <div>
+          <%= form.label :instagram, "Instagram URL", class: "block text-sm font-medium text-slate-700" %>
+          <%= form.url_field :instagram, class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2" %>
+        </div>
+        <div>
+          <%= form.label :facebook, "Facebook URL", class: "block text-sm font-medium text-slate-700" %>
+          <%= form.url_field :facebook, class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2" %>
+        </div>
+        <div>
+          <%= form.label :soundcloud, "SoundCloud URL", class: "block text-sm font-medium text-slate-700" %>
+          <%= form.url_field :soundcloud, class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2" %>
+        </div>
+        <div>
+          <%= form.label :youtube, "YouTube URL", class: "block text-sm font-medium text-slate-700" %>
+          <%= form.url_field :youtube, class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2" %>
+        </div>
+        <div>
+          <%= form.label :twitter, "X URL", class: "block text-sm font-medium text-slate-700" %>
+          <%= form.url_field :twitter, class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2" %>
+        </div>
+      </div>
+
+      <div>
+        <%= form.label :public_site_markdown, "Website Markdown", class: "block text-sm font-medium text-slate-700" %>
+        <%= form.text_area :public_site_markdown, rows: 16, class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2 font-mono text-sm" %>
+        <p class="mt-1 text-xs text-slate-500">Available placeholders: <code>{{ bandName }}</code>, <code>{{ description }}</code>, <code>{{ contact }}</code>, <code>{{ gigList | future }}</code>, and <code>{{ merchUrl }}</code>.</p>
+      </div>
+
+      <div>
+        <%= form.label :gallery_images, "Gallery images", class: "block text-sm font-medium text-slate-700" %>
+        <%= form.file_field :gallery_images, multiple: true, accept: "image/heic,image/jpeg,image/png,image/webp", class: "mt-1 block w-full text-sm text-slate-600" %>
+        <% band.errors.full_messages_for(:gallery_images).each do |message| %>
+          <p class="mt-1 text-xs text-red-600"><%= message %></p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
   <div class="flex items-center justify-end gap-3">
     <%= link_to "Cancel", bands_path, class: "text-sm text-slate-600 hover:text-slate-900" %>
     <%= form.submit class: "rounded-md bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800" %>

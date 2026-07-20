@@ -4,6 +4,7 @@
 
 - Responsive UI is the primary target; mobile and desktop share the same web app.
 - Postgres in development and production.
+- Docker Compose is the supported single-node topology for development and self-hosting. GitHub Actions validates code but does not deploy it.
 
 ## Delivery targets
 
@@ -30,6 +31,14 @@
 - 12-factor-ish config: ENV-driven with `.env.example` for self-hosters.
 - Composable deployment: app image runs anywhere; DB/mail/storage are swappable.
 
+## Public Band Sites
+
+- A Band can opt in to a public website. It is private by default and is only served when the request hostname exactly matches its globally unique `public_domain`.
+- A self-hosted instance may publish one or many band domains. Caddy terminates TLS and proxies requests while preserving the original `Host` header; Rails makes the band selection, so Caddy does not need one route per band.
+- Public pages have no member session and only render explicitly public fields: the authored Markdown source, future gigs, gallery images, and HTTPS external links. Gallery image responses also require the matching published hostname.
+- The management application remains available at its normal routes, including `/admin`; a band member signs in and edits the relevant band's settings. A custom admin subdomain can be added later without changing public-site ownership or rendering.
+- A future pooled hosted offering needs DNS ownership verification before activating a customer-controlled domain. The self-hosted configuration assumes the operator controls both the Caddy configuration and the DNS mapping.
+
 **Non-goals:** multi-tenant pooled DB, microservices, heavy front-end framework.
 
 ## Baseline Tech Choices
@@ -43,6 +52,7 @@
 **Front-end**
 
 - Hotwire (Turbo + Stimulus).
+- Browser push notifications use standards-based Web Push with a self-hoster-managed VAPID key pair and an opt-in subscription per browser.
 - CSS: `tailwindcss-rails`.
 - JS packaging: importmap unless a bundler is clearly required.
 - DaisyUI for component styling and theming. Documentation is available in LLM-friendly form here https://daisyui.com/llms.txt
@@ -102,10 +112,9 @@ Keep the Turbo handbook as the shared reference.
 
 ## 6. Self-Hosting (docker-compose)
 
-**Compose targets**
+**Compose target**
 
-- docker-compose.yml — production-like single node.
-- docker-compose.dev.yml — development conveniences (bind mounts, live reload).
+- docker-compose.yml — the shared single-node topology for local development and self-hosting, with web, worker, Postgres, Redis, and persistent local storage.
 
 **Services**
 
@@ -165,7 +174,7 @@ Keep the Turbo handbook as the shared reference.
 
 **Adopt**
 
-- Rails 8 defaults: Propshaft, Kamal 2, auth generator.
+- Rails 8 defaults: Propshaft and auth generator.
 - Solid adapters unless Redis is clearly needed.
 
 **Explicitly decide**

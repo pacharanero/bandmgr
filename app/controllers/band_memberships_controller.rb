@@ -4,15 +4,17 @@ class BandMembershipsController < ApplicationController
   before_action :set_band_membership, only: %i[update destroy resend_invite]
 
   def create
+    @band_membership = @band.band_memberships.new
+    @band_membership.user = find_user_from_email
+    @band_membership.invited_email = band_membership_params[:email_address] if @band_membership.user.nil?
+    authorize @band_membership
+
     requested_role = sanitized_role_param
     if requested_role == "band_admin" && !current_user_band_admin?(@band)
       render_forbidden_role and return
     end
 
-    @band_membership = @band.band_memberships.new(role: requested_role)
-    @band_membership.user = find_user_from_email
-    @band_membership.invited_email = band_membership_params[:email_address] if @band_membership.user.nil?
-    authorize @band_membership
+    @band_membership.role = requested_role
 
     if @band_membership.user
       @band.account.memberships.find_or_create_by!(user: @band_membership.user) do |membership|

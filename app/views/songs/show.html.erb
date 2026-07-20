@@ -76,4 +76,8 @@
       <p class="mt-2 text-sm text-slate-600">No setlists yet. Create one to start assigning songs.</p>
     <% end %>
   </div>
+
+  <%= render "attachments/attachments", record: @song %>
+
+  <%= render "comments/comments", commentable: @song, comments: @comments %>
 </div>

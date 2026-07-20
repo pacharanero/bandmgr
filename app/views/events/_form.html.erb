@@ -40,8 +40,8 @@
 
   <div>
     <%= form.label :attachments, "Attachments", class: "block text-sm font-medium text-slate-700" %>
-    <%= form.file_field :attachments, multiple: true, class: "mt-1 w-full text-sm text-slate-600" %>
-    <p class="mt-2 text-xs text-slate-500">Upload contracts, stage plots, or PDFs.</p>
+    <%= form.file_field :attachments, multiple: true, accept: ".pdf,.txt,.rtf,.doc,.docx,.odt,.jpg,.jpeg,.png,.webp,.heic", class: "mt-1 w-full text-sm text-slate-600" %>
+    <p class="mt-2 text-xs text-slate-500">Upload contracts, stage plots, or PDFs up to 20 MB each.</p>
   </div>
 
   <div class="flex items-center justify-end gap-3">

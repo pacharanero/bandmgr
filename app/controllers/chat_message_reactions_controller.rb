@@ -2,12 +2,8 @@ class ChatMessageReactionsController < ApplicationController
   before_action :require_account
 
   def toggle
-    message = ChatMessage.find(params[:message_id])
-    band = message.chat_channel.band
-    unless band.band_memberships.where(user_id: current_user.id).exists?
-      redirect_to chat_band_path(band), alert: "You do not have access."
-      return
-    end
+    message = policy_scope(ChatMessage).find(params[:message_id])
+    authorize message, :react?
 
     reaction = message.chat_message_reactions.find_by(user_id: current_user.id, kind: "like")
     if reaction
@@ -16,6 +12,6 @@ class ChatMessageReactionsController < ApplicationController
       message.chat_message_reactions.create!(user: current_user, kind: "like")
     end
 
-    redirect_to chat_band_path(band, channel_id: message.chat_channel_id)
+    redirect_to chat_band_path(message.chat_channel.band, channel_id: message.chat_channel_id)
   end
 end

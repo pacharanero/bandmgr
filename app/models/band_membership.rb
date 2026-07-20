@@ -30,10 +30,10 @@ class BandMembership < ApplicationRecord
 
   private
 
-  def send_invitation
-    return unless recipient_email
+    def send_invitation
+      return if accepted? || recipient_email.blank?
 
-    update_column(:invitation_sent_at, Time.current)
+      update_column(:invitation_sent_at, Time.current)
     BandMembershipMailer.with(membership: self).invitation.deliver_later
   end
 

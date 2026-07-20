@@ -45,7 +45,8 @@ For the full status list and roadmap, see `spec/features.md` and `spec/roadmap.m
 3. Run the dev stack: `./s/dev`
 
 What `./s/dev` does:
-- Starts Postgres and Redis via Docker Compose.
+- Starts Postgres, Redis, the Rails web application, and the Solid Queue worker via Docker Compose.
+- Runs a one-off migration service before starting the web and worker services.
 - Builds/starts the Rails web container with live code reload and bind-mounts `storage/` for uploads.
 - Waits for the stack and opens `http://localhost:3000`.
 
@@ -62,7 +63,7 @@ Have an idea that isn't listed? Open an issue and let's chat.
 
 ## Deployment
 
-Production deployments use Kamal and the configuration in `config/deploy.yml`. Keep `.kamal/secrets` local and supply `KAMAL_REGISTRY_PASSWORD` and `RAILS_MASTER_KEY` from a password manager or the environment.
+The single `docker-compose.yml` is the supported topology for local development and self-hosting. For production, copy `.env.example` to `.env`, set `RAILS_ENV=production`, replace every example secret, provide `RAILS_MASTER_KEY`, and run `docker compose up -d --build`. Put the web service behind a TLS-terminating reverse proxy before exposing it publicly. GitHub Actions verifies the application but does not deploy it.
 
 ## Licence
 

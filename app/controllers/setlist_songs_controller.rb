@@ -61,6 +61,25 @@ class SetlistSongsController < ApplicationController
     redirect_to @setlist, notice: "Song removed from setlist."
   end
 
+  def move
+    authorize @setlist, :update?
+    setlist_song = @setlist.setlist_songs.find(params[:id])
+    ordered_songs = @setlist.setlist_songs.order(:position).to_a
+    index = ordered_songs.index(setlist_song)
+    offset = params[:direction] == "up" ? -1 : 1
+    other_song = ordered_songs[index + offset]
+
+    if other_song
+      SetlistSong.transaction do
+        original_position = setlist_song.position
+        setlist_song.update!(position: other_song.position)
+        other_song.update!(position: original_position)
+      end
+    end
+
+    redirect_to @setlist
+  end
+
   def bulk_destroy
     authorize @setlist, :update?
     ids = Array(params[:setlist_song_ids]).map(&:to_i).uniq

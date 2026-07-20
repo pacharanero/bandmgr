@@ -1,0 +1,20 @@
+<% content_for :title, "Notifications" %>
+
+<div class="max-w-3xl">
+  <h1 class="text-2xl font-semibold text-slate-900">Notifications</h1>
+  <p class="mt-1 text-sm text-slate-600">A private record of replies, comments, and task assignments.</p>
+
+  <% if @notifications.any? %>
+    <div class="mt-6 divide-y divide-slate-200 rounded-lg border border-slate-200 bg-white shadow-sm">
+      <% @notifications.each do |notification| %>
+        <%= link_to notification_destination(notification), class: "block px-5 py-4 hover:bg-slate-50" do %>
+          <p class="text-sm font-medium text-slate-800"><%= notification.kind.humanize %></p>
+          <p class="mt-1 text-sm text-slate-600"><%= notification.actor ? "#{notification.actor.email_address} created this activity." : "This event is coming up soon." %></p>
+          <p class="mt-1 text-xs text-slate-500"><%= l(notification.created_at, format: :short) %></p>
+        <% end %>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="mt-6 rounded-lg border border-slate-200 bg-white px-5 py-4 text-sm text-slate-600">No notifications yet.</p>
+  <% end %>
+</div>

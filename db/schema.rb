@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_13_234432) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_17_211000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -20,6 +20,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_13_234432) do
     t.string "ai_openai_api_key"
     t.string "ai_provider"
     t.datetime "created_at", null: false
+    t.text "encrypted_ai_anthropic_api_key"
+    t.text "encrypted_ai_openai_api_key"
     t.string "name", null: false
     t.string "slug", null: false
     t.datetime "updated_at", null: false
@@ -79,12 +81,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_13_234432) do
     t.string "facebook"
     t.string "instagram"
     t.string "location"
+    t.string "merch_url"
     t.string "name", null: false
     t.string "phone"
     t.string "private_calendar_token"
     t.boolean "public_calendar_enabled", default: false, null: false
     t.boolean "public_calendar_include_rehearsals", default: false, null: false
     t.string "public_calendar_token"
+    t.string "public_contact_email"
+    t.string "public_domain"
+    t.boolean "public_site_enabled", default: false, null: false
+    t.text "public_site_markdown", default: "# {{ bandName }}\n\n{{ description }}\n\n{{ contact }}\n\n## Upcoming shows\n\n{{ gigList | future }}\n", null: false
     t.string "soundcloud"
     t.string "twitter"
     t.datetime "updated_at", null: false
@@ -92,6 +99,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_13_234432) do
     t.index ["account_id"], name: "index_bands_on_account_id"
     t.index ["private_calendar_token"], name: "index_bands_on_private_calendar_token", unique: true
     t.index ["public_calendar_token"], name: "index_bands_on_public_calendar_token", unique: true
+    t.index ["public_domain"], name: "index_bands_on_public_domain", unique: true
   end
 
   create_table "chat_channel_participants", force: :cascade do |t|
@@ -136,6 +144,19 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_13_234432) do
     t.index ["user_id"], name: "index_chat_messages_on_user_id"
   end
 
+  create_table "comments", force: :cascade do |t|
+    t.bigint "band_id", null: false
+    t.text "body", null: false
+    t.bigint "commentable_id", null: false
+    t.string "commentable_type", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["band_id"], name: "index_comments_on_band_id"
+    t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable"
+    t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
   create_table "event_setlists", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.bigint "event_id", null: false
@@ -151,10 +172,23 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_13_234432) do
     t.datetime "created_at", null: false
     t.integer "kind", default: 0, null: false
     t.text "notes"
+    t.datetime "reminder_sent_at"
     t.datetime "starts_at"
     t.datetime "updated_at", null: false
     t.string "venue"
     t.index ["band_id"], name: "index_events_on_band_id"
+  end
+
+  create_table "job_failures", force: :cascade do |t|
+    t.string "active_job_id", null: false
+    t.datetime "created_at", null: false
+    t.string "error_class", null: false
+    t.string "job_class", null: false
+    t.text "message", null: false
+    t.datetime "occurred_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["active_job_id"], name: "index_job_failures_on_active_job_id"
+    t.index ["occurred_at"], name: "index_job_failures_on_occurred_at"
   end
 
   create_table "memberships", force: :cascade do |t|
@@ -168,6 +202,33 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_13_234432) do
     t.index ["account_id"], name: "index_memberships_on_account_id"
     t.index ["default_band_id"], name: "index_memberships_on_default_band_id"
     t.index ["user_id"], name: "index_memberships_on_user_id"
+  end
+
+  create_table "notifications", force: :cascade do |t|
+    t.bigint "actor_id"
+    t.datetime "created_at", null: false
+    t.integer "kind", default: 0, null: false
+    t.bigint "notifiable_id", null: false
+    t.string "notifiable_type", null: false
+    t.datetime "read_at"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["actor_id"], name: "index_notifications_on_actor_id"
+    t.index ["notifiable_type", "notifiable_id"], name: "index_notifications_on_notifiable"
+    t.index ["user_id", "read_at"], name: "index_notifications_on_user_id_and_read_at"
+    t.index ["user_id"], name: "index_notifications_on_user_id"
+  end
+
+  create_table "push_subscriptions", force: :cascade do |t|
+    t.text "auth", null: false
+    t.datetime "created_at", null: false
+    t.text "endpoint", null: false
+    t.datetime "last_used_at", null: false
+    t.text "p256dh", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["endpoint"], name: "index_push_subscriptions_on_endpoint", unique: true
+    t.index ["user_id"], name: "index_push_subscriptions_on_user_id"
   end
 
   create_table "sessions", force: :cascade do |t|
@@ -245,6 +306,21 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_13_234432) do
     t.index ["account_id"], name: "index_tags_on_account_id"
   end
 
+  create_table "tasks", force: :cascade do |t|
+    t.bigint "assignee_id"
+    t.bigint "band_id", null: false
+    t.datetime "created_at", null: false
+    t.bigint "creator_id", null: false
+    t.text "description"
+    t.integer "status", default: 0, null: false
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.index ["assignee_id"], name: "index_tasks_on_assignee_id"
+    t.index ["band_id", "status"], name: "index_tasks_on_band_id_and_status"
+    t.index ["band_id"], name: "index_tasks_on_band_id"
+    t.index ["creator_id"], name: "index_tasks_on_creator_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "email_address", null: false
@@ -268,12 +344,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_13_234432) do
   add_foreign_key "chat_messages", "chat_channels"
   add_foreign_key "chat_messages", "chat_messages", column: "parent_id"
   add_foreign_key "chat_messages", "users"
+  add_foreign_key "comments", "bands"
+  add_foreign_key "comments", "users"
   add_foreign_key "event_setlists", "events"
   add_foreign_key "event_setlists", "setlists"
   add_foreign_key "events", "bands"
   add_foreign_key "memberships", "accounts"
   add_foreign_key "memberships", "bands", column: "default_band_id"
   add_foreign_key "memberships", "users"
+  add_foreign_key "notifications", "users"
+  add_foreign_key "notifications", "users", column: "actor_id"
+  add_foreign_key "push_subscriptions", "users"
   add_foreign_key "sessions", "users"
   add_foreign_key "setlist_songs", "setlists"
   add_foreign_key "setlist_songs", "songs"
@@ -284,4 +365,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_13_234432) do
   add_foreign_key "songs", "bands"
   add_foreign_key "taggings", "tags"
   add_foreign_key "tags", "accounts"
+  add_foreign_key "tasks", "bands"
+  add_foreign_key "tasks", "users", column: "assignee_id"
+  add_foreign_key "tasks", "users", column: "creator_id"
 end

@@ -1,5 +1,9 @@
 class BandMembershipInvitationsController < ApplicationController
+  allow_unauthenticated_access only: :show
+
   def show
+    # A signed-in recipient and the invitation token establish access before membership exists.
+    skip_authorization
     @membership = BandMembership.find_by!(invitation_token: params[:token])
 
     unless current_user

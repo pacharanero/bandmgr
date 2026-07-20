@@ -1,12 +1,15 @@
 class EventsController < ApplicationController
   before_action :require_account
   before_action :set_event, only: %i[show edit update destroy]
+  after_action :verify_policy_scoped, only: %i[index calendar]
 
   def index
+    authorize Event
     @events = policy_scope(Event).joins(:band).where(bands: { account_id: current_account.id }).order(starts_at: :asc)
   end
 
   def calendar
+    authorize Event
     @month = parse_month(params[:month], params[:year])
     @start_date = @month.beginning_of_month.beginning_of_week(:monday)
     @end_date = @month.end_of_month.end_of_week(:monday)
@@ -22,6 +25,7 @@ class EventsController < ApplicationController
 
   def show
     authorize @event
+    @comments = policy_scope(Comment).where(commentable: @event).includes(:user).order(created_at: :asc)
   end
 
   def new
@@ -36,7 +40,7 @@ class EventsController < ApplicationController
   def create
     load_bands
     band_id = event_params[:band_id].presence || @selected_band&.id
-    @event = Event.new(event_params.merge(band_id: band_id))
+    @event = Event.new(event_params.except(:setlist_ids).merge(band_id: band_id))
     authorize @event
     @selected_band = @event.band
     load_setlists
@@ -63,7 +67,7 @@ class EventsController < ApplicationController
     @selected_band = @event.band
     load_setlists
 
-    if @event.update(event_params)
+    if @event.update(event_params.except(:setlist_ids))
       assign_setlists
       redirect_to @event, notice: "Event updated."
     else
@@ -100,7 +104,7 @@ class EventsController < ApplicationController
     def assign_setlists
       return if @event.band.nil?
 
-      ids = Array(params.dig(:event, :setlist_ids)).reject(&:blank?).map(&:to_i).uniq
+      ids = Array(event_params[:setlist_ids]).reject(&:blank?).map(&:to_i).uniq
       @event.setlist_ids = @event.band.setlists.where(id: ids).pluck(:id)
     end
 

@@ -1,6 +1,7 @@
 class BandsController < ApplicationController
   before_action :require_account
-  before_action :set_band, only: %i[show edit update destroy set_default]
+  before_action :set_band, only: %i[show edit update destroy set_default purge_gallery_image]
+  after_action :verify_policy_scoped, only: :index
 
   def index
     @bands = policy_scope(Band).where(account: current_account)
@@ -25,7 +26,7 @@ class BandsController < ApplicationController
     authorize @band
 
     if @band.save
-      @band.band_memberships.create!(user: current_user, role: :band_admin)
+      @band.band_memberships.create!(user: current_user, role: :band_admin, invitation_accepted_at: Time.current)
       redirect_to @band, notice: "Band created."
     else
       render :new, status: :unprocessable_entity
@@ -66,13 +67,21 @@ class BandsController < ApplicationController
     redirect_to @band, notice: "Default band set."
   end
 
+  def purge_gallery_image
+    authorize @band, :update?
+    image = @band.gallery_images.attachments.find_by!(blob_id: ActiveStorage::Blob.find_signed!(params[:signed_id]).id)
+    image.purge
+
+    redirect_to edit_band_path(@band), notice: "Gallery image removed."
+  end
+
   private
     def set_band
       @band = policy_scope(Band).find(params[:id])
     end
 
     def band_params
-      params.require(:band).permit(:name, :description, :public_calendar_enabled, :public_calendar_include_rehearsals)
+      params.require(:band).permit(:name, :description, :public_calendar_enabled, :public_calendar_include_rehearsals, :public_site_enabled, :public_domain, :public_contact_email, :public_site_markdown, :merch_url, :bandcamp, :facebook, :instagram, :soundcloud, :twitter, :youtube, gallery_images: [])
     end
 
     def ensure_calendar_tokens

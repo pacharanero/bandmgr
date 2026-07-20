@@ -1,8 +1,10 @@
 class SongsController < ApplicationController
   before_action :require_account
   before_action :set_song, only: %i[show edit update destroy]
+  after_action :verify_policy_scoped, only: :index
 
   def index
+    authorize Song
     @query = params[:q].to_s.strip
     @tag_filter = params[:tag].to_s.strip
     @tags = current_account.tags.order(:name)
@@ -24,6 +26,7 @@ class SongsController < ApplicationController
   def show
     authorize @song
     @setlists = policy_scope(Setlist).joins(:band).where(bands: { account_id: current_account.id, id: @song.band_id }).order(:title)
+    @comments = policy_scope(Comment).where(commentable: @song).includes(:user).order(created_at: :asc)
   end
 
   def new
@@ -118,7 +121,20 @@ class SongsController < ApplicationController
     end
 
     def song_params
-      params.require(:song).permit(:band_id, :title, :artist, :album, :key, :tempo, :notes, :tag_list, :singer_band_membership_id, :singer_name, :duration_seconds)
+      permitted = params.require(:song).permit(:band_id, :title, :artist, :album, :key, :tempo, :notes, :tag_list, :singer_band_membership_id, :singer_name, :duration_seconds, attachments: [])
+      permitted[:duration_seconds] = duration_in_seconds(permitted[:duration_seconds])
+      permitted
+    end
+
+    def duration_in_seconds(value)
+      value = value.to_s.strip
+      return if value.blank?
+      return value.to_i unless value.match?(/\A\d+:\d{1,2}\z/)
+
+      minutes, seconds = value.split(":").map(&:to_i)
+      return value if seconds >= 60
+
+      (minutes * 60) + seconds
     end
 
     def assign_tags(song)

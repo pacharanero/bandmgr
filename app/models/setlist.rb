@@ -1,4 +1,6 @@
 class Setlist < ApplicationRecord
+  include Attachable
+
   belongs_to :account
   belongs_to :band
 

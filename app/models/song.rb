@@ -1,4 +1,6 @@
 class Song < ApplicationRecord
+  include Attachable
+
   belongs_to :account
   belongs_to :band
 
@@ -7,6 +9,7 @@ class Song < ApplicationRecord
 
   has_many :setlist_songs, dependent: :destroy
   has_many :setlists, through: :setlist_songs
+  has_many :comments, as: :commentable, dependent: :destroy
 
   belongs_to :singer_band_membership, class_name: "BandMembership", optional: true
 

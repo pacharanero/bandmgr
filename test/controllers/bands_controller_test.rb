@@ -31,5 +31,17 @@ class BandsControllerTest < ActionDispatch::IntegrationTest
     assert_equal band, membership.band
     assert_equal users(:one), membership.user
     assert_equal "band_admin", membership.role
+    assert_predicate membership, :accepted?
+  end
+
+  test "updates public website settings for a band admin" do
+    sign_in_as users(:one)
+
+    patch band_path(bands(:one)), params: { band: { public_site_enabled: true, public_domain: "example-band.test", public_contact_email: "booking@example.test", merch_url: "https://shop.example.test", public_site_markdown: "# {{ bandName }}" } }
+
+    assert_redirected_to bands(:one)
+    band = bands(:one).reload
+    assert_predicate band, :public_site_enabled?
+    assert_equal "example-band.test", band.public_domain
   end
 end

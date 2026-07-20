@@ -3,9 +3,11 @@ class PasswordsController < ApplicationController
   before_action :set_user_by_token, only: %i[ edit update ]
 
   def new
+    skip_authorization
   end
 
   def create
+    skip_authorization
     if user = User.find_by(email_address: params[:email_address])
       PasswordsMailer.reset(user).deliver_later
     end
@@ -14,9 +16,11 @@ class PasswordsController < ApplicationController
   end
 
   def edit
+    skip_authorization
   end
 
   def update
+    skip_authorization
     if @user.update(params.permit(:password, :password_confirmation))
       redirect_to new_session_path, notice: "Password has been reset."
     else

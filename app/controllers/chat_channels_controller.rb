@@ -3,7 +3,7 @@ class ChatChannelsController < ApplicationController
 
   def create
     band = policy_scope(Band).find(params[:band_id])
-    authorize band
+    authorize band, :chat?
 
     recipient = band.users.find_by(id: params[:recipient_id])
     unless recipient
@@ -18,10 +18,17 @@ class ChatChannelsController < ApplicationController
   private
     def find_or_create_direct_channel(band, users)
       channel = band.chat_channels.find_by(kind: :direct, name: direct_name(users))
-      return channel if channel
+      if channel
+        authorize channel
+        return channel
+      end
 
-      channel = band.chat_channels.create!(name: direct_name(users), kind: :direct)
-      users.each { |user| channel.chat_channel_participants.find_or_create_by!(user: user) }
+      channel = band.chat_channels.new(name: direct_name(users), kind: :direct)
+      authorize channel, :create?
+      ChatChannel.transaction do
+        channel.save!
+        users.each { |user| channel.chat_channel_participants.find_or_create_by!(user: user) }
+      end
       channel
     end
 

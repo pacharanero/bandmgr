@@ -23,6 +23,10 @@ class BandPolicy < ApplicationPolicy
     account_member?
   end
 
+  def chat?
+    band_member?
+  end
+
   class Scope < Scope
     def resolve
       return scope.none unless user
@@ -50,5 +54,9 @@ class BandPolicy < ApplicationPolicy
       return false unless user
 
       record.band_memberships.where(user_id: user.id, role: :band_admin).exists? || account_admin?
+    end
+
+    def band_member?
+      user && record.band_memberships.exists?(user_id: user.id)
     end
 end

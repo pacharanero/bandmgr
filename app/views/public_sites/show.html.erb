@@ -1,0 +1,35 @@
+<% content_for :title, @band.name %>
+
+<header class="public-site-header">
+  <div class="public-site-shell public-site-header-content">
+    <a href="#content" class="public-site-name"><%= @band.name %></a>
+    <% if (merch = @public_links.assoc("Merch")) %>
+      <a href="<%= merch.last %>" class="public-site-merch" rel="noopener noreferrer">Merch</a>
+    <% end %>
+  </div>
+</header>
+
+<main id="content" class="public-site-shell public-site-content">
+  <article class="public-site-prose"><%= @rendered_content %></article>
+
+  <% if @band.gallery_images.attached? %>
+    <section class="public-site-gallery" aria-labelledby="gallery-heading">
+      <h2 id="gallery-heading">Gallery</h2>
+      <div class="public-site-gallery-grid">
+        <% @band.gallery_images.each do |image| %>
+          <%= image_tag public_gallery_image_path(image.signed_id), alt: "#{@band.name} gallery image", class: "public-site-gallery-image" %>
+        <% end %>
+      </div>
+    </section>
+  <% end %>
+</main>
+
+<% if @public_links.any? %>
+  <footer class="public-site-footer">
+    <div class="public-site-shell public-site-links" aria-label="External links">
+      <% @public_links.each do |label, url| %>
+        <a href="<%= url %>" rel="noopener noreferrer"><%= label %></a>
+      <% end %>
+    </div>
+  </footer>
+<% end %>

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || @band.name %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  </head>
+
+  <body class="public-site">
+    <%= yield %>
+  </body>
+</html>

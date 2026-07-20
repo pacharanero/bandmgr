@@ -1,0 +1,48 @@
+<% content_for :title, "Style guide" %>
+
+<div class="mx-auto max-w-4xl space-y-8">
+  <header>
+    <p class="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">Bandmgr interface</p>
+    <h1 class="mt-2 text-3xl font-semibold text-slate-900">Style guide</h1>
+    <p class="mt-2 max-w-2xl text-sm text-slate-600">A working reference for the shared visual language used across the workspace.</p>
+  </header>
+
+  <section class="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+    <h2 class="text-lg font-semibold text-slate-900">Palette</h2>
+    <div class="mt-4 grid gap-3 sm:grid-cols-3">
+      <div class="style-guide-swatch style-guide-swatch-canvas"><span>Canvas</span><code>--canvas</code></div>
+      <div class="style-guide-swatch style-guide-swatch-surface"><span>Surface</span><code>--surface</code></div>
+      <div class="style-guide-swatch style-guide-swatch-accent"><span>Accent</span><code>--accent</code></div>
+    </div>
+  </section>
+
+  <section class="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+    <h2 class="text-lg font-semibold text-slate-900">Type and actions</h2>
+    <div class="mt-4 space-y-4">
+      <div>
+        <p class="text-xl font-semibold text-slate-900">Section heading</p>
+        <p class="mt-1 text-sm text-slate-600">Supporting text remains muted and concise.</p>
+      </div>
+      <div class="flex flex-wrap gap-3">
+        <button type="button" class="rounded-md bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">Primary action</button>
+        <button type="button" class="rounded-md border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 hover:border-slate-400">Secondary action</button>
+        <button type="button" class="rounded-md border border-red-200 px-4 py-2 text-sm font-semibold text-red-600 hover:border-red-300">Destructive action</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
+    <h2 class="text-lg font-semibold text-slate-900">Lists and empty states</h2>
+    <div class="mt-4 divide-y divide-slate-200 rounded-md border border-slate-200">
+      <div class="flex items-center justify-between px-4 py-3">
+        <div><p class="font-medium text-slate-900">List row</p><p class="text-sm text-slate-600">Secondary metadata</p></div>
+        <a href="#empty-state" class="text-sm font-semibold text-slate-700 hover:text-slate-900">View</a>
+      </div>
+      <div class="flex items-center justify-between px-4 py-3">
+        <div><p class="font-medium text-slate-900">Another row</p><p class="text-sm text-slate-600">Consistent spacing and hierarchy</p></div>
+        <button type="button" class="text-sm font-semibold text-red-600 hover:text-red-700">Remove</button>
+      </div>
+    </div>
+    <div id="empty-state" class="app-empty-state mt-5">No items yet. Empty states explain the next useful action.</div>
+  </section>
+</div>

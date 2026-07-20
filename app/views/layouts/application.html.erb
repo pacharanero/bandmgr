@@ -22,7 +22,7 @@
     <%= javascript_importmap_tags %>
     <%= heroicon_stylesheet %>
 
-    <script>
+    <script nonce="<%= content_security_policy_nonce %>">
       (function() {
         var storedTheme = localStorage.getItem("theme");
         if (storedTheme === "dark") {
@@ -36,7 +36,7 @@
     <div class="min-h-screen md:flex">
       <aside class="hidden w-64 flex-col border-r border-slate-200 bg-white px-5 py-6 md:flex">
         <div class="flex items-center justify-between">
-          <%= link_to "bandmgr", root_path, class: "text-lg font-semibold tracking-tight text-slate-900" %>
+          <%= link_to "bandmgr", root_path, class: "app-wordmark text-xl font-semibold" %>
         </div>
         <% if current_account %>
           <p class="mt-2 text-xs uppercase tracking-wide text-slate-400"><%= current_account.name %></p>
@@ -44,12 +44,14 @@
 
         <nav class="mt-8 text-sm text-slate-700">
           <div class="space-y-2">
-            <%= link_to "Bands", bands_path, class: "block rounded-md px-3 py-2 hover:bg-slate-100" %>
-            <%= link_to "Songs", songs_path, class: "block rounded-md px-3 py-2 hover:bg-slate-100" %>
-            <%= link_to "Setlists", setlists_path, class: "block rounded-md px-3 py-2 hover:bg-slate-100" %>
-            <%= link_to "Events", events_path, class: "block rounded-md px-3 py-2 hover:bg-slate-100" %>
+            <%= link_to "Bands", bands_path, class: "app-nav-link #{current_page?(bands_path) ? "app-nav-link-active" : ""} block rounded-md px-3 py-2 hover:bg-slate-100" %>
+            <%= link_to "Songs", songs_path, class: "app-nav-link #{controller_name == 'songs' ? 'app-nav-link-active' : ''} block rounded-md px-3 py-2 hover:bg-slate-100" %>
+            <%= link_to "Setlists", setlists_path, class: "app-nav-link #{controller_name == 'setlists' ? 'app-nav-link-active' : ''} block rounded-md px-3 py-2 hover:bg-slate-100" %>
+            <%= link_to "Events", events_path, class: "app-nav-link #{controller_name == 'events' ? 'app-nav-link-active' : ''} block rounded-md px-3 py-2 hover:bg-slate-100" %>
+            <%= link_to "Tasks", tasks_path, class: "app-nav-link #{controller_name == 'tasks' ? 'app-nav-link-active' : ''} block rounded-md px-3 py-2 hover:bg-slate-100" %>
+            <%= link_to "Notifications", notifications_path, class: "app-nav-link #{controller_name == 'notifications' ? 'app-nav-link-active' : ''} block rounded-md px-3 py-2 hover:bg-slate-100" %>
             <% if preferred_band %>
-              <%= link_to "Chat", chat_band_path(preferred_band), class: "block rounded-md px-3 py-2 hover:bg-slate-100" %>
+              <%= link_to "Chat", chat_band_path(preferred_band), class: "app-nav-link #{controller_name == 'band_chats' ? 'app-nav-link-active' : ''} block rounded-md px-3 py-2 hover:bg-slate-100" %>
             <% else %>
               <span class="block rounded-md px-3 py-2 text-slate-400" aria-disabled="true">Chat</span>
             <% end %>
@@ -79,36 +81,38 @@
       <div class="flex-1">
         <header class="border-b border-slate-200 bg-white md:hidden">
           <div class="flex items-center justify-between px-6 py-4">
-            <%= link_to "bandmgr", root_path, class: "text-lg font-semibold tracking-tight text-slate-900" %>
+            <%= link_to "bandmgr", root_path, class: "app-wordmark text-xl font-semibold" %>
             <% if current_user %>
               <%= button_to "Sign out", session_path, method: :delete, class: "rounded-full border border-slate-300 px-3 py-1 text-sm text-slate-700 hover:border-slate-400 hover:text-slate-900" %>
             <% end %>
           </div>
           <nav class="px-6 pb-4 text-sm text-slate-600">
-            <div class="flex flex-wrap gap-3">
-              <%= link_to "Bands", bands_path, class: "hover:text-slate-900" %>
-              <%= link_to "Songs", songs_path, class: "hover:text-slate-900" %>
-              <%= link_to "Setlists", setlists_path, class: "hover:text-slate-900" %>
-              <%= link_to "Events", events_path, class: "hover:text-slate-900" %>
+            <div class="-mx-6 flex gap-3 overflow-x-auto px-6 pb-1">
+              <%= link_to "Bands", bands_path, class: "app-mobile-nav-link #{current_page?(bands_path) ? "app-mobile-nav-link-active" : ""}" %>
+              <%= link_to "Songs", songs_path, class: "app-mobile-nav-link #{controller_name == 'songs' ? 'app-mobile-nav-link-active' : ''}" %>
+              <%= link_to "Setlists", setlists_path, class: "app-mobile-nav-link #{controller_name == 'setlists' ? 'app-mobile-nav-link-active' : ''}" %>
+              <%= link_to "Events", events_path, class: "app-mobile-nav-link #{controller_name == 'events' ? 'app-mobile-nav-link-active' : ''}" %>
+              <%= link_to "Tasks", tasks_path, class: "app-mobile-nav-link #{controller_name == 'tasks' ? 'app-mobile-nav-link-active' : ''}" %>
+              <%= link_to "Notifications", notifications_path, class: "app-mobile-nav-link #{controller_name == 'notifications' ? 'app-mobile-nav-link-active' : ''}" %>
               <% if preferred_band %>
-                <%= link_to "Chat", chat_band_path(preferred_band), class: "hover:text-slate-900" %>
+                <%= link_to "Chat", chat_band_path(preferred_band), class: "app-mobile-nav-link #{controller_name == 'band_chats' ? 'app-mobile-nav-link-active' : ''}" %>
               <% else %>
-                <span class="text-slate-400">Chat</span>
+                <span class="app-mobile-nav-link text-slate-400">Chat</span>
               <% end %>
               <% if current_account_membership&.admin? || current_account_membership&.owner? %>
-                <%= link_to "Admin", admin_path, class: "hover:text-slate-900" %>
+                <%= link_to "Admin", admin_path, class: "app-mobile-nav-link #{current_page?(admin_path) ? 'app-mobile-nav-link-active' : ''}" %>
               <% end %>
-              <span class="text-slate-400">Branding</span>
-              <span class="text-slate-400">Inventory</span>
-              <span class="text-slate-400">Technical</span>
-              <span class="text-slate-400">Finance</span>
+              <span class="app-mobile-nav-link text-slate-400">Branding</span>
+              <span class="app-mobile-nav-link text-slate-400">Inventory</span>
+              <span class="app-mobile-nav-link text-slate-400">Technical</span>
+              <span class="app-mobile-nav-link text-slate-400">Finance</span>
             </div>
           </nav>
         </header>
 
         <main class="mx-auto w-full max-w-6xl px-6 py-8">
           <% flash.each do |type, message| %>
-            <div class="mb-4 rounded-md border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700">
+            <div class="app-flash mb-4 rounded-md border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700">
               <%= message %>
             </div>
           <% end %>
@@ -117,7 +121,7 @@
       </div>
     </div>
 
-    <script>
+    <script nonce="<%= content_security_policy_nonce %>">
       (function() {
         var toggle = document.getElementById("theme-toggle");
         if (!toggle) return;
@@ -137,7 +141,7 @@
       })();
     </script>
 
-    <script>
+    <script nonce="<%= content_security_policy_nonce %>">
       (function() {
         document.addEventListener("click", function(event) {
           var button = event.target.closest("[data-copy-target]");

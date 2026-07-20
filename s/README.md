@@ -4,7 +4,7 @@
 
 ## `s/dev`
 
-Starts Postgres and Redis, then builds and runs the Rails application at `http://localhost:3000`.
+Starts the shared Compose topology: Postgres, Redis, a one-off migration service, the Rails application at `http://localhost:3000`, and the Solid Queue worker.
 
 ## `s/seed`
 

@@ -1,4 +1,4 @@
-<%= form_with model: song, class: "space-y-4" do |form| %>
+<%= form_with model: song, html: { multipart: true }, class: "space-y-4" do |form| %>
   <div>
     <%= form.label :band_id, "Band", class: "block text-sm font-medium text-slate-700" %>
     <%= form.collection_select :band_id, @bands, :id, :name, { prompt: "Select a band" }, class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2" %>
@@ -61,6 +61,12 @@
   <div>
     <%= form.label :notes, class: "block text-sm font-medium text-slate-700" %>
     <%= form.text_area :notes, rows: 4, class: "mt-1 w-full rounded-md border border-slate-300 px-3 py-2" %>
+  </div>
+
+  <div>
+    <%= form.label :attachments, "Attachments", class: "block text-sm font-medium text-slate-700" %>
+    <%= form.file_field :attachments, multiple: true, accept: ".pdf,.txt,.rtf,.doc,.docx,.odt,.jpg,.jpeg,.png,.webp,.heic", class: "mt-1 w-full text-sm text-slate-600" %>
+    <p class="mt-2 text-xs text-slate-500">PDFs, text documents, and images up to 20 MB each.</p>
   </div>
 
   <div class="flex items-center justify-end gap-3">

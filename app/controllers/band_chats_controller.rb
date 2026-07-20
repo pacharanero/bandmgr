@@ -4,16 +4,24 @@ class BandChatsController < ApplicationController
   before_action :ensure_default_channels
 
   def show
-    @channels = @band.chat_channels.order(:kind, :name)
+    @channels = policy_scope(ChatChannel).where(band: @band).order(:kind, :name)
     @channel = @channels.find_by(id: params[:channel_id]) || @channels.first
-    @messages = @channel ? @channel.chat_messages.includes(:user, :chat_message_reactions).order(created_at: :asc) : []
+    authorize @channel if @channel
+    @messages = if @channel
+      policy_scope(ChatMessage)
+        .where(chat_channel: @channel, parent_id: nil)
+        .includes(:user, :chat_message_reactions, replies: [ :user, :chat_message_reactions ])
+        .order(created_at: :asc)
+    else
+      []
+    end
     @members = @band.users.where.not(id: current_user.id).order(:email_address)
   end
 
   private
     def set_band
       @band = policy_scope(Band).find(params[:id])
-      authorize @band
+      authorize @band, :chat?
     end
 
     def ensure_default_channels

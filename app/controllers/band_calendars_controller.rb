@@ -2,6 +2,7 @@ class BandCalendarsController < ApplicationController
   allow_unauthenticated_access only: %i[public_feed private_feed]
 
   def private_feed
+    skip_authorization
     band = Band.find(params[:band_id])
     return head :not_found unless secure_token_match?(band.private_calendar_token, params[:token])
 
@@ -10,6 +11,7 @@ class BandCalendarsController < ApplicationController
   end
 
   def public_feed
+    skip_authorization
     band = Band.find(params[:band_id])
     return head :not_found unless band.public_calendar_enabled?
     return head :not_found unless secure_token_match?(band.public_calendar_token, params[:token])

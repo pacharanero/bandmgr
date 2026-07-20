@@ -4,7 +4,7 @@
     <title><%= content_for(:title) || "Bandmgr" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
-    <style>
+    <style nonce="<%= content_security_policy_nonce %>">
       body { font-family: "Helvetica Neue", Arial, sans-serif; color: #0f172a; margin: 32px; }
       h1 { font-size: 24px; margin-bottom: 4px; }
       h2 { font-size: 14px; text-transform: uppercase; letter-spacing: 0.06em; color: #64748b; margin-top: 24px; }

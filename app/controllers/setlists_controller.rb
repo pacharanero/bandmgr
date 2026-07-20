@@ -1,8 +1,10 @@
 class SetlistsController < ApplicationController
   before_action :require_account
   before_action :set_setlist, only: %i[show edit update destroy duplicate print export]
+  after_action :verify_policy_scoped, only: :index
 
   def index
+    authorize Setlist
     @setlists = policy_scope(Setlist)
       .joins(:band)
       .includes(:setlist_songs, :band)
@@ -132,7 +134,7 @@ class SetlistsController < ApplicationController
     end
 
     def setlist_params
-      params.require(:setlist).permit(:band_id, :title, :description)
+      params.require(:setlist).permit(:band_id, :title, :description, attachments: [])
     end
 
     def load_bands

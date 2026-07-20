@@ -49,6 +49,28 @@ class SongsControllerTest < ActionDispatch::IntegrationTest
     assert_includes song.tags.pluck(:name), "newtag"
   end
 
+  test "parses a minutes and seconds duration" do
+    sign_in_as users(:one)
+
+    post songs_path, params: {
+      song: { title: "Timed Song", duration_seconds: "03:15" }
+    }
+
+    assert_redirected_to song_path(Song.last)
+    assert_equal 195, Song.last.duration_seconds
+  end
+
+  test "creates a song with an attachment" do
+    sign_in_as users(:one)
+
+    post songs_path, params: {
+      song: { title: "Song with chart", attachments: [ fixture_file_upload("sample.txt", "text/plain") ] }
+    }
+
+    assert_redirected_to song_path(Song.last)
+    assert_predicate Song.last.attachments, :attached?
+  end
+
   test "updates a song" do
     sign_in_as users(:one)
 

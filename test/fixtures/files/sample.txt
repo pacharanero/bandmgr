@@ -1,0 +1,1 @@
+Bandmgr attachment fixture.

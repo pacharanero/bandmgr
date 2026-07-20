@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
   include Pundit::Authorization
 
   before_action :set_current_account
+  after_action :verify_authorized
   helper_method :current_user, :current_account, :current_account_membership, :preferred_band
 
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
@@ -46,6 +47,7 @@ class ApplicationController < ActionController::Base
     def require_account
       return if current_account
 
+      skip_authorization
       redirect_to new_account_path, alert: "Create an account to get started."
     end
 

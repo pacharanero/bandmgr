@@ -15,9 +15,9 @@ Read this file before changing the repository.
 ## Core Invariants
 
 - Scope all account and band data, and authorise access through Pundit before rendering or mutating it.
-- Keep secrets out of Git, logs, and browser responses. `.kamal/secrets` is local-only.
+- Keep secrets out of Git, logs, and browser responses. Local deployment credentials stay out of version control.
 - Preserve the Rails layering: controllers load and authorise, service/query objects hold non-trivial business logic, and policies state access rules.
-- Keep the Docker development environment and production Kamal configuration working for supported self-hosting.
+- Keep the Docker development environment working for supported local development and testing. Production deployment remains an explicit future decision.
 
 ## Workflow
 

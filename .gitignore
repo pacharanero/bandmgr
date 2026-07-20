@@ -54,7 +54,6 @@ db/*.sqlite3-*
 .env.development.local
 .env.test.local
 .env.production.local
-.kamal/secrets
 
 ### Misc
 *.log
