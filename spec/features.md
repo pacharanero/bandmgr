@@ -11,7 +11,7 @@
 - Equipment tracking: keep an inventory of your band's equipment and manage stage layouts.
 - Tagging system: use tags to organise songs, gigs, setlists, venues, and members for easier searching and filtering.
 - Data import/export: import songs from Plain Text, Markdown, or CSV files; export band data to YAML for backup or transfer.
-- Simple band website: gallery, booking info, static content (optional band website replacement)
+- Band website: About, gallery, booking info, static content (optional band website replacement) band merch shop, linktree to all pther web presence
 
 ### Tagging
 

@@ -32,7 +32,14 @@ Legend: [x] done, [~] in progress, [ ] not started.
 - [x] **R19 - Build the public band website** with About, gallery, booking information, static content, merchandise, and an external-link directory.
 - [ ] **R20 - Add equipment inventory and stage-plan management.**
 
-## Work Session 5 - Operations And Self-Hosting
+## Work Session 5 - API And CLI
+
+- [ ] **R52 - Add a versioned REST API** (`/api/v1/`) covering all band, member, song, setlist, event, task, comment, attachment, and notification resources.
+- [ ] **R53 - Add user-managed API keys** with optional band scoping and operation limits (read/write/delete), never exceeding the owner's GUI permissions.
+- [ ] **R54 - Build `bmgr` CLI** wrapping the API for scripted and LLM-driven automation (mirroring `sct`/`dsc` patterns: subcommands, JSON output, shell completions).
+- [ ] **R55 - Document the API** with OpenAPI/Swagger and example curl/bmgr recipes for common workflows.
+
+## Work Session 6 - Operations And Self-Hosting
 
 - [ ] **R21 - Add structured production logging and useful log tags.**
 - [ ] **R22 - Define error-reporting and minimal metrics integration points.**

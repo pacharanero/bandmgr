@@ -1,5 +1,3 @@
 class Current < ActiveSupport::CurrentAttributes
-  attribute :session
-  attribute :account
-  delegate :user, to: :session, allow_nil: true
+  attribute :session, :user, :account, :api_key
 end

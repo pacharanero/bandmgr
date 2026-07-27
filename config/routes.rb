@@ -1,4 +1,15 @@
 Rails.application.routes.draw do
+  namespace :api do
+    namespace :v1 do
+      resources :bands
+      resources :api_keys do
+        member do
+          post :revoke
+        end
+      end
+    end
+  end
+
   resource :session
   resource :registration, only: %i[new create]
   resources :passwords, param: :token
