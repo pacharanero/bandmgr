@@ -38,6 +38,7 @@ Legend: [x] done, [~] in progress, [ ] not started.
 - [x] **R53 - Add user-managed API keys** with optional band scoping and operation limits (read/write/delete), never exceeding the owner's GUI permissions.
 - [ ] **R54 - Build `bmgr` CLI** wrapping the API for scripted and LLM-driven automation (mirroring `sct`/`dsc` patterns: subcommands, JSON output, shell completions).
 - [ ] **R55 - Document the API** with OpenAPI/Swagger and example curl/bmgr recipes for common workflows.
+- [ ] **R56 - Enforce band-scoped API keys down to the band**, not just its account. A band-scoped key currently resolves the owning account and still reaches every band in that account; scoping must constrain each `policy_scope` to the pinned band so a key cannot read or mutate sibling bands.
 
 ## Work Session 6 - Operations And Self-Hosting
 

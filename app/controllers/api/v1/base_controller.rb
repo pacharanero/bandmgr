@@ -1,4 +1,6 @@
 class Api::V1::BaseController < ApplicationController
+  PermissionDenied = Class.new(StandardError)
+
   skip_before_action :require_authentication
   skip_before_action :verify_authenticity_token
   before_action :authenticate_api_key
@@ -6,6 +8,7 @@ class Api::V1::BaseController < ApplicationController
   after_action :mark_api_key_used
 
   rescue_from Pundit::NotAuthorizedError, with: :api_not_authorized
+  rescue_from PermissionDenied, with: :api_permission_denied
 
   private
 
@@ -57,9 +60,16 @@ class Api::V1::BaseController < ApplicationController
       render json: { error: "Forbidden", message: "You do not have access to that resource" }, status: :forbidden
     end
 
+    def api_permission_denied(error)
+      render json: { error: "Forbidden", message: error.message }, status: :forbidden
+    end
+
+    # Raises to guarantee the action halts before any mutation runs. Rescued to a
+    # clean 403 by rescue_from PermissionDenied. Never render here: callers invoke
+    # this inline without `return`, so rendering would let the mutation proceed.
     def check_api_permission(permission)
       return unless @api_key.present? && !@api_key.can?(permission)
 
-      render json: { error: "Forbidden", message: "API key does not have #{permission} permission" }, status: :forbidden
+      raise PermissionDenied, "API key does not have #{permission} permission"
     end
 end

@@ -29,10 +29,7 @@ class Api::V1::BandsController < Api::V1::BaseController
 
   def update
     authorize @band
-
-    unless @api_key.can?("write")
-      return render json: { error: "Forbidden", message: "API key does not have write permission" }, status: :forbidden
-    end
+    check_api_permission("write")
 
     if @band.update(band_params)
       render json: @band
@@ -43,10 +40,7 @@ class Api::V1::BandsController < Api::V1::BaseController
 
   def destroy
     authorize @band
-
-    unless @api_key.can?("delete")
-      return render json: { error: "Forbidden", message: "API key does not have delete permission" }, status: :forbidden
-    end
+    check_api_permission("delete")
 
     @band.destroy
     head :no_content
