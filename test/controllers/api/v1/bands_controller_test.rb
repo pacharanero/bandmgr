@@ -11,7 +11,7 @@ class Api::V1::BandsControllerTest < ActionDispatch::IntegrationTest
     get api_v1_bands_path, headers: { "Authorization" => "Bearer #{@api_key.token}" }
 
     assert_response :success
-    assert_equal [@band.id], response.parsed_body.pluck("id")
+    assert_equal [ @band.id ], response.parsed_body.pluck("id")
   end
 
   test "shows a band" do

@@ -23,6 +23,8 @@ module Authentication
 
     def resume_session
       Current.session ||= find_session_by_cookie
+      Current.user ||= Current.session&.user
+      Current.session
     end
 
     def find_session_by_cookie

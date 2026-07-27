@@ -12,7 +12,7 @@ class CreateApiKeys < ActiveRecord::Migration[8.1]
       t.text :description
 
       t.index :token, unique: true
-      t.index [:user_id, :band_id]
+      t.index [ :user_id, :band_id ]
     end
   end
 end

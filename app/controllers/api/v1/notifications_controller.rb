@@ -3,7 +3,7 @@ class Api::V1::NotificationsController < Api::V1::BaseController
 
   def index
     authorize Notification
-    @notifications = policy_scope(Notification).where(user: current_user).order(:created_at: :desc).limit(50)
+    @notifications = policy_scope(Notification).where(user: current_user).order(created_at: :desc).limit(50)
     render json: @notifications
   end
 

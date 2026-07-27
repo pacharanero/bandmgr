@@ -47,7 +47,7 @@ class ApiKey < ApplicationRecord
     def scopes_are_valid
       return if scopes.blank?
 
-      invalid = scopes.split(",").reject { |s| s.in?(PERMISSIONS + ["all"]) }
+      invalid = scopes.split(",").reject { |s| s.in?(PERMISSIONS + [ "all" ]) }
       errors.add(:scopes, "contains invalid permissions: #{invalid.join(", ")}") if invalid.any?
     end
 

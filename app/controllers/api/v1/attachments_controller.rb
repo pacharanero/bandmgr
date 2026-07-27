@@ -16,7 +16,7 @@ class Api::V1::AttachmentsController < Api::V1::BaseController
     if @attachment.attached?
       render json: attachment_json(@attachment), status: :created
     else
-      render json: { errors: ["Failed to attach file"] }, status: :unprocessable_entity
+      render json: { errors: [ "Failed to attach file" ] }, status: :unprocessable_entity
     end
   end
 
