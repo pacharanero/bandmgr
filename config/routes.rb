@@ -1,12 +1,21 @@
 Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
-      resources :bands
+      resources :bands do
+        resources :band_memberships, only: %i[index create update destroy]
+      end
       resources :api_keys do
         member do
           post :revoke
         end
       end
+      resources :songs
+      resources :setlists
+      resources :events
+      resources :tasks
+      resources :comments, only: %i[index create]
+      resources :attachments, only: %i[index create destroy]
+      resources :notifications, only: %i[index update]
     end
   end
 

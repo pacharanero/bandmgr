@@ -34,8 +34,8 @@ Legend: [x] done, [~] in progress, [ ] not started.
 
 ## Work Session 5 - API And CLI
 
-- [ ] **R52 - Add a versioned REST API** (`/api/v1/`) covering all band, member, song, setlist, event, task, comment, attachment, and notification resources.
-- [ ] **R53 - Add user-managed API keys** with optional band scoping and operation limits (read/write/delete), never exceeding the owner's GUI permissions.
+- [x] **R52 - Add a versioned REST API** (`/api/v1/`) covering all band, member, song, setlist, event, task, comment, attachment, and notification resources.
+- [x] **R53 - Add user-managed API keys** with optional band scoping and operation limits (read/write/delete), never exceeding the owner's GUI permissions.
 - [ ] **R54 - Build `bmgr` CLI** wrapping the API for scripted and LLM-driven automation (mirroring `sct`/`dsc` patterns: subcommands, JSON output, shell completions).
 - [ ] **R55 - Document the API** with OpenAPI/Swagger and example curl/bmgr recipes for common workflows.
 
