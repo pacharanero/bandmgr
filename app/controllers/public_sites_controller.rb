@@ -3,6 +3,7 @@ class PublicSitesController < ApplicationController
 
   def show
     skip_authorization
+    resume_session
     @band = Band.find_by(public_domain: request.host.downcase, public_site_enabled: true)
     return redirect_to(current_user ? bands_path : new_session_path) unless @band
 

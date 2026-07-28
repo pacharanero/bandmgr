@@ -14,7 +14,7 @@ Rails.application.configure do
     policy.frame_ancestors :self
     policy.img_src :self, :data
     policy.object_src :none
-    policy.script_src :self
+    policy.script_src :self, :strict_dynamic
     policy.style_src :self
   end
 
